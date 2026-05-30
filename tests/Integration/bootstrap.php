@@ -63,9 +63,14 @@ function pluginora_find_wp_tests_dir(): ?string
 {
     $candidates = [];
     $configured = getenv('WP_TESTS_DIR');
+    $wpDevelopDir = getenv('WP_DEVELOP_DIR');
 
     if (is_string($configured) && '' !== $configured) {
         $candidates[] = $configured;
+    }
+
+    if (is_string($wpDevelopDir) && '' !== $wpDevelopDir) {
+        $candidates[] = rtrim($wpDevelopDir, '/\\') . '/tests/phpunit';
     }
 
     $home = getenv('HOME');
@@ -76,6 +81,7 @@ function pluginora_find_wp_tests_dir(): ?string
     }
 
     $workspaceRoot = dirname(__DIR__, 2);
+    $candidates[] = $workspaceRoot . '/.wordpress-develop/tests/phpunit';
     $candidates[] = dirname($workspaceRoot) . '/wordpress-develop/tests/phpunit';
 
     foreach ($candidates as $candidate) {
@@ -91,12 +97,17 @@ function pluginora_find_woocommerce_plugin_file(string $wpTestsDir): ?string
 {
     $candidates = [];
     $configured = getenv('PLUGINORA_WC_PLUGIN_FILE');
+    $wpDevelopDir = getenv('WP_DEVELOP_DIR');
 
     if (is_string($configured) && '' !== $configured) {
         $candidates[] = $configured;
     }
 
-    $wpDevelopRoot = dirname(dirname(dirname($wpTestsDir)));
+    if (is_string($wpDevelopDir) && '' !== $wpDevelopDir) {
+        $candidates[] = rtrim($wpDevelopDir, '/\\') . '/src/wp-content/plugins/woocommerce/woocommerce.php';
+    }
+
+    $wpDevelopRoot = dirname(dirname($wpTestsDir));
     $candidates[] = $wpDevelopRoot . '/src/wp-content/plugins/woocommerce/woocommerce.php';
 
     $home = getenv('HOME');
