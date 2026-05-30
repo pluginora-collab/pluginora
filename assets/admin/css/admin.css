@@ -1,0 +1,220 @@
+.pluginora-admin-page {
+    max-width: 1080px;
+}
+
+.pluginora-admin-card {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 20px;
+    padding: 24px;
+}
+
+.pluginora-admin-card h2 {
+    margin-top: 0;
+}
+
+.pluginora-admin-notice {
+    border-radius: 4px;
+    margin-bottom: 16px;
+    padding: 12px 14px;
+}
+
+.pluginora-admin-notice.is-success {
+    background: #edfaef;
+    border: 1px solid #9fd5a6;
+}
+
+.pluginora-admin-notice.is-error {
+    background: #fcf0f1;
+    border: 1px solid #e2a4ab;
+}
+
+.pluginora-admin-grid {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: 1.3fr 1fr;
+}
+
+.pluginora-builder-card,
+.pluginora-list-card {
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    padding: 20px;
+}
+
+.pluginora-family-grid,
+.pluginora-type-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    margin: 16px 0;
+}
+
+.pluginora-family-card,
+.pluginora-type-card {
+    background: #f6f7f7;
+    border: 1px solid #dcdcde;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 16px;
+    text-align: left;
+}
+
+.pluginora-family-card.is-active,
+.pluginora-type-card.is-active {
+    background: #edf4ff;
+    border-color: #2271b1;
+}
+
+.pluginora-family-card h3,
+.pluginora-type-card h3,
+.pluginora-section h3,
+.pluginora-list-card h2 {
+    margin: 0 0 8px;
+}
+
+.pluginora-section {
+    border-top: 1px solid #dcdcde;
+    margin-top: 24px;
+    padding-top: 20px;
+}
+
+.pluginora-field-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.pluginora-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.pluginora-field.is-full {
+    grid-column: 1 / -1;
+}
+
+.pluginora-field label {
+    font-weight: 600;
+}
+
+.pluginora-field input[type='text'],
+.pluginora-field input[type='search'],
+.pluginora-field input[type='number'],
+.pluginora-field input[type='datetime-local'],
+.pluginora-field textarea,
+.pluginora-field select {
+    min-height: 40px;
+    width: 100%;
+}
+
+.pluginora-field textarea {
+    min-height: 96px;
+}
+
+.pluginora-field-help {
+    color: #50575e;
+    font-size: 12px;
+}
+
+.pluginora-checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.pluginora-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.pluginora-list-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.pluginora-list-table th,
+.pluginora-list-table td {
+    border-bottom: 1px solid #f0f0f1;
+    padding: 10px 8px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.pluginora-list-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.pluginora-chip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.pluginora-chip {
+    align-items: center;
+    background: #f0f6fc;
+    border: 1px solid #c5d9ed;
+    border-radius: 999px;
+    display: inline-flex;
+    gap: 8px;
+    padding: 6px 10px;
+}
+
+.pluginora-chip button {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    padding: 0;
+}
+
+.pluginora-lookup-results {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    margin-top: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.pluginora-lookup-option {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    display: block;
+    padding: 10px 12px;
+    text-align: left;
+    width: 100%;
+}
+
+.pluginora-lookup-option:hover {
+    background: #f6f7f7;
+}
+
+.pluginora-tier-row {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    margin-bottom: 10px;
+}
+
+.pluginora-muted {
+    color: #646970;
+}
+
+@media (max-width: 960px) {
+    .pluginora-admin-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pluginora-tier-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}

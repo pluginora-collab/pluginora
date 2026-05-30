@@ -1,0 +1,52 @@
+{
+    "name": "pluginora/pluginora",
+    "description": "Pluginora for WooCommerce dynamic pricing and coupon orchestration.",
+    "type": "wordpress-plugin",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.1"
+    },
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+        "phpcompatibility/php-compatibility": "^9.3",
+        "phpunit/phpunit": "^9.6",
+        "squizlabs/php_codesniffer": "^3.10",
+        "wp-coding-standards/wpcs": "^3.1",
+        "yoast/phpunit-polyfills": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Pluginora\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Pluginora\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "sort-packages": true,
+        "platform": {
+            "php": "8.1"
+        }
+    },
+    "scripts": {
+        "validate": "composer validate --strict",
+        "build:release": "bash bin/build-release.sh",
+        "verify:release": "bash bin/verify-release.sh",
+        "test": "phpunit --configuration phpunit.xml.dist",
+        "test:unit": "phpunit --configuration phpunit.xml.dist",
+        "test:integration:setup": "bash bin/install-wp-tests.sh",
+        "test:integration": "phpunit --configuration phpunit.integration.xml.dist",
+        "lint:phpcs": "phpcs --standard=phpcs.xml.dist --runtime-set ignore_warnings_on_exit 1",
+        "lint:phpcbf": "phpcbf --standard=phpcs.xml.dist",
+        "check": [
+            "@validate",
+            "@lint:phpcs",
+            "@test:unit"
+        ]
+    }
+}

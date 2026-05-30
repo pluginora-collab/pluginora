@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<ruleset name="Pluginora">
+    <description>PSR-12 plus targeted WordPress checks for Pluginora.</description>
+
+    <arg name="basepath" value="."/>
+    <arg name="colors"/>
+    <arg name="extensions" value="php"/>
+    <arg name="parallel" value="4"/>
+
+    <file>pluginora.php</file>
+    <file>uninstall.php</file>
+    <file>src</file>
+    <file>tests</file>
+
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+
+    <rule ref="PSR12">
+        <exclude name="PSR1.Methods.CamelCapsMethodName.NotCamelCaps"/>
+    </rule>
+    <rule ref="PHPCompatibility">
+        <properties>
+            <property name="testVersion" value="8.1-"/>
+        </properties>
+    </rule>
+
+    <config name="testVersion" value="8.1-"/>
+    <config name="minimum_supported_wp_version" value="6.5"/>
+
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array">
+                <element value="pluginora"/>
+            </property>
+        </properties>
+    </rule>
+
+    <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+        <properties>
+            <property name="prefixes" type="array">
+                <element value="pluginora"/>
+                <element value="PLUGINORA"/>
+            </property>
+        </properties>
+    </rule>
+</ruleset>

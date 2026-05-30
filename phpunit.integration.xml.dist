@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    bootstrap="tests/Integration/bootstrap.php"
+    colors="true"
+    failOnRisky="true"
+    failOnWarning="true"
+    verbose="true"
+>
+    <testsuites>
+        <testsuite name="Pluginora Integration Tests">
+            <directory suffix="Test.php">tests/Integration</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

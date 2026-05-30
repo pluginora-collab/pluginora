@@ -1,0 +1,63 @@
+.pluginora-frontend-notice {
+    margin: 1em 0;
+}
+
+.pluginora-price del,
+.pluginora-cart-price del {
+    color: #646970;
+    margin-right: 6px;
+}
+
+.pluginora-price ins,
+.pluginora-cart-price ins {
+    background: transparent;
+    color: inherit;
+    text-decoration: none;
+}
+
+.pluginora-savings-message {
+    color: #2271b1;
+    display: block;
+    margin-top: 4px;
+}
+
+.pluginora-tier-table {
+    margin-top: 16px;
+}
+
+.pluginora-tier-pricing-table {
+    margin-top: 8px;
+}
+
+.pluginora-coupon-list {
+    margin: 1.5em 0;
+}
+
+.pluginora-coupon-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.pluginora-coupon-card {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 6px;
+    padding: 16px;
+}
+
+.pluginora-coupon-code {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.pluginora-coupon-form {
+    margin-top: 12px;
+}
+
+.pluginora-coupon-meta {
+    color: #646970;
+    display: block;
+    margin-top: 4px;
+}
