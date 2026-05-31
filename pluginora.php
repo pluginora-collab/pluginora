@@ -4,7 +4,7 @@
  * Plugin Name: Pluginora
  * Plugin URI: https://example.com/pluginora
  * Description: Modular WooCommerce dynamic pricing and coupon orchestration.
- * Version: 1.0.0
+ * Version: 1.0.3
  * Requires at least: 6.5
  * Requires PHP: 8.1
  * Author: Pluginora
@@ -23,7 +23,7 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
-define('PLUGINORA_VERSION', '1.0.0');
+define('PLUGINORA_VERSION', '1.0.3');
 define('PLUGINORA_FILE', __FILE__);
 define('PLUGINORA_PATH', plugin_dir_path(__FILE__));
 define('PLUGINORA_URL', plugin_dir_url(__FILE__));

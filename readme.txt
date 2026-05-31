@@ -4,7 +4,7 @@ Tags: woocommerce, dynamic pricing, discounts, coupons, bogo
 Requires at least: 6.5
 Tested up to: 6.8
 Requires PHP: 8.1
-Stable tag: 1.0.0
+Stable tag: 1.0.3
 License: Proprietary
 License URI: https://example.com
 
@@ -42,6 +42,20 @@ No. Pluginora relies on WooCommerce hooks, CRUD objects, and native coupon stora
 Yes. The plugin declares compatibility with WooCommerce custom order tables and avoids direct legacy order storage assumptions.
 
 == Changelog ==
+
+= 1.0.3 =
+
+* Align plugin metadata, release packaging, and GitHub artifacts with the published version.
+* Add a GitHub README with CI and release badges.
+
+= 1.0.2 =
+
+* Fix GitHub Actions integration path discovery for the WordPress test suite.
+* Publish the corrected CI-verified release package.
+
+= 1.0.1 =
+
+* Internal release iteration superseded by 1.0.2.
 
 = 1.0.0 =
 
