@@ -14,7 +14,7 @@ Pluginora is a modular WooCommerce extension that combines dynamic pricing rules
 
 Pluginora provides a single promotion engine for WooCommerce stores that need both price rules and coupon automation without a fragmented admin workflow.
 
-Current foundations included in this codebase:
+Current capabilities in this release:
 
 * Guided rule builder for Dynamic Pricing and Coupon Engine rules.
 * Custom rule persistence with extensible repositories.
@@ -23,15 +23,87 @@ Current foundations included in this codebase:
 * Conflict resolution settings for `stack_all`, `best_discount_only`, and `coupon_priority`.
 * HPOS compatibility declaration and WooCommerce dependency guards.
 
+Supported promotion families:
+
+* Dynamic Pricing
+** Percentage or fixed discounts
+** Tiered or bulk pricing
+** Cart subtotal discounts
+* Coupon Engine
+** Basic native-backed coupons
+** Auto-apply coupons
+** BOGO coupon flows
+
+This version is intended for structured staging and QA with WooCommerce and includes automated test coverage, CI validation, and packaged release artifacts.
+
 == Installation ==
 
-1. Install the packaged Pluginora release into the `wp-content/plugins/pluginora` directory.
-2. Activate WooCommerce.
-3. Activate Pluginora from the WordPress admin.
+1. Download the packaged Pluginora release zip.
+2. In WordPress admin, go to Plugins > Add New > Upload Plugin.
+3. Upload the Pluginora zip and install it.
+4. Activate WooCommerce.
+5. Activate Pluginora from the WordPress admin.
+6. Open WooCommerce > Pluginora to create promotion rules.
+7. Open WooCommerce > Pluginora Settings to choose the conflict mode.
 
 If you are installing from a source checkout instead of a packaged release zip, run `composer install` inside the plugin directory before activation.
 
+== Getting Started ==
+
+After activation, Pluginora adds two WooCommerce submenu pages:
+
+* WooCommerce > Pluginora
+* WooCommerce > Pluginora Settings
+
+Recommended first-run flow:
+
+1. Create a few simple WooCommerce products with known prices.
+2. Go to WooCommerce > Pluginora.
+3. Create one rule and set it to Active.
+4. Test the storefront and cart before creating additional active rules.
+5. Change the conflict mode in Pluginora Settings if you want to compare stacking behavior.
+
+Suggested first tests:
+
+* Create a simple percentage discount for one selected product.
+* Create a tiered pricing rule and test quantity changes.
+* Create a cart subtotal discount with a minimum threshold.
+* Create a coupon rule with a code such as SAVE10.
+* Create an auto-apply coupon rule.
+* Create a BOGO rule and verify reward behavior.
+
+== Testing ==
+
+Recommended manual QA checks:
+
+* Product page price rendering
+* Cart and checkout discounts
+* Badge and savings message output
+* Native coupon creation and application
+* Auto-apply coupon behavior
+* BOGO reward handling
+* Conflict behavior when multiple rules can apply
+* Compatibility with your active theme and WooCommerce extensions
+
+For source-based development and validation:
+
+* Run `composer test:unit`
+* Run `composer test:integration`
+* Run `composer verify:release`
+
 == Frequently Asked Questions ==
+
+= Where do I find Pluginora after activation? =
+
+Pluginora adds WooCommerce submenu pages for the rule builder and settings panel.
+
+= What can I build with Pluginora right now? =
+
+You can create dynamic pricing rules, cart subtotal discounts, basic coupons, auto-apply coupons, and BOGO promotions.
+
+= How should I test Pluginora safely? =
+
+Use a staging WooCommerce site, activate one rule at a time, and verify storefront, cart, checkout, and coupon behavior before combining multiple active promotions.
 
 = Does Pluginora modify WooCommerce core files? =
 
@@ -41,12 +113,16 @@ No. Pluginora relies on WooCommerce hooks, CRUD objects, and native coupon stora
 
 Yes. The plugin declares compatibility with WooCommerce custom order tables and avoids direct legacy order storage assumptions.
 
+= Is Pluginora already production-ready for every store? =
+
+The plugin is validated for staging and structured QA, but live-store readiness still depends on your theme, taxes, shipping configuration, and third-party WooCommerce extensions.
+
 == Changelog ==
 
 = 1.0.3 =
 
 * Align plugin metadata, release packaging, and GitHub artifacts with the published version.
-* Add a GitHub README with CI and release badges.
+* Add fuller setup, usage, and testing documentation.
 
 = 1.0.2 =
 
