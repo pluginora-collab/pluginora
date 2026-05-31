@@ -32,7 +32,7 @@ final class Activator
         global $wpdb;
 
         $installer = new SchemaInstaller($wpdb, new RuleTables($wpdb->prefix));
-        $installer->install();
+        $installer->installOrUpgrade();
 
         update_option('pluginora_version', PLUGINORA_VERSION);
         add_option(SettingsRepository::OPTION_KEY, SettingsRepository::defaults());

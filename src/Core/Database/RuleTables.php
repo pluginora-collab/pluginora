@@ -10,6 +10,18 @@ final class RuleTables
     {
     }
 
+    public function all(): array
+    {
+        return [
+            $this->conditions(),
+            $this->actions(),
+            $this->items(),
+            $this->tiers(),
+            $this->logs(),
+            $this->rules(),
+        ];
+    }
+
     public function rules(): string
     {
         return $this->prefix . 'pluginora_rules';
@@ -38,5 +50,13 @@ final class RuleTables
     public function logs(): string
     {
         return $this->prefix . 'pluginora_rule_logs';
+    }
+
+    public function dropStatements(): array
+    {
+        return array_map(
+            static fn (string $table): string => sprintf('DROP TABLE IF EXISTS %s', $table),
+            $this->all()
+        );
     }
 }

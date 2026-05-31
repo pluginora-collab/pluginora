@@ -10,6 +10,14 @@ use WP_REST_Response;
 
 final class RulesControllerIntegrationTest extends IntegrationTestCase
 {
+    public function set_up(): void
+    {
+        parent::set_up();
+
+        self::$rulesController->register();
+        do_action('rest_api_init');
+    }
+
     public function test_store_and_show_round_trip_rule_payload(): void
     {
         $storeRequest = new WP_REST_Request('POST', '/pluginora/v1/rules');
@@ -106,5 +114,25 @@ final class RulesControllerIntegrationTest extends IntegrationTestCase
 
         self::assertInstanceOf(WP_Error::class, $response);
         self::assertSame('pluginora_rule_validation_error', $response->get_error_code());
+    }
+
+    public function test_registered_route_rejects_invalid_module_before_callback(): void
+    {
+        $request = new WP_REST_Request('POST', '/pluginora/v1/rules');
+        $request->set_body(
+            wp_json_encode(
+                [
+                    'module'    => 'invalid_module',
+                    'rule_type' => 'simple_discount',
+                    'name'      => 'Invalid Rule',
+                ]
+            )
+        );
+        $request->set_header('content-type', 'application/json');
+
+        $response = rest_do_request($request);
+
+        self::assertSame(400, $response->get_status());
+        self::assertSame('rest_invalid_param', $response->get_data()['code']);
     }
 }

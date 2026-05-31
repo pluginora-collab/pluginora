@@ -8,7 +8,9 @@ use wpdb;
 
 final class SchemaInstaller
 {
-    public const VERSION = '1.0.3';
+    public const VERSION = '1.0.4';
+
+    private const VERSION_OPTION = 'pluginora_db_version';
 
     public function __construct(
         private readonly wpdb $wpdb,
@@ -22,9 +24,37 @@ final class SchemaInstaller
 
         foreach ($this->getSchemas() as $schema) {
             dbDelta($schema->getSql());
+            $this->wpdb->query(sprintf('ALTER TABLE %s ENGINE=InnoDB', $schema->getName()));
         }
 
-        update_option('pluginora_db_version', self::VERSION);
+        update_option(self::VERSION_OPTION, self::VERSION);
+    }
+
+    public function getInstalledVersion(): string
+    {
+        $version = get_option(self::VERSION_OPTION, '');
+
+        return is_string($version) ? $version : '';
+    }
+
+    public function needsUpgrade(): bool
+    {
+        $installedVersion = $this->getInstalledVersion();
+
+        if ('' === $installedVersion) {
+            return true;
+        }
+
+        return version_compare($installedVersion, self::VERSION, '<');
+    }
+
+    public function installOrUpgrade(): void
+    {
+        if (! $this->needsUpgrade()) {
+            return;
+        }
+
+        $this->install();
     }
 
     /**

@@ -12,10 +12,13 @@ use Pluginora\Support\RuleCondition;
 use Pluginora\Support\RuleItem;
 use Pluginora\Support\RuleTier;
 use RuntimeException;
+use Throwable;
 use wpdb;
 
 final class WpdbRuleRepository implements RuleRepositoryInterface
 {
+    private ?array $pendingLogEntry = null;
+
     public function __construct(
         private readonly wpdb $wpdb,
         private readonly RuleTables $tables
@@ -49,24 +52,67 @@ final class WpdbRuleRepository implements RuleRepositoryInterface
     {
         $data = $rule->toDatabaseRow();
 
-        if (null !== $rule->getId()) {
-            unset($data['created_at_gmt']);
+        $this->beginTransaction();
 
-            $result = $this->wpdb->update(
-                $this->tables->rules(),
-                $data,
-                ['id' => $rule->getId()],
-                ['%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s'],
-                ['%d']
-            );
+        try {
+            if (null !== $rule->getId()) {
+                unset($data['created_at_gmt']);
 
-            if (false === $result) {
-                throw new RuntimeException('Failed to update Pluginora rule.');
+                $result = $this->wpdb->update(
+                    $this->tables->rules(),
+                    $data,
+                    ['id' => $rule->getId()],
+                    ['%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s'],
+                    ['%d']
+                );
+
+                if (false === $result) {
+                    $this->queueDatabaseError(
+                        $rule->getId() ?? 0,
+                        'rule_update',
+                        $this->tables->rules(),
+                        'Failed to update Pluginora rule.',
+                        $data
+                    );
+
+                    throw new RuntimeException('Failed to update Pluginora rule.');
+                }
+
+                $ruleId = $rule->getId();
+                $this->deleteChildren($ruleId);
+                $this->insertChildren($ruleId, $rule);
+                $this->commitTransaction();
+
+                $savedRule = $this->find($ruleId);
+
+                if (null !== $savedRule) {
+                    do_action('pluginora_rule_saved', $savedRule);
+                }
+
+                return $ruleId;
             }
 
-            $ruleId = $rule->getId();
-            $this->deleteChildren($ruleId);
+            $inserted = $this->wpdb->insert(
+                $this->tables->rules(),
+                $data,
+                ['%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%s']
+            );
+
+            if (! $inserted) {
+                $this->queueDatabaseError(
+                    0,
+                    'rule_insert',
+                    $this->tables->rules(),
+                    'Failed to insert Pluginora rule.',
+                    $data
+                );
+
+                throw new RuntimeException('Failed to insert Pluginora rule.');
+            }
+
+            $ruleId = (int) $this->wpdb->insert_id;
             $this->insertChildren($ruleId, $rule);
+            $this->commitTransaction();
 
             $savedRule = $this->find($ruleId);
 
@@ -75,47 +121,54 @@ final class WpdbRuleRepository implements RuleRepositoryInterface
             }
 
             return $ruleId;
+        } catch (Throwable $exception) {
+            $this->rollbackTransaction();
+            $this->flushQueuedDatabaseError();
+
+            throw $exception;
         }
-
-        $inserted = $this->wpdb->insert(
-            $this->tables->rules(),
-            $data,
-            ['%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%s']
-        );
-
-        if (! $inserted) {
-            throw new RuntimeException('Failed to insert Pluginora rule.');
-        }
-
-        $ruleId = (int) $this->wpdb->insert_id;
-        $this->insertChildren($ruleId, $rule);
-
-        $savedRule = $this->find($ruleId);
-
-        if (null !== $savedRule) {
-            do_action('pluginora_rule_saved', $savedRule);
-        }
-
-        return $ruleId;
     }
 
     public function delete(int $ruleId): bool
     {
         $rule = $this->find($ruleId);
 
-        $this->deleteChildren($ruleId);
+        $this->beginTransaction();
 
-        $deleted = $this->wpdb->delete(
-            $this->tables->rules(),
-            ['id' => $ruleId],
-            ['%d']
-        );
+        try {
+            $this->deleteChildren($ruleId);
 
-        if (false !== $deleted && null !== $rule) {
+            $deleted = $this->wpdb->delete(
+                $this->tables->rules(),
+                ['id' => $ruleId],
+                ['%d']
+            );
+
+            if (false === $deleted) {
+                $this->queueDatabaseError(
+                    $ruleId,
+                    'rule_delete',
+                    $this->tables->rules(),
+                    'Failed to delete Pluginora rule.',
+                    ['rule_id' => $ruleId]
+                );
+
+                throw new RuntimeException('Failed to delete Pluginora rule.');
+            }
+
+            $this->commitTransaction();
+        } catch (Throwable $exception) {
+            $this->rollbackTransaction();
+            $this->flushQueuedDatabaseError();
+
+            throw $exception;
+        }
+
+        if (null !== $rule) {
             do_action('pluginora_rule_deleted', $rule);
         }
 
-        return false !== $deleted;
+        return true;
     }
 
     public function duplicate(int $ruleId): int
@@ -141,6 +194,19 @@ final class WpdbRuleRepository implements RuleRepositoryInterface
             ['%s', '%s'],
             ['%d']
         );
+
+        if (false === $updated) {
+            $this->logDatabaseError(
+                $ruleId,
+                'rule_status_update',
+                $this->tables->rules(),
+                'Failed to update Pluginora rule status.',
+                [
+                    'rule_id' => $ruleId,
+                    'status'  => $status,
+                ]
+            );
+        }
 
         if (false !== $updated) {
             $rule = $this->find($ruleId);
@@ -219,10 +285,10 @@ final class WpdbRuleRepository implements RuleRepositoryInterface
 
     private function deleteChildren(int $ruleId): void
     {
-        $this->wpdb->delete($this->tables->conditions(), ['rule_id' => $ruleId], ['%d']);
-        $this->wpdb->delete($this->tables->actions(), ['rule_id' => $ruleId], ['%d']);
-        $this->wpdb->delete($this->tables->items(), ['rule_id' => $ruleId], ['%d']);
-        $this->wpdb->delete($this->tables->tiers(), ['rule_id' => $ruleId], ['%d']);
+        $this->deleteChildrenFromTable($this->tables->conditions(), $ruleId);
+        $this->deleteChildrenFromTable($this->tables->actions(), $ruleId);
+        $this->deleteChildrenFromTable($this->tables->items(), $ruleId);
+        $this->deleteChildrenFromTable($this->tables->tiers(), $ruleId);
     }
 
     private function insertChildren(int $ruleId, Rule $rule): void
@@ -265,7 +331,115 @@ final class WpdbRuleRepository implements RuleRepositoryInterface
         $inserted = $this->wpdb->insert($table, $data, $formats);
 
         if (! $inserted) {
+            $this->queueDatabaseError(
+                (int) ($data['rule_id'] ?? 0),
+                'child_insert',
+                $table,
+                sprintf('Failed to insert Pluginora child row into "%s".', $table),
+                $data
+            );
+
             throw new RuntimeException(sprintf('Failed to insert Pluginora child row into "%s".', $table));
         }
+    }
+
+    private function deleteChildrenFromTable(string $table, int $ruleId): void
+    {
+        $deleted = $this->wpdb->delete($table, ['rule_id' => $ruleId], ['%d']);
+
+        if (false === $deleted) {
+            $this->queueDatabaseError(
+                $ruleId,
+                'child_delete',
+                $table,
+                sprintf('Failed to delete Pluginora child rows from "%s".', $table),
+                ['rule_id' => $ruleId]
+            );
+
+            throw new RuntimeException(sprintf('Failed to delete Pluginora child rows from "%s".', $table));
+        }
+    }
+
+    private function logDatabaseError(
+        int $ruleId,
+        string $contextType,
+        string $contextReference,
+        string $message,
+        array $context = []
+    ): void {
+        $payload = wp_json_encode(
+            [
+                'message'  => $message,
+                'db_error' => $this->wpdb->last_error,
+                'context'  => $context,
+            ]
+        );
+
+        if (! is_string($payload) || '' === $payload) {
+            $payload = $message;
+        }
+
+        $this->wpdb->insert(
+            $this->tables->logs(),
+            [
+                'rule_id'           => max(0, $ruleId),
+                'context_type'      => $contextType,
+                'context_reference' => substr($contextReference, 0, 191),
+                'message'           => $payload,
+                'created_at_gmt'    => gmdate('Y-m-d H:i:s'),
+            ],
+            ['%d', '%s', '%s', '%s', '%s']
+        );
+    }
+
+    private function queueDatabaseError(
+        int $ruleId,
+        string $contextType,
+        string $contextReference,
+        string $message,
+        array $context = []
+    ): void {
+        $this->pendingLogEntry = [
+            'rule_id'           => $ruleId,
+            'context_type'      => $contextType,
+            'context_reference' => $contextReference,
+            'message'           => $message,
+            'context'           => $context,
+        ];
+    }
+
+    private function flushQueuedDatabaseError(): void
+    {
+        if (! is_array($this->pendingLogEntry)) {
+            return;
+        }
+
+        $entry = $this->pendingLogEntry;
+        $this->pendingLogEntry = null;
+
+        $this->logDatabaseError(
+            (int) $entry['rule_id'],
+            (string) $entry['context_type'],
+            (string) $entry['context_reference'],
+            (string) $entry['message'],
+            is_array($entry['context']) ? $entry['context'] : []
+        );
+    }
+
+    private function beginTransaction(): void
+    {
+        $this->pendingLogEntry = null;
+        $this->wpdb->query('START TRANSACTION');
+    }
+
+    private function commitTransaction(): void
+    {
+        $this->wpdb->query('COMMIT');
+        $this->pendingLogEntry = null;
+    }
+
+    private function rollbackTransaction(): void
+    {
+        $this->wpdb->query('ROLLBACK');
     }
 }

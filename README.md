@@ -7,13 +7,13 @@ Pluginora is a modular WooCommerce extension for dynamic pricing and coupon orch
 
 ## Current Status
 
-Pluginora is currently packaged and verified as `v1.0.3`.
+Pluginora is currently packaged and verified as `v1.0.4`.
 
 - GitHub Actions CI is passing on `main`.
 - Unit tests and WooCommerce-backed integration tests are passing.
-- The latest packaged release artifact is `pluginora-1.0.3.zip`.
+- The latest packaged release artifact is `pluginora-1.0.4.zip`.
 
-Current verified release: [v1.0.3](https://github.com/pluginora-collab/pluginora/releases/tag/v1.0.3)
+Current verified release: [v1.0.4](https://github.com/pluginora-collab/pluginora/releases/tag/v1.0.4)
 
 ## Highlights
 
@@ -36,7 +36,7 @@ Current verified release: [v1.0.3](https://github.com/pluginora-collab/pluginora
 
 If you want to test Pluginora in a WordPress or WooCommerce site, use the packaged release zip.
 
-1. Download `pluginora-1.0.3.zip` from the [releases page](https://github.com/pluginora-collab/pluginora/releases).
+1. Download `pluginora-1.0.4.zip` from the [releases page](https://github.com/pluginora-collab/pluginora/releases).
 2. In WordPress admin, go to `Plugins` -> `Add New` -> `Upload Plugin`.
 3. Upload the zip and install it.
 4. Activate WooCommerce if it is not already active.
@@ -52,11 +52,11 @@ Choose one of these paths depending on how you want to run Pluginora.
 
 Use this if you want the fastest way to test Pluginora in WordPress.
 
-1. Download the latest `pluginora-1.0.3.zip` release asset.
+1. Download the latest `pluginora-1.0.4.zip` release asset.
 2. Start your WordPress site.
 3. Log in to WordPress admin as an administrator.
 4. Go to `Plugins` -> `Add New` -> `Upload Plugin`.
-5. Upload `pluginora-1.0.3.zip`.
+5. Upload `pluginora-1.0.4.zip`.
 6. Install the plugin.
 7. Activate WooCommerce.
 8. Activate Pluginora.

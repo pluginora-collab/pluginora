@@ -53,11 +53,13 @@ final class RulesController implements HookableInterface
                     'methods'             => WP_REST_Server::READABLE,
                     'callback'            => [$this, 'index'],
                     'permission_callback' => [$this, 'permissionsCheck'],
+                    'args'                => $this->getIndexArgs(),
                 ],
                 [
                     'methods'             => WP_REST_Server::CREATABLE,
                     'callback'            => [$this, 'store'],
                     'permission_callback' => [$this, 'permissionsCheck'],
+                    'args'                => $this->getPayloadArgs(),
                 ],
             ]
         );
@@ -70,16 +72,19 @@ final class RulesController implements HookableInterface
                     'methods'             => WP_REST_Server::READABLE,
                     'callback'            => [$this, 'show'],
                     'permission_callback' => [$this, 'permissionsCheck'],
+                    'args'                => $this->getRuleIdArgs(),
                 ],
                 [
                     'methods'             => WP_REST_Server::EDITABLE,
                     'callback'            => [$this, 'update'],
                     'permission_callback' => [$this, 'permissionsCheck'],
+                    'args'                => array_merge($this->getRuleIdArgs(), $this->getPayloadArgs()),
                 ],
                 [
                     'methods'             => WP_REST_Server::DELETABLE,
                     'callback'            => [$this, 'destroy'],
                     'permission_callback' => [$this, 'permissionsCheck'],
+                    'args'                => $this->getRuleIdArgs(),
                 ],
             ]
         );
@@ -93,6 +98,7 @@ final class RulesController implements HookableInterface
                         'methods'             => WP_REST_Server::CREATABLE,
                         'callback'            => [$this, $action],
                         'permission_callback' => [$this, 'permissionsCheck'],
+                        'args'                => $this->getRuleIdArgs(),
                     ],
                 ]
             );
@@ -271,5 +277,70 @@ final class RulesController implements HookableInterface
         $payload = $request->get_json_params();
 
         return is_array($payload) ? $payload : [];
+    }
+
+    private function getIndexArgs(): array
+    {
+        return [
+            'module'    => [
+                'required'          => false,
+                'sanitize_callback' => 'sanitize_key',
+                'validate_callback' => static fn (mixed $value): bool => is_string($value)
+                    && in_array(sanitize_key($value), ['dynamic_pricing', 'coupon_engine'], true),
+            ],
+            'status'    => [
+                'required'          => false,
+                'sanitize_callback' => 'sanitize_key',
+                'validate_callback' => static fn (mixed $value): bool => is_string($value)
+                    && in_array(sanitize_key($value), ['active', 'inactive'], true),
+            ],
+            'rule_type' => [
+                'required'          => false,
+                'sanitize_callback' => 'sanitize_key',
+                'validate_callback' => static fn (mixed $value): bool => is_string($value)
+                    && '' !== sanitize_key($value),
+            ],
+        ];
+    }
+
+    private function getPayloadArgs(): array
+    {
+        return [
+            'module'    => [
+                'required'          => true,
+                'sanitize_callback' => 'sanitize_key',
+                'validate_callback' => static fn (mixed $value): bool => is_string($value)
+                    && in_array(sanitize_key($value), ['dynamic_pricing', 'coupon_engine'], true),
+            ],
+            'rule_type' => [
+                'required'          => true,
+                'sanitize_callback' => 'sanitize_key',
+                'validate_callback' => static fn (mixed $value): bool => is_string($value)
+                    && '' !== sanitize_key($value),
+            ],
+            'name'      => [
+                'required'          => true,
+                'sanitize_callback' => 'sanitize_text_field',
+                'validate_callback' => static fn (mixed $value): bool => is_string($value)
+                    && '' !== trim($value),
+            ],
+            'status'    => [
+                'required'          => false,
+                'sanitize_callback' => 'sanitize_key',
+                'validate_callback' => static fn (mixed $value): bool => null === $value
+                    || (is_string($value) && in_array(sanitize_key($value), ['active', 'inactive'], true)),
+            ],
+        ];
+    }
+
+    private function getRuleIdArgs(): array
+    {
+        return [
+            'id' => [
+                'required'          => true,
+                'sanitize_callback' => 'absint',
+                'validate_callback' => static fn (mixed $value): bool => absint($value) > 0,
+            ],
+        ];
     }
 }

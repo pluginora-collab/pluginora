@@ -4,7 +4,7 @@ Tags: woocommerce, dynamic pricing, discounts, coupons, bogo
 Requires at least: 6.5
 Tested up to: 6.8
 Requires PHP: 8.1
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: Proprietary
 License URI: https://example.com
 
@@ -150,6 +150,15 @@ Yes. The plugin declares compatibility with WooCommerce custom order tables and 
 The plugin is validated for staging and structured QA, but live-store readiness still depends on your theme, taxes, shipping configuration, and third-party WooCommerce extensions.
 
 == Changelog ==
+
+
+= 1.0.4 =
+
+* Add upgrade-safe schema checks during normal plugin boot.
+* Add uninstall cleanup for Pluginora tables and settings.
+* Add structured database failure logging for repository writes.
+* Add REST route argument validation for rules and lookups.
+* Add production-readiness checklist documentation.
 
 = 1.0.3 =
 

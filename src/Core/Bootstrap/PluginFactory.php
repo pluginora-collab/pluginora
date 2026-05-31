@@ -37,7 +37,8 @@ final class PluginFactory
         return new Plugin(
             $context,
             $loader,
-            $container->get(WooCommerceGuard::class)
+            $container->get(WooCommerceGuard::class),
+            $container->get(\Pluginora\Core\Database\SchemaInstaller::class)
         );
     }
 }

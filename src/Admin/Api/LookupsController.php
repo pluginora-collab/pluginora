@@ -26,6 +26,7 @@ final class LookupsController implements HookableInterface
                     'methods'             => WP_REST_Server::READABLE,
                     'callback'            => [$this, 'products'],
                     'permission_callback' => [$this, 'permissionsCheck'],
+                    'args'                => $this->getLookupArgs(),
                 ],
             ]
         );
@@ -38,6 +39,7 @@ final class LookupsController implements HookableInterface
                     'methods'             => WP_REST_Server::READABLE,
                     'callback'            => [$this, 'categories'],
                     'permission_callback' => [$this, 'permissionsCheck'],
+                    'args'                => $this->getLookupArgs(),
                 ],
             ]
         );
@@ -123,6 +125,44 @@ final class LookupsController implements HookableInterface
         }
 
         return [];
+    }
+
+    private function getLookupArgs(): array
+    {
+        return [
+            'search'  => [
+                'required'          => false,
+                'sanitize_callback' => 'sanitize_text_field',
+                'validate_callback' => static fn (mixed $value): bool => is_string($value),
+            ],
+            'include' => [
+                'required'          => false,
+                'sanitize_callback' => [$this, 'sanitizeIncludeParam'],
+                'validate_callback' => [$this, 'validateIncludeParam'],
+            ],
+        ];
+    }
+
+    public function sanitizeIncludeParam(mixed $value): array
+    {
+        return $this->parseIds($value);
+    }
+
+    public function validateIncludeParam(mixed $value): bool
+    {
+        if (null === $value || '' === $value || [] === $value) {
+            return true;
+        }
+
+        if (is_string($value)) {
+            return [] !== $this->parseIds($value);
+        }
+
+        if (is_array($value)) {
+            return count($value) === count($this->parseIds($value));
+        }
+
+        return false;
     }
 
     private function sortIntegersByRequestedOrder(array $values, array $requestedIds): array

@@ -80,4 +80,38 @@ final class RuleRepositoryIntegrationTest extends IntegrationTestCase
 
         self::assertCount(2, $filteredRules);
     }
+
+    public function test_update_status_failure_writes_log_entry(): void
+    {
+        global $wpdb;
+
+        $rulesTable       = self::$tables->rules();
+        $backupRulesTable = $rulesTable . '_backup';
+
+        $wpdb->suppress_errors(true);
+        $wpdb->query(sprintf('RENAME TABLE %s TO %s', $rulesTable, $backupRulesTable));
+        $wpdb->suppress_errors(false);
+
+        try {
+            self::assertFalse(self::$ruleRepository->updateStatus(999, 'active'));
+        } finally {
+            $wpdb->suppress_errors(true);
+            $wpdb->query(sprintf('RENAME TABLE %s TO %s', $backupRulesTable, $rulesTable));
+            $wpdb->suppress_errors(false);
+        }
+
+        $logEntry = $wpdb->get_row(
+            $wpdb->prepare(
+                sprintf(
+                    'SELECT * FROM %s WHERE context_type = %%s ORDER BY id DESC LIMIT 1',
+                    self::$tables->logs()
+                ),
+                'rule_status_update'
+            ),
+            ARRAY_A
+        );
+
+        self::assertIsArray($logEntry);
+        self::assertStringContainsString('Failed to update Pluginora rule status', (string) $logEntry['message']);
+    }
 }

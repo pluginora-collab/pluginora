@@ -22,6 +22,8 @@ final class LookupsControllerIntegrationTest extends IntegrationTestCase
         }
 
         $this->controller = new LookupsController();
+        $this->controller->register();
+        do_action('rest_api_init');
     }
 
     public function test_permissions_check_allows_administrator_with_manage_woocommerce(): void
@@ -79,6 +81,17 @@ final class LookupsControllerIntegrationTest extends IntegrationTestCase
             ],
             $response->get_data()['items']
         );
+    }
+
+    public function test_registered_route_rejects_invalid_include_parameter(): void
+    {
+        $request = new WP_REST_Request('GET', '/pluginora/v1/lookups/products');
+        $request->set_param('include', 'abc');
+
+        $response = rest_do_request($request);
+
+        self::assertSame(400, $response->get_status());
+        self::assertSame('rest_invalid_param', $response->get_data()['code']);
     }
 
     private function createProduct(string $name): WC_Product_Simple
