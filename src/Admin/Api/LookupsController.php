@@ -66,6 +66,7 @@ final class LookupsController implements HookableInterface
         }
 
         $productIds = function_exists('wc_get_products') ? wc_get_products($query) : [];
+        $productIds = $this->sortIntegersByRequestedOrder($productIds, $ids);
         $items      = [];
 
         foreach ($productIds as $productId) {
@@ -96,6 +97,7 @@ final class LookupsController implements HookableInterface
         }
 
         $terms = get_terms($args);
+        $terms = $this->sortTermsByRequestedOrder($terms, $ids);
         $items = [];
 
         if (! is_wp_error($terms)) {
@@ -121,5 +123,40 @@ final class LookupsController implements HookableInterface
         }
 
         return [];
+    }
+
+    private function sortIntegersByRequestedOrder(array $values, array $requestedIds): array
+    {
+        if ([] === $requestedIds) {
+            return $values;
+        }
+
+        $requestedOrder = array_flip($requestedIds);
+
+        usort(
+            $values,
+            static fn (mixed $left, mixed $right): int =>
+                ($requestedOrder[(int) $left] ?? PHP_INT_MAX) <=> ($requestedOrder[(int) $right] ?? PHP_INT_MAX)
+        );
+
+        return $values;
+    }
+
+    private function sortTermsByRequestedOrder(mixed $terms, array $requestedIds): mixed
+    {
+        if ([] === $requestedIds || ! is_array($terms)) {
+            return $terms;
+        }
+
+        $requestedOrder = array_flip($requestedIds);
+
+        usort(
+            $terms,
+            static fn (object $left, object $right): int =>
+                ($requestedOrder[(int) $left->term_id] ?? PHP_INT_MAX)
+                <=> ($requestedOrder[(int) $right->term_id] ?? PHP_INT_MAX)
+        );
+
+        return $terms;
     }
 }
