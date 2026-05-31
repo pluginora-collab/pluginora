@@ -48,6 +48,37 @@ This version is intended for structured staging and QA with WooCommerce and incl
 
 If you are installing from a source checkout instead of a packaged release zip, run `composer install` inside the plugin directory before activation.
 
+== Run Pluginora Step By Step ==
+
+Fastest path using the release zip:
+
+1. Download the latest Pluginora zip.
+2. Start your WordPress site.
+3. Log in as an administrator.
+4. Upload the zip from Plugins > Add New > Upload Plugin.
+5. Install and activate WooCommerce.
+6. Activate Pluginora.
+7. Open WooCommerce > Pluginora.
+8. Create one active rule.
+9. Test the storefront, product page, cart, and checkout.
+
+Run from source checkout:
+
+1. Clone the Pluginora repository.
+2. Run `composer install`.
+3. Place the folder in `wp-content/plugins/pluginora`.
+4. Start WordPress and your database.
+5. Activate WooCommerce.
+6. Activate Pluginora.
+7. Open the Pluginora admin pages and begin testing.
+
+Recommended source validation order:
+
+1. Run `composer test:unit`.
+2. Run `composer test:integration:setup` on a fresh machine.
+3. Run `composer test:integration`.
+4. Run `composer verify:release`.
+
 == Getting Started ==
 
 After activation, Pluginora adds two WooCommerce submenu pages:
@@ -88,6 +119,7 @@ Recommended manual QA checks:
 For source-based development and validation:
 
 * Run `composer test:unit`
+* Run `composer test:integration:setup` on a fresh machine
 * Run `composer test:integration`
 * Run `composer verify:release`
 

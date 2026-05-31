@@ -29,6 +29,8 @@ Current verified release: [v1.0.3](https://github.com/pluginora-collab/pluginora
 - WordPress 6.5+
 - WooCommerce active
 - PHP 8.1+
+- Composer 2.x for source-based installs and local development
+- MySQL or MariaDB for local WordPress testing
 
 ## Quick Start
 
@@ -41,6 +43,71 @@ If you want to test Pluginora in a WordPress or WooCommerce site, use the packag
 5. Activate Pluginora.
 6. Open `WooCommerce` -> `Pluginora` to create rules.
 7. Open `WooCommerce` -> `Pluginora Settings` to configure conflict behavior.
+
+## Step-By-Step Run Guide
+
+Choose one of these paths depending on how you want to run Pluginora.
+
+### Option 1: Run The Released Plugin Zip
+
+Use this if you want the fastest way to test Pluginora in WordPress.
+
+1. Download the latest `pluginora-1.0.3.zip` release asset.
+2. Start your WordPress site.
+3. Log in to WordPress admin as an administrator.
+4. Go to `Plugins` -> `Add New` -> `Upload Plugin`.
+5. Upload `pluginora-1.0.3.zip`.
+6. Install the plugin.
+7. Activate WooCommerce.
+8. Activate Pluginora.
+9. Go to `WooCommerce` -> `Pluginora`.
+10. Create your first rule and save it as `Active`.
+11. Open the storefront, product page, cart, and checkout to verify the rule behavior.
+
+### Option 2: Run Pluginora From Source In WordPress
+
+Use this if you want to edit code locally and test changes.
+
+1. Clone the repository.
+2. Change into the project directory.
+3. Install dependencies with Composer.
+4. Copy or symlink the project into your WordPress plugins directory as `wp-content/plugins/pluginora`.
+5. Start your local WordPress site and database.
+6. Activate WooCommerce.
+7. Activate Pluginora.
+8. Open `WooCommerce` -> `Pluginora` to create rules.
+9. Open `WooCommerce` -> `Pluginora Settings` to change conflict mode behavior.
+
+Commands:
+
+```bash
+git clone https://github.com/pluginora-collab/pluginora.git
+cd pluginora
+composer install
+```
+
+### Option 3: Run The Local Validation Suite
+
+Use this if you want to verify that Pluginora is working as a codebase before or after changes.
+
+1. Install PHP, Composer, MySQL, WordPress test dependencies, and WooCommerce test dependencies.
+2. Run `composer install`.
+3. Run unit tests.
+4. Run integration environment setup once on a fresh machine.
+5. Run integration tests.
+6. Run PHPCS.
+7. Optionally run the full release verification command.
+
+Commands:
+
+```bash
+composer install
+composer test:unit
+composer test:integration:setup
+composer test:integration
+composer run lint:phpcs
+composer verify:release
+```
 
 ## Install From Source
 
@@ -65,6 +132,21 @@ After that:
 3. Open the WooCommerce admin menus described below.
 
 If you activate from a source checkout without Composer dependencies, Pluginora will block activation and show an admin notice. That behavior is defined in [pluginora.php](/Users/abhishektiwari/pluginora/pluginora.php).
+
+## Local WordPress Setup Checklist
+
+If you are starting from zero on a local machine, use this order:
+
+1. Install PHP 8.1+.
+2. Install Composer.
+3. Install MySQL or MariaDB.
+4. Create or start a local WordPress site.
+5. Install and activate WooCommerce.
+6. Clone Pluginora or download the release zip.
+7. Run `composer install` if using the source checkout.
+8. Activate Pluginora.
+9. Create test products.
+10. Create and verify one rule at a time.
 
 ## Where To Start In Admin
 
@@ -221,6 +303,17 @@ composer test:integration
 composer build:release
 composer verify:release
 composer check
+```
+
+Recommended command order on a new development machine:
+
+```bash
+composer install
+composer test:integration:setup
+composer test:unit
+composer test:integration
+composer run lint:phpcs
+composer verify:release
 ```
 
 ## Local Integration Tests
