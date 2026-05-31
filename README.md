@@ -67,49 +67,84 @@ These items are the remaining work before making a stronger production claim for
 
 ## Quick Start
 
-If you want to test Pluginora in a WordPress or WooCommerce site, use the packaged release zip.
+If you want the fastest way to run Pluginora, use the packaged release zip on a WordPress site that already has WooCommerce installed.
 
 1. Download `pluginora-1.0.4.zip` from the [releases page](https://github.com/pluginora-collab/pluginora/releases).
-2. In WordPress admin, go to `Plugins` -> `Add New` -> `Upload Plugin`.
-3. Upload the zip and install it.
-4. Activate WooCommerce if it is not already active.
-5. Activate Pluginora.
-6. Open `WooCommerce` -> `Pluginora` to create rules.
-7. Open `WooCommerce` -> `Pluginora Settings` to configure conflict behavior.
+2. Log in to WordPress admin as an administrator.
+3. Go to `Plugins` -> `Add New` -> `Upload Plugin`.
+4. Upload `pluginora-1.0.4.zip` and click `Install Now`.
+5. Activate WooCommerce if it is not already active.
+6. Activate Pluginora.
+7. Open `WooCommerce` -> `Pluginora` and create one active rule.
+8. Open a product page, then the cart, then checkout to confirm the rule works end to end.
 
 ## Step-By-Step Run Guide
 
 Choose one of these paths depending on how you want to run Pluginora.
+
+### Before You Start
+
+Make sure you have these basics in place first:
+
+1. A working WordPress 6.5+ site.
+2. WooCommerce installed and activated.
+3. PHP 8.1+.
+4. Administrator access to WordPress.
+5. If you are using the source checkout instead of the release zip, Composer 2.x must be available.
+
+If you are testing safely for the first time, use a staging or local WooCommerce site instead of a live storefront.
 
 ### Option 1: Run The Released Plugin Zip
 
 Use this if you want the fastest way to test Pluginora in WordPress.
 
 1. Download the latest `pluginora-1.0.4.zip` release asset.
-2. Start your WordPress site.
-3. Log in to WordPress admin as an administrator.
-4. Go to `Plugins` -> `Add New` -> `Upload Plugin`.
-5. Upload `pluginora-1.0.4.zip`.
-6. Install the plugin.
-7. Activate WooCommerce.
-8. Activate Pluginora.
-9. Go to `WooCommerce` -> `Pluginora`.
-10. Create your first rule and save it as `Active`.
-11. Open the storefront, product page, cart, and checkout to verify the rule behavior.
+2. Start your WordPress site and confirm you can log in to admin.
+3. In WordPress admin, go to `Plugins` -> `Add New` -> `Upload Plugin`.
+4. Choose `pluginora-1.0.4.zip` from your machine.
+5. Click `Install Now` and wait for WordPress to unpack the plugin.
+6. Click `Activate Plugin`.
+7. If WooCommerce is not already active, activate WooCommerce before continuing.
+8. Confirm that the `WooCommerce` menu now contains:
+   - `Pluginora`
+   - `Pluginora Settings`
+9. Go to `WooCommerce` -> `Pluginora Settings` and leave the default conflict mode as `best_discount_only` for your first test.
+10. Create two or three simple WooCommerce products with known prices if your test catalog is empty.
+11. Go to `WooCommerce` -> `Pluginora`.
+12. Create a first rule using this safe starter flow:
+	- Choose the `Dynamic Pricing` family.
+	- Choose the `simple_discount` rule type.
+	- Target one selected product.
+	- Set a `10%` discount.
+	- Enable any savings badge or message fields if you want to see frontend output.
+	- Save the rule as `Active`.
+13. Open the selected product on the storefront and verify the displayed price changes.
+14. Add the product to cart and confirm the discount still applies.
+15. Open checkout and confirm the final totals still reflect the expected promotion.
+16. Return to admin and test one additional rule type such as `tiered_pricing`, `basic_coupon`, or `auto_apply_coupon`.
+
+Expected result:
+
+- Pluginora activates cleanly.
+- The admin menus load.
+- An active rule affects product, cart, or coupon behavior as configured.
 
 ### Option 2: Run Pluginora From Source In WordPress
 
 Use this if you want to edit code locally and test changes.
 
-1. Clone the repository.
+1. Clone the repository to your machine.
 2. Change into the project directory.
-3. Install dependencies with Composer.
-4. Copy or symlink the project into your WordPress plugins directory as `wp-content/plugins/pluginora`.
-5. Start your local WordPress site and database.
-6. Activate WooCommerce.
-7. Activate Pluginora.
-8. Open `WooCommerce` -> `Pluginora` to create rules.
-9. Open `WooCommerce` -> `Pluginora Settings` to change conflict mode behavior.
+3. Install PHP dependencies with Composer.
+4. Copy or symlink the repository into your WordPress plugins directory as `wp-content/plugins/pluginora`.
+5. Verify the plugin folder contains the `vendor` directory after Composer finishes.
+6. Start your local WordPress site and database.
+7. Log in to WordPress admin.
+8. Activate WooCommerce.
+9. Activate Pluginora.
+10. Open `WooCommerce` -> `Pluginora Settings` and keep the default conflict mode for the first run.
+11. Open `WooCommerce` -> `Pluginora` and create one rule.
+12. Test the storefront, cart, and checkout exactly as you would with the packaged zip.
 
 Commands:
 
@@ -119,17 +154,29 @@ cd pluginora
 composer install
 ```
 
+Then place the project in WordPress as:
+
+```text
+wp-content/plugins/pluginora
+```
+
+Notes:
+
+- If you symlink the repo into `wp-content/plugins`, WordPress will run your live checkout directly.
+- If you activate Pluginora without running `composer install`, activation will be blocked because the autoloader is required.
+- This path is best for local development, debugging, and repeated manual QA.
+
 ### Option 3: Run The Local Validation Suite
 
 Use this if you want to verify that Pluginora is working as a codebase before or after changes.
 
-1. Install PHP, Composer, MySQL, WordPress test dependencies, and WooCommerce test dependencies.
+1. Install PHP, Composer, MySQL or MariaDB, and the other local dependencies needed for WordPress testing.
 2. Run `composer install`.
-3. Run unit tests.
-4. Run integration environment setup once on a fresh machine.
-5. Run integration tests.
-6. Run PHPCS.
-7. Optionally run the full release verification command.
+3. Run `composer test:unit` to validate the unit-level behavior.
+4. Run `composer test:integration:setup` once on a fresh machine to prepare the WordPress and WooCommerce test environment.
+5. Run `composer test:integration` to execute WooCommerce-backed integration coverage.
+6. Run `composer run lint:phpcs` to validate coding standards.
+7. Run `composer verify:release` if you want the release preflight check used before packaging.
 
 Commands:
 
@@ -141,6 +188,8 @@ composer test:integration
 composer run lint:phpcs
 composer verify:release
 ```
+
+Use this path when you want confidence in the codebase itself, not just a manual WordPress install.
 
 ## Install From Source
 
@@ -180,6 +229,27 @@ If you are starting from zero on a local machine, use this order:
 8. Activate Pluginora.
 9. Create test products.
 10. Create and verify one rule at a time.
+
+## Detailed First Run Walkthrough
+
+If this is your first time running Pluginora, use this exact sequence after activation:
+
+1. In WooCommerce, create at least two simple products with clear prices such as `$100` and `$50`.
+2. Go to `WooCommerce` -> `Pluginora Settings`.
+3. Leave the conflict mode as `best_discount_only`.
+4. Go to `WooCommerce` -> `Pluginora`.
+5. Create a new rule in the `Dynamic Pricing` family.
+6. Choose the `simple_discount` rule type.
+7. Target one of the products you created.
+8. Set the discount to `10%`.
+9. Save the rule as `Active`.
+10. Open that product on the storefront and confirm the price changes.
+11. Add the product to cart and confirm the discount remains applied.
+12. Open checkout and confirm the total still matches the promotion.
+13. Return to the builder and create a second rule such as `basic_coupon` or `tiered_pricing`.
+14. Test that rule separately before enabling several rules at once.
+
+After the first successful run, you can move on to mixed-rule testing, coupon automation, BOGO behavior, and conflict-mode checks.
 
 ## Where To Start In Admin
 
