@@ -36,6 +36,17 @@ Supported promotion families:
 
 This version is intended for structured staging and QA with WooCommerce and includes automated test coverage, CI validation, and packaged release artifacts.
 
+Production readiness at this point:
+
+* Ready today
+** Plugin bootstrap, dependency checks, HPOS compatibility, and admin rule management are implemented.
+** Dynamic pricing, basic coupons, auto-apply coupons, and BOGO flows are implemented for the current MVP scope.
+** Unit tests, WooCommerce-backed integration tests, CI, and packaged release artifacts are in place.
+* Still left before a stronger live-store claim
+** Run a full staging pass on the exact theme, tax, shipping, payment, and extension stack used by the target store.
+** Validate mixed-rule behavior when multiple active promotions can apply together.
+** Add browser E2E coverage, static analysis, and performance profiling if you want a higher operational confidence bar.
+
 == Installation ==
 
 1. Download the packaged Pluginora release zip.
@@ -147,7 +158,7 @@ Yes. The plugin declares compatibility with WooCommerce custom order tables and 
 
 = Is Pluginora already production-ready for every store? =
 
-The plugin is validated for staging and structured QA, but live-store readiness still depends on your theme, taxes, shipping configuration, and third-party WooCommerce extensions.
+No. Pluginora is ready for staging and controlled rollout validation, but a real production claim still depends on passing staging tests against your exact theme, taxes, shipping configuration, payment setup, and third-party WooCommerce extensions.
 
 == Changelog ==
 

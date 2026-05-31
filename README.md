@@ -12,8 +12,41 @@ Pluginora is currently packaged and verified as `v1.0.4`.
 - GitHub Actions CI is passing on `main`.
 - Unit tests and WooCommerce-backed integration tests are passing.
 - The latest packaged release artifact is `pluginora-1.0.4.zip`.
+- The current codebase should be treated as production-capable for MVP scope after store-specific staging validation.
 
 Current verified release: [v1.0.4](https://github.com/pluginora-collab/pluginora/releases/tag/v1.0.4)
+
+## Production Readiness Snapshot
+
+Current recommendation:
+
+- Ready for source control, packaging, CI, and structured staging QA.
+- Ready for controlled production use when validated against the target store's theme, tax rules, shipping rules, payment setup, and WooCommerce extensions.
+- Not yet universally production-certified for arbitrary WooCommerce stores without that staging pass.
+
+## What Is Ready Today
+
+- Plugin bootstrap, activation flow, dependency checks, and HPOS compatibility declaration are implemented.
+- Dynamic Pricing MVP is implemented, including `simple_discount`, `tiered_pricing`, and `cart_subtotal_discount` rules.
+- Coupon Engine MVP is implemented, including `basic_coupon`, `auto_apply_coupon`, and `bogo_coupon` rules.
+- Admin rule builder, settings page, lookup endpoints, and rule CRUD APIs are implemented.
+- Conflict resolution modes are implemented for `stack_all`, `best_discount_only`, and `coupon_priority`.
+- Database schema install and upgrade handling are implemented.
+- Uninstall cleanup and database write-failure logging are implemented.
+- PHPUnit unit tests, WooCommerce-backed integration tests, PHPCS, CI, and release packaging are in place.
+- Release `v1.0.4` is packaged and published with zip and checksum artifacts.
+
+## What Is Still Left
+
+These items are the remaining work before making a stronger production claim for a live store:
+
+- Run a full staging pass on the exact WordPress, WooCommerce, theme, and extension stack that will be used in production.
+- Verify storefront behavior on product, cart, and checkout pages with the target theme.
+- Validate tax, shipping, payment, and coupon edge cases on staging.
+- Validate mixed-promotion behavior when multiple active rules are enabled at the same time.
+- Confirm uninstall and data-retention behavior matches your deployment policy.
+- Add browser E2E coverage for the admin builder and storefront flows if you want stronger regression protection.
+- Add static analysis such as PHPStan and run performance profiling if you want a higher operational confidence bar.
 
 ## Highlights
 
@@ -365,4 +398,4 @@ composer verify:release
 
 ## Production Caution
 
-Pluginora is in good shape for staging and structured QA, but production readiness for a real store still depends on your theme, taxes, shipping rules, payment setup, and third-party WooCommerce extensions. Test on staging before using it on a live storefront.
+Pluginora is ready for staging and controlled release validation, but final production readiness still depends on your real store setup. Test on staging before using it on a live storefront.
