@@ -25,7 +25,7 @@ Current recommendation:
 - [x] WooCommerce-backed integration tests are passing locally.
 - [x] PHPCS is passing locally.
 - [x] CI and release workflows are configured.
-- [x] Release `v1.0.4` is packaged and published with zip and checksum artifacts.
+- [x] Release `v1.0.5` is prepared to package and publish with zip and checksum artifacts.
 
 ## What Is Still Left
 

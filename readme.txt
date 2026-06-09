@@ -4,7 +4,7 @@ Tags: woocommerce, dynamic pricing, discounts, coupons, bogo
 Requires at least: 6.5
 Tested up to: 6.8
 Requires PHP: 8.1
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 License: Proprietary
 License URI: https://example.com
 
@@ -54,8 +54,8 @@ Production readiness at this point:
 3. Upload the Pluginora zip and install it.
 4. Activate WooCommerce.
 5. Activate Pluginora from the WordPress admin.
-6. Open WooCommerce > Pluginora to create promotion rules.
-7. Open WooCommerce > Pluginora Settings to choose the conflict mode.
+6. Open the top-level Pluginora menu to create promotion rules.
+7. Use the embedded Promotion Policy settings card inside the Pluginora workspace to choose the conflict mode.
 
 If you are installing from a source checkout instead of a packaged release zip, run `composer install` inside the plugin directory before activation.
 
@@ -69,9 +69,10 @@ Fastest path using the release zip:
 4. Upload the zip from Plugins > Add New > Upload Plugin.
 5. Install and activate WooCommerce.
 6. Activate Pluginora.
-7. Open WooCommerce > Pluginora.
-8. Create one active rule.
-9. Test the storefront, product page, cart, and checkout.
+7. Open the top-level Pluginora workspace.
+8. Review the embedded Promotion Policy settings card and keep the default conflict mode for the first run.
+9. Create one active rule.
+10. Test the storefront, product page, cart, and checkout.
 
 Run from source checkout:
 
@@ -92,10 +93,13 @@ Recommended source validation order:
 
 == Getting Started ==
 
-After activation, Pluginora adds two WooCommerce submenu pages:
+After activation, Pluginora adds a single top-level Pluginora admin workspace.
 
-* WooCommerce > Pluginora
-* WooCommerce > Pluginora Settings
+The main workspace includes:
+
+* The guided rule builder
+* The promotion library
+* The embedded Promotion Policy settings card
 
 Recommended first-run flow:
 
@@ -103,7 +107,7 @@ Recommended first-run flow:
 2. Go to WooCommerce > Pluginora.
 3. Create one rule and set it to Active.
 4. Test the storefront and cart before creating additional active rules.
-5. Change the conflict mode in Pluginora Settings if you want to compare stacking behavior.
+5. Change the embedded Promotion Policy conflict mode if you want to compare stacking behavior.
 
 Suggested first tests:
 
@@ -138,7 +142,7 @@ For source-based development and validation:
 
 = Where do I find Pluginora after activation? =
 
-Pluginora adds WooCommerce submenu pages for the rule builder and settings panel.
+Pluginora adds a top-level Pluginora workspace for the rule builder, rule library, and embedded promotion policy settings.
 
 = What can I build with Pluginora right now? =
 
@@ -162,6 +166,14 @@ No. Pluginora is ready for staging and controlled rollout validation, but a real
 
 == Changelog ==
 
+
+= 1.0.5 =
+
+* Introduce a single top-level Pluginora admin workspace instead of split WooCommerce submenu pages.
+* Redesign the admin builder and promotion library for a more professional workflow.
+* Improve admin microcopy, search, and rule-management UX.
+* Default new rule priority to 1 instead of 10.
+* Improve storefront sale badge visibility for Pluginora-backed discounts.
 
 = 1.0.4 =
 

@@ -45,8 +45,8 @@ final class FrontendAssetsIntegrationTest extends IntegrationTestCase
         self::assertNotNull($script);
         self::assertStringContainsString('assets/frontend/css/frontend.css', (string) $style->src);
         self::assertStringContainsString('assets/frontend/js/frontend.js', (string) $script->src);
-        self::assertSame('1.0.4', (string) $style->ver);
-        self::assertSame('1.0.4', (string) $script->ver);
+        self::assertSame('1.0.5', (string) $style->ver);
+        self::assertSame('1.0.5', (string) $script->ver);
     }
 
     private function makeAssets(\Closure $shouldEnqueueResolver): FrontendAssets
@@ -57,7 +57,7 @@ final class FrontendAssetsIntegrationTest extends IntegrationTestCase
                 'pluginora/pluginora.php',
                 '/Users/abhishektiwari/pluginora/',
                 'https://example.org/wp-content/plugins/pluginora/',
-                '1.0.4',
+                '1.0.5',
                 'pluginora'
             ),
             $shouldEnqueueResolver
