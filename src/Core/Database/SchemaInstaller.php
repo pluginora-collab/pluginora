@@ -8,7 +8,7 @@ use wpdb;
 
 final class SchemaInstaller
 {
-    public const VERSION = '1.0.5';
+    public const VERSION = '1.0.6';
 
     private const VERSION_OPTION = 'pluginora_db_version';
 

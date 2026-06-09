@@ -4,7 +4,7 @@ Tags: woocommerce, dynamic pricing, discounts, coupons, bogo
 Requires at least: 6.5
 Tested up to: 6.8
 Requires PHP: 8.1
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 License: Proprietary
 License URI: https://example.com
 
@@ -45,7 +45,7 @@ Production readiness at this point:
 * Still left before a stronger live-store claim
 ** Run a full staging pass on the exact theme, tax, shipping, payment, and extension stack used by the target store.
 ** Validate mixed-rule behavior when multiple active promotions can apply together.
-** Add browser E2E coverage, static analysis, and performance profiling if you want a higher operational confidence bar.
+** Execute the included browser E2E coverage, static analysis, and performance profiling flows against the target staging environment.
 
 == Installation ==
 
@@ -166,6 +166,15 @@ No. Pluginora is ready for staging and controlled rollout validation, but a real
 
 == Changelog ==
 
+
+
+= 1.0.6 =
+
+* Add PHPStan static analysis with WordPress and WooCommerce stubs.
+* Add Playwright-based browser E2E smoke coverage and a manual GitHub Actions workflow for staging runs.
+* Add staging validation and performance profiling runbooks.
+* Add committed admin and storefront preview assets under `docs/`.
+* Exclude repository-only tooling files from packaged release artifacts.
 
 = 1.0.5 =
 

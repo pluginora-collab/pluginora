@@ -9,8 +9,8 @@ This file is a context handoff for another model or engineer who needs to contin
 - GitHub repository: `pluginora-collab/pluginora`
 - Current branch used in this session: `main`
 - Exact current checkout can be confirmed with `git rev-parse --short HEAD`
-- Current published release: `v1.0.5`
-- Release URL: `https://github.com/pluginora-collab/pluginora/releases/tag/v1.0.5`
+- Current published release: `v1.0.6`
+- Release URL: `https://github.com/pluginora-collab/pluginora/releases/tag/v1.0.6`
 
 ## What Pluginora Is
 
@@ -27,8 +27,7 @@ It is implemented as a modular OOP WordPress plugin with custom Pluginora rule t
 
 As of this handoff:
 
-- `v1.0.5` is released and published.
-- `main` now contains additional post-`v1.0.5` hardening work that is not yet part of the published release zip.
+- `v1.0.6` is released and published.
 - The published zip now matches the redesigned admin workspace.
 - The plugin is functional for MVP scope.
 - Unit tests, WooCommerce-backed integration tests, PHPCS, PHPStan, CI, and release packaging are in place.
@@ -66,12 +65,12 @@ As of this handoff:
 
 These are the most important recent changes another model should know about.
 
-### `v1.0.5` release work
+### `v1.0.6` release work
 
-- Released `v1.0.5` and aligned source, docs, and release assets.
+- Released `v1.0.6` with the post-`v1.0.5` production hardening and preview documentation included.
 - Packaged assets:
-  - `dist/pluginora-1.0.5.zip`
-  - `dist/pluginora-1.0.5.zip.sha256`
+  - `dist/pluginora-1.0.6.zip`
+  - `dist/pluginora-1.0.6.zip.sha256`
 
 ### Admin UX redesign
 
@@ -91,7 +90,7 @@ These are the most important recent changes another model should know about.
 - Product lookup search in the admin builder was stabilized so it does not feel like it resets while typing.
 - Custom sale badges now participate in WooCommerce `is_on_sale` logic so frontend badge rendering works more reliably.
 
-### Post-`v1.0.5` production hardening on `main`
+### Production hardening included in `v1.0.6`
 
 - PHPStan static analysis was added with WordPress and WooCommerce stubs.
 - CI now runs PHPStan alongside PHPCS and unit tests.
@@ -217,16 +216,16 @@ Important:
 - These are **local static preview files**.
 - They are useful for design review and screenshots.
 - They are now committed in the repository under `docs/`.
-- They are **not part of the published `v1.0.5` plugin release** unless a later release is cut from `main`.
+- They are included in the repository and were published as documentation assets alongside the `v1.0.6` source release.
 
 If another model sees these files, it should treat them as repository documentation assets rather than release-runtime code.
 
 ## Release State At Handoff
 
-- `main` is ahead of the published `v1.0.5` release with production-hardening and preview-documentation commits.
-- GitHub release `v1.0.5` exists and is published.
+- `main` matches the published `v1.0.6` release state at handoff time.
+- GitHub release `v1.0.6` exists and is published.
 - README and `readme.txt` were updated so release docs match the single top-level Pluginora workspace.
-- `v1.0.4` release notes were also updated earlier to clarify that later admin UX refinements had landed on `main` before `v1.0.5` was cut.
+- `v1.0.4` release notes were also updated earlier to clarify the path to the newer admin UX releases.
 
 ## Recommended Starting Point For Another Model
 
@@ -237,7 +236,7 @@ If another model continues from here, it should do this first:
 3. Read `docs/staging-validation.md` and `docs/performance-profiling.md` if the goal is launch readiness.
 4. If working on product behavior, run `composer test:integration` after changes.
 5. If working on quality/tooling, run `composer run lint:phpstan` and inspect `.github/workflows/e2e.yml`.
-6. If working on release work, run `composer verify:release` before tagging.
+6. If working on release work, run `composer verify:release` before tagging the next version.
 
 ## Good Next Tasks
 
@@ -246,5 +245,4 @@ Examples of sensible next work:
 - run staging QA against a real WooCommerce store
 - execute the Playwright E2E workflow against staging
 - expand browser E2E coverage beyond the current smoke paths
-- tag and publish a release that includes the post-`v1.0.5` hardening work
 - improve storefront visual styling if more customer-facing polish is desired

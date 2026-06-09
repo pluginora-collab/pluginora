@@ -37,6 +37,7 @@ cd "${PROJECT_ROOT}"
 
 echo "Running release preflight checks"
 composer run lint:phpcs
+composer run lint:phpstan
 composer test:unit
 composer test:integration
 composer build:release
@@ -86,6 +87,20 @@ for excluded_prefix in \
     "pluginora/bin/"; do
     if grep -Fq "${excluded_prefix}" <<<"${ZIP_ENTRIES}"; then
         echo "Unexpected development-only content in release zip: ${excluded_prefix}" >&2
+        exit 1
+    fi
+done
+
+for excluded_entry in \
+    "pluginora/config.md" \
+    "pluginora/.gitignore" \
+    "pluginora/phpstan.neon.dist" \
+    "pluginora/phpstan-bootstrap.php" \
+    "pluginora/package.json" \
+    "pluginora/package-lock.json" \
+    "pluginora/playwright.config.js"; do
+    if grep -Fxq "${excluded_entry}" <<<"${ZIP_ENTRIES}"; then
+        echo "Unexpected development-only file in release zip: ${excluded_entry}" >&2
         exit 1
     fi
 done

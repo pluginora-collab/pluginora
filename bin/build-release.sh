@@ -60,10 +60,17 @@ rsync -a \
     --exclude='tests/' \
     --exclude='bin/' \
     --exclude='vendor/' \
+    --exclude='config.md' \
+    --exclude='.gitignore' \
     --exclude='.phpunit.result.cache' \
     --exclude='phpunit.xml.dist' \
     --exclude='phpunit.integration.xml.dist' \
     --exclude='phpcs.xml.dist' \
+    --exclude='phpstan.neon.dist' \
+    --exclude='phpstan-bootstrap.php' \
+    --exclude='package.json' \
+    --exclude='package-lock.json' \
+    --exclude='playwright.config.js' \
     --exclude='node_modules/' \
     --exclude='.DS_Store' \
     "${PROJECT_ROOT}/" \

@@ -27,7 +27,7 @@ Current recommendation:
 - [x] PHPStan static analysis is passing locally.
 - [x] CI and release workflows are configured.
 - [x] Playwright E2E smoke coverage exists for the admin workspace and storefront pricing flow.
-- [x] Release `v1.0.5` is prepared to package and publish with zip and checksum artifacts.
+- [x] Release `v1.0.6` is prepared to package and publish with zip and checksum artifacts.
 
 ## What Is Still Left
 

@@ -20,7 +20,7 @@ final class AdminAssetsIntegrationTest extends IntegrationTestCase
             'pluginora/pluginora.php',
             '/Users/abhishektiwari/pluginora/',
             'https://example.org/wp-content/plugins/pluginora/',
-            '1.0.5',
+            '1.0.6',
             'pluginora'
         );
 
@@ -61,8 +61,8 @@ final class AdminAssetsIntegrationTest extends IntegrationTestCase
         self::assertNotNull($script);
         self::assertStringContainsString('assets/admin/css/admin.css', (string) $style->src);
         self::assertStringContainsString('assets/admin/js/admin.js', (string) $script->src);
-        self::assertSame('1.0.5', (string) $style->ver);
-        self::assertSame('1.0.5', (string) $script->ver);
+        self::assertSame('1.0.6', (string) $style->ver);
+        self::assertSame('1.0.6', (string) $script->ver);
         self::assertStringContainsString('window.pluginoraAdmin = ', $inlineBefore);
         self::assertStringContainsString('pluginora\\/v1\\/', $inlineBefore);
         self::assertStringContainsString('Promotion rule saved successfully.', $inlineBefore);

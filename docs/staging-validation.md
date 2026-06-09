@@ -15,7 +15,7 @@ Validate Pluginora on the real deployment stack:
 
 ## Preconditions
 
-- Pluginora `v1.0.5` or later is installed on staging.
+- Pluginora `v1.0.6` or later is installed on staging.
 - WooCommerce is active and configured.
 - The target theme is active.
 - The full extension set mirrors production as closely as possible.
