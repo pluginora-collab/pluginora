@@ -13,8 +13,18 @@ Pluginora is currently packaged and verified as `v1.0.4`.
 - Unit tests and WooCommerce-backed integration tests are passing.
 - The latest packaged release artifact is `pluginora-1.0.4.zip`.
 - The current codebase should be treated as production-capable for MVP scope after store-specific staging validation.
+- The `main` branch now includes a redesigned top-level Pluginora workspace and admin UX refinements that are newer than the published `v1.0.4` zip.
 
 Current verified release: [v1.0.4](https://github.com/pluginora-collab/pluginora/releases/tag/v1.0.4)
+
+## Release Vs Main
+
+Use this split when testing Pluginora so the admin navigation matches what you installed:
+
+- `v1.0.4` release zip: admin access is under `WooCommerce` -> `Pluginora` and `WooCommerce` -> `Pluginora Settings`.
+- current `main` branch: Pluginora uses a single top-level `Pluginora` menu with the promotion policy settings embedded into the main workspace.
+
+If you are evaluating the newest admin design, test the current source checkout on `main`. If you are evaluating the published release artifact, follow the `v1.0.4` navigation.
 
 ## Production Readiness Snapshot
 
@@ -105,10 +115,8 @@ Use this if you want the fastest way to test Pluginora in WordPress.
 5. Click `Install Now` and wait for WordPress to unpack the plugin.
 6. Click `Activate Plugin`.
 7. If WooCommerce is not already active, activate WooCommerce before continuing.
-8. Confirm that the `WooCommerce` menu now contains:
-   - `Pluginora`
-   - `Pluginora Settings`
-9. Go to `WooCommerce` -> `Pluginora Settings` and leave the default conflict mode as `best_discount_only` for your first test.
+8. Confirm that the Pluginora admin screens are available from the WooCommerce menu.
+9. In `v1.0.4`, open `WooCommerce` -> `Pluginora Settings` and leave the default conflict mode as `best_discount_only` for your first test.
 10. Create two or three simple WooCommerce products with known prices if your test catalog is empty.
 11. Go to `WooCommerce` -> `Pluginora`.
 12. Create a first rule using this safe starter flow:
@@ -142,8 +150,8 @@ Use this if you want to edit code locally and test changes.
 7. Log in to WordPress admin.
 8. Activate WooCommerce.
 9. Activate Pluginora.
-10. Open `WooCommerce` -> `Pluginora Settings` and keep the default conflict mode for the first run.
-11. Open `WooCommerce` -> `Pluginora` and create one rule.
+10. Open the top-level `Pluginora` workspace and review the embedded promotion policy settings card.
+11. Create one rule in the main Pluginora workspace.
 12. Test the storefront, cart, and checkout exactly as you would with the packaged zip.
 
 Commands:
@@ -235,9 +243,11 @@ If you are starting from zero on a local machine, use this order:
 If this is your first time running Pluginora, use this exact sequence after activation:
 
 1. In WooCommerce, create at least two simple products with clear prices such as `$100` and `$50`.
-2. Go to `WooCommerce` -> `Pluginora Settings`.
+2. Open the Pluginora admin experience that matches your install:
+	- `v1.0.4` release zip: `WooCommerce` -> `Pluginora Settings`, then `WooCommerce` -> `Pluginora`
+	- current `main` branch: top-level `Pluginora`, then use the embedded `Promotion Policy` card
 3. Leave the conflict mode as `best_discount_only`.
-4. Go to `WooCommerce` -> `Pluginora`.
+4. Go to the main rule builder workspace.
 5. Create a new rule in the `Dynamic Pricing` family.
 6. Choose the `simple_discount` rule type.
 7. Target one of the products you created.
@@ -253,12 +263,19 @@ After the first successful run, you can move on to mixed-rule testing, coupon au
 
 ## Where To Start In Admin
 
-Pluginora adds two WooCommerce submenu pages:
+Pluginora admin navigation depends on whether you are using the current source checkout or the latest packaged release.
+
+Current `main` branch:
+
+- top-level `Pluginora`
+- embedded `Promotion Policy` settings in the main workspace
+
+Published `v1.0.4` release:
 
 - `WooCommerce` -> `Pluginora`
 - `WooCommerce` -> `Pluginora Settings`
 
-These pages are registered in [src/Admin/Pages/RuleBuilderPage.php](/Users/abhishektiwari/pluginora/src/Admin/Pages/RuleBuilderPage.php) and [src/Admin/Settings/PluginSettingsPage.php](/Users/abhishektiwari/pluginora/src/Admin/Settings/PluginSettingsPage.php).
+The admin entry point is registered in [src/Admin/Pages/RuleBuilderPage.php](/Users/abhishektiwari/pluginora/src/Admin/Pages/RuleBuilderPage.php), and the settings form is defined in [src/Admin/Settings/PluginSettingsPage.php](/Users/abhishektiwari/pluginora/src/Admin/Settings/PluginSettingsPage.php).
 
 ### Rule Builder
 
@@ -268,7 +285,9 @@ The builder is backed by REST routes under `pluginora/v1` and the rule schema in
 
 ### Settings
 
-Use `WooCommerce` -> `Pluginora Settings` to define how Pluginora resolves conflicts between pricing rules and coupon behavior.
+In the current `main` branch, use the embedded `Promotion Policy` card in the main Pluginora workspace to define how Pluginora resolves conflicts between pricing rules and coupon behavior.
+
+In the published `v1.0.4` release, use `WooCommerce` -> `Pluginora Settings` for the same configuration.
 
 Current conflict modes:
 
