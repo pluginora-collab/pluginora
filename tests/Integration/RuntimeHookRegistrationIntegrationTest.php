@@ -80,6 +80,7 @@ final class RuntimeHookRegistrationIntegrationTest extends IntegrationTestCase
     {
         remove_filter('woocommerce_get_price_html', [$this->productPriceRenderer, 'filterPriceHtml'], 20);
         remove_filter('woocommerce_sale_flash', [$this->productPriceRenderer, 'filterSaleFlash'], 20);
+        remove_filter('woocommerce_product_is_on_sale', [$this->productPriceRenderer, 'filterIsOnSale'], 20);
 
         remove_action(
             'woocommerce_before_calculate_totals',
@@ -129,6 +130,10 @@ final class RuntimeHookRegistrationIntegrationTest extends IntegrationTestCase
             has_filter('woocommerce_get_price_html', [$this->productPriceRenderer, 'filterPriceHtml'])
         );
         self::assertSame(20, has_filter('woocommerce_sale_flash', [$this->productPriceRenderer, 'filterSaleFlash']));
+        self::assertSame(
+            20,
+            has_filter('woocommerce_product_is_on_sale', [$this->productPriceRenderer, 'filterIsOnSale'])
+        );
 
         self::assertSame(
             20,

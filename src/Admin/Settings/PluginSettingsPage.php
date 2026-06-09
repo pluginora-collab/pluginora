@@ -15,20 +15,7 @@ final class PluginSettingsPage implements HookableInterface
 
     public function register(): void
     {
-        add_action('admin_menu', [$this, 'registerMenu']);
         add_action('admin_init', [$this, 'registerSettings']);
-    }
-
-    public function registerMenu(): void
-    {
-        add_submenu_page(
-            'woocommerce',
-            __('Pluginora Settings', 'pluginora'),
-            __('Pluginora Settings', 'pluginora'),
-            'manage_woocommerce',
-            'pluginora-settings',
-            [$this, 'render']
-        );
     }
 
     public function registerSettings(): void
@@ -107,19 +94,26 @@ final class PluginSettingsPage implements HookableInterface
         ?>
         <div class="wrap pluginora-admin-page">
             <h1><?php echo esc_html__('Pluginora Settings', 'pluginora'); ?></h1>
-            <?php settings_errors(); ?>
-            <form
-                method="post"
-                action="options.php"
-                class="pluginora-admin-card"
-            >
-                <?php
-                settings_fields('pluginora_settings_group');
-                do_settings_sections('pluginora-settings');
-                submit_button(__('Save Settings', 'pluginora'));
-                ?>
-            </form>
+            <?php $this->renderEmbedded(); ?>
         </div>
+        <?php
+    }
+
+    public function renderEmbedded(): void
+    {
+        settings_errors();
+        ?>
+        <form
+            method="post"
+            action="options.php"
+            class="pluginora-admin-card"
+        >
+            <?php
+            settings_fields('pluginora_settings_group');
+            do_settings_sections('pluginora-settings');
+            submit_button(__('Save Settings', 'pluginora'));
+            ?>
+        </form>
         <?php
     }
 }

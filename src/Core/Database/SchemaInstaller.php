@@ -73,7 +73,7 @@ final class SchemaInstaller
                     rule_type VARCHAR(50) NOT NULL,
                     name VARCHAR(255) NOT NULL,
                     status VARCHAR(20) NOT NULL DEFAULT 'inactive',
-                    priority INT UNSIGNED NOT NULL DEFAULT 10,
+                    priority INT UNSIGNED NOT NULL DEFAULT 1,
                     stack_mode_override VARCHAR(50) NULL,
                     starts_at_gmt DATETIME NULL,
                     ends_at_gmt DATETIME NULL,

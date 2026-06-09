@@ -1,84 +1,382 @@
+:root {
+    --pluginora-bg: #f4f6fb;
+    --pluginora-surface: #ffffff;
+    --pluginora-surface-alt: #f7f9fc;
+    --pluginora-border: #d7dfeb;
+    --pluginora-border-strong: #aebfd8;
+    --pluginora-text: #10233f;
+    --pluginora-text-soft: #5b6b80;
+    --pluginora-primary: #1457d9;
+    --pluginora-primary-strong: #0f3ea3;
+    --pluginora-accent: #f59e0b;
+    --pluginora-success: #1f8f5f;
+    --pluginora-shadow: 0 18px 38px rgba(16, 35, 63, 0.08);
+}
+
 .pluginora-admin-page {
-    max-width: 1080px;
+    box-sizing: border-box;
+    max-width: 1340px;
+    padding-top: 16px;
+}
+
+.pluginora-page-hero {
+    align-items: flex-end;
+    background:
+        radial-gradient(circle at top right, rgba(245, 158, 11, 0.2), transparent 35%),
+        linear-gradient(135deg, #0f1730 0%, #1457d9 70%, #1f8f5f 100%);
+    border-radius: 24px;
+    box-shadow: var(--pluginora-shadow);
+    color: #fff;
+    display: flex;
+    gap: 24px;
+    justify-content: space-between;
+    margin: 10px 0 20px;
+    overflow: hidden;
+    padding: 28px 30px;
+    position: relative;
+}
+
+.pluginora-page-hero::after {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), transparent);
+    content: '';
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+}
+
+.pluginora-page-hero__content,
+.pluginora-page-hero__meta {
+    position: relative;
+    z-index: 1;
+}
+
+.pluginora-page-eyebrow,
+.pluginora-builder-header__eyebrow,
+.pluginora-workspace-kicker {
+    color: rgba(255, 255, 255, 0.76);
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.pluginora-builder-header__eyebrow,
+.pluginora-workspace-kicker {
+    color: var(--pluginora-primary);
+}
+
+.pluginora-page-hero h1,
+.pluginora-page-hero p,
+.pluginora-workspace-hero h2,
+.pluginora-workspace-hero p,
+.pluginora-builder-header h2,
+.pluginora-builder-header p,
+.pluginora-list-card__header h2,
+.pluginora-list-card__header p,
+.pluginora-stage__header h3,
+.pluginora-stage__header p,
+.pluginora-section__header h3,
+.pluginora-section__header p,
+.pluginora-settings-card h2,
+.pluginora-settings-card p {
+    margin: 0;
+}
+
+.pluginora-page-hero h1 {
+    color: #fff;
+    font-size: 34px;
+    line-height: 1.05;
+    margin-bottom: 10px;
+}
+
+.pluginora-page-hero p {
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 15px;
+    max-width: 760px;
+}
+
+.pluginora-page-hero__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.pluginora-page-pill,
+.pluginora-badge {
+    align-items: center;
+    border-radius: 999px;
+    display: inline-flex;
+    font-size: 12px;
+    font-weight: 700;
+    gap: 8px;
+    line-height: 1;
+    padding: 8px 12px;
+}
+
+.pluginora-page-pill {
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.pluginora-admin-card,
+.pluginora-builder-card,
+.pluginora-list-card,
+.pluginora-stage,
+.pluginora-section,
+.pluginora-rule-card,
+.pluginora-metric,
+.pluginora-overview-stat {
+    background: var(--pluginora-surface);
+    border: 1px solid var(--pluginora-border);
+    border-radius: 22px;
+    box-shadow: var(--pluginora-shadow);
 }
 
 .pluginora-admin-card {
-    background: #fff;
-    border: 1px solid #dcdcde;
-    border-radius: 4px;
     box-sizing: border-box;
     margin-top: 20px;
-    padding: 24px;
-}
-
-.pluginora-admin-card h2 {
-    margin-top: 0;
+    padding: 28px;
 }
 
 .pluginora-admin-notice {
-    border-radius: 4px;
-    margin-bottom: 16px;
-    padding: 12px 14px;
+    border-radius: 16px;
+    margin-bottom: 18px;
+    padding: 14px 16px;
 }
 
 .pluginora-admin-notice.is-success {
-    background: #edfaef;
-    border: 1px solid #9fd5a6;
+    background: #ebfbf3;
+    border: 1px solid #8ed2af;
 }
 
 .pluginora-admin-notice.is-error {
-    background: #fcf0f1;
-    border: 1px solid #e2a4ab;
+    background: #fff0f2;
+    border: 1px solid #ecb6bf;
+}
+
+.pluginora-shell {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.pluginora-workspace-hero {
+    background:
+        radial-gradient(circle at top left, rgba(20, 87, 217, 0.1), transparent 40%),
+        linear-gradient(180deg, #ffffff, #f6f9ff);
+    border: 1px solid var(--pluginora-border);
+    border-radius: 24px;
+    display: grid;
+    gap: 20px;
+    grid-template-columns: minmax(0, 1.5fr) minmax(320px, 1fr);
+    padding: 24px;
+}
+
+.pluginora-workspace-hero__copy h2,
+.pluginora-builder-header h2,
+.pluginora-list-card__header h2 {
+    color: var(--pluginora-text);
+    font-size: 28px;
+    line-height: 1.12;
+    margin-bottom: 8px;
+}
+
+.pluginora-workspace-hero__copy p,
+.pluginora-builder-header p,
+.pluginora-list-card__header p,
+.pluginora-stage__header p,
+.pluginora-section__header p,
+.pluginora-settings-card p,
+.pluginora-empty-state p,
+.pluginora-muted,
+.pluginora-rule-card__top p {
+    color: var(--pluginora-text-soft);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.pluginora-metrics,
+.pluginora-workspace-overview {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.pluginora-metric,
+.pluginora-overview-stat {
+    padding: 16px 18px;
+}
+
+.pluginora-metric span,
+.pluginora-overview-stat span {
+    color: var(--pluginora-text-soft);
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.pluginora-metric strong,
+.pluginora-overview-stat strong,
+.pluginora-rule-card__top h3 {
+    color: var(--pluginora-text);
+    display: block;
+    font-size: 20px;
+    line-height: 1.2;
+    margin: 0;
 }
 
 .pluginora-admin-grid {
     display: grid;
-    gap: 24px;
-    grid-template-columns: 1.3fr 1fr;
+    gap: 22px;
+    grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.9fr);
 }
 
 .pluginora-builder-card,
 .pluginora-list-card {
-    border: 1px solid #dcdcde;
-    border-radius: 4px;
+    padding: 24px;
+}
+
+.pluginora-builder-card {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.pluginora-list-card {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.pluginora-progress {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.pluginora-progress-step {
+    align-items: flex-start;
+    background: var(--pluginora-surface-alt);
+    border: 1px solid var(--pluginora-border);
+    border-radius: 18px;
+    display: flex;
+    gap: 12px;
+    padding: 14px;
+}
+
+.pluginora-progress-step__index {
+    align-items: center;
+    background: #dbe6fb;
+    border-radius: 999px;
+    color: var(--pluginora-primary-strong);
+    display: inline-flex;
+    font-size: 12px;
+    font-weight: 700;
+    height: 28px;
+    justify-content: center;
+    width: 28px;
+}
+
+.pluginora-progress-step strong {
+    color: var(--pluginora-text);
+    display: block;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.pluginora-progress-step p {
+    color: var(--pluginora-text-soft);
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.pluginora-progress-step.is-complete {
+    border-color: rgba(31, 143, 95, 0.28);
+    box-shadow: inset 0 0 0 1px rgba(31, 143, 95, 0.12);
+}
+
+.pluginora-progress-step.is-complete .pluginora-progress-step__index {
+    background: #dff6ea;
+    color: var(--pluginora-success);
+}
+
+.pluginora-progress-step.is-current {
+    background: #eef4ff;
+    border-color: rgba(20, 87, 217, 0.32);
+}
+
+.pluginora-stage,
+.pluginora-section {
     padding: 20px;
+}
+
+.pluginora-stage__header,
+.pluginora-section__header,
+.pluginora-list-card__header {
+    margin-bottom: 16px;
+}
+
+.pluginora-stage__header h3,
+.pluginora-section__header h3,
+.pluginora-settings-card h2 {
+    color: var(--pluginora-text);
+    font-size: 18px;
+    margin-bottom: 6px;
 }
 
 .pluginora-family-grid,
 .pluginora-type-grid {
     display: grid;
-    gap: 12px;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    margin: 16px 0;
+    gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
 }
 
 .pluginora-family-card,
 .pluginora-type-card {
-    background: #f6f7f7;
-    border: 1px solid #dcdcde;
-    border-radius: 6px;
+    background: linear-gradient(180deg, #fff, #f7f9fc);
+    border: 1px solid var(--pluginora-border);
+    border-radius: 18px;
+    color: var(--pluginora-text);
     cursor: pointer;
-    padding: 16px;
+    min-height: 150px;
+    padding: 18px;
     text-align: left;
+    transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+}
+
+.pluginora-family-card:hover,
+.pluginora-type-card:hover,
+.pluginora-family-card:focus,
+.pluginora-type-card:focus {
+    border-color: rgba(20, 87, 217, 0.4);
+    box-shadow: 0 14px 28px rgba(20, 87, 217, 0.12);
+    outline: 0;
+    transform: translateY(-1px);
 }
 
 .pluginora-family-card.is-active,
 .pluginora-type-card.is-active {
-    background: #edf4ff;
-    border-color: #2271b1;
+    background: linear-gradient(180deg, #eef4ff, #ffffff);
+    border-color: var(--pluginora-primary);
+    box-shadow: 0 16px 32px rgba(20, 87, 217, 0.14);
 }
 
 .pluginora-family-card h3,
-.pluginora-type-card h3,
-.pluginora-section h3,
-.pluginora-list-card h2 {
-    margin: 0 0 8px;
+.pluginora-type-card h3 {
+    margin: 0 0 10px;
 }
 
-.pluginora-section {
-    border-top: 1px solid #dcdcde;
-    margin-top: 24px;
-    padding-top: 20px;
+.pluginora-family-card p,
+.pluginora-type-card p {
+    color: var(--pluginora-text-soft);
+    margin: 0;
 }
 
 .pluginora-field-grid {
@@ -90,7 +388,7 @@
 .pluginora-field {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
 }
 
 .pluginora-field.is-full {
@@ -98,7 +396,8 @@
 }
 
 .pluginora-field label {
-    font-weight: 600;
+    color: var(--pluginora-text);
+    font-weight: 700;
 }
 
 .pluginora-field input[type='text'],
@@ -106,18 +405,27 @@
 .pluginora-field input[type='number'],
 .pluginora-field input[type='datetime-local'],
 .pluginora-field textarea,
-.pluginora-field select {
-    min-height: 40px;
+.pluginora-field select,
+.pluginora-library__search,
+.pluginora-library__filter {
+    background: #fff;
+    border: 1px solid var(--pluginora-border-strong);
+    border-radius: 14px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    min-height: 44px;
+    padding: 0 14px;
     width: 100%;
 }
 
 .pluginora-field textarea {
-    min-height: 96px;
+    min-height: 108px;
+    padding: 12px 14px;
 }
 
 .pluginora-field-help {
-    color: #50575e;
+    color: var(--pluginora-text-soft);
     font-size: 12px;
+    line-height: 1.5;
 }
 
 .pluginora-checkbox-group {
@@ -126,29 +434,20 @@
     gap: 12px;
 }
 
-.pluginora-actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 24px;
-}
-
-.pluginora-list-table {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-.pluginora-list-table th,
-.pluginora-list-table td {
-    border-bottom: 1px solid #f0f0f1;
-    padding: 10px 8px;
-    text-align: left;
-    vertical-align: top;
-}
-
-.pluginora-list-actions {
+.pluginora-actions,
+.pluginora-list-actions,
+.pluginora-library__toolbar,
+.pluginora-rule-card__top,
+.pluginora-rule-card__badges {
+    align-items: center;
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.pluginora-actions {
+    margin-top: 12px;
 }
 
 .pluginora-chip-list {
@@ -160,42 +459,55 @@
 
 .pluginora-chip {
     align-items: center;
-    background: #f0f6fc;
-    border: 1px solid #c5d9ed;
+    background: #eef4ff;
+    border: 1px solid #c7d7f5;
     border-radius: 999px;
+    color: var(--pluginora-primary-strong);
     display: inline-flex;
     gap: 8px;
-    padding: 6px 10px;
+    padding: 8px 12px;
 }
 
 .pluginora-chip button {
     background: transparent;
     border: 0;
+    color: inherit;
     cursor: pointer;
     padding: 0;
 }
 
-.pluginora-lookup-results {
+.pluginora-lookup-results,
+.pluginora-lookup-empty {
     background: #fff;
-    border: 1px solid #dcdcde;
-    border-radius: 4px;
+    border: 1px solid var(--pluginora-border);
+    border-radius: 14px;
     margin-top: 8px;
-    max-height: 200px;
+}
+
+.pluginora-lookup-results {
+    max-height: 220px;
     overflow-y: auto;
 }
 
 .pluginora-lookup-option {
     background: transparent;
     border: 0;
+    color: var(--pluginora-text);
     cursor: pointer;
     display: block;
-    padding: 10px 12px;
+    padding: 12px 14px;
     text-align: left;
     width: 100%;
 }
 
 .pluginora-lookup-option:hover {
-    background: #f6f7f7;
+    background: #f5f8ff;
+}
+
+.pluginora-lookup-empty {
+    color: var(--pluginora-text-soft);
+    font-size: 13px;
+    padding: 12px 14px;
 }
 
 .pluginora-tier-row {
@@ -205,16 +517,97 @@
     margin-bottom: 10px;
 }
 
-.pluginora-muted {
-    color: #646970;
+.pluginora-library {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
-@media (max-width: 960px) {
-    .pluginora-admin-grid {
+.pluginora-library__toolbar {
+    justify-content: flex-start;
+}
+
+.pluginora-library__search {
+    flex: 1 1 220px;
+}
+
+.pluginora-library__filter {
+    flex: 0 0 170px;
+}
+
+.pluginora-rule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.pluginora-rule-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px;
+}
+
+.pluginora-badge.is-success {
+    background: #e7f8ef;
+    color: var(--pluginora-success);
+}
+
+.pluginora-badge.is-neutral,
+.pluginora-badge.is-outline {
+    background: #f3f6fa;
+    color: var(--pluginora-text-soft);
+}
+
+.pluginora-badge.is-outline {
+    border: 1px solid var(--pluginora-border);
+}
+
+.pluginora-empty-state {
+    background: linear-gradient(180deg, #fff, #f8fbff);
+    border: 1px dashed var(--pluginora-border-strong);
+    border-radius: 18px;
+    padding: 22px;
+}
+
+.pluginora-empty-state h3 {
+    color: var(--pluginora-text);
+    margin: 0 0 8px;
+}
+
+.pluginora-settings-card {
+    background: linear-gradient(180deg, #ffffff, #f8fbff);
+}
+
+.pluginora-settings-card form {
+    margin-top: 18px;
+}
+
+@media (max-width: 1180px) {
+    .pluginora-admin-grid,
+    .pluginora-workspace-hero {
         grid-template-columns: 1fr;
     }
 
+    .pluginora-page-hero {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 860px) {
+    .pluginora-progress,
+    .pluginora-metrics,
+    .pluginora-workspace-overview,
     .pluginora-tier-row {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
+    }
+
+    .pluginora-admin-card,
+    .pluginora-builder-card,
+    .pluginora-list-card,
+    .pluginora-stage,
+    .pluginora-section {
+        padding: 20px;
     }
 }

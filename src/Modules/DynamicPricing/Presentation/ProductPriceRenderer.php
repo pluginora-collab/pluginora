@@ -19,6 +19,7 @@ final class ProductPriceRenderer implements HookableInterface
     {
         add_filter('woocommerce_get_price_html', [$this, 'filterPriceHtml'], 20, 2);
         add_filter('woocommerce_sale_flash', [$this, 'filterSaleFlash'], 20, 3);
+        add_filter('woocommerce_product_is_on_sale', [$this, 'filterIsOnSale'], 20, 2);
     }
 
     public function filterPriceHtml(string $priceHtml, WC_Product $product): string
@@ -58,6 +59,17 @@ final class ProductPriceRenderer implements HookableInterface
         }
 
         return sprintf('<span class="onsale pluginora-onsale">%s</span>', esc_html($badgeText));
+    }
+
+    public function filterIsOnSale(bool $isOnSale, WC_Product $product): bool
+    {
+        if ($isOnSale) {
+            return true;
+        }
+
+        $discount = $this->productPricingService->resolveProductDiscount($product, 1);
+
+        return null !== $discount && $discount->isBadgeEnabled();
     }
 
     private function renderSavingsMessage(ProductDiscount $discount): string

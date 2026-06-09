@@ -84,6 +84,28 @@ final class ProductPriceRendererIntegrationTest extends IntegrationTestCase
         self::assertSame('<span class="onsale pluginora-onsale">Hot Deal</span>', $html);
     }
 
+    public function test_filter_is_on_sale_returns_true_for_products_with_pluginora_badges(): void
+    {
+        self::$ruleRepository->save(
+            self::$rulePayloadMapper->fromPayload(
+                $this->makeSimpleDiscountPayload(
+                    [
+                        'status'            => 'active',
+                        'applies_to'        => 'all_products',
+                        'selected_products' => [],
+                        'discount_value'    => 10,
+                        'badge_enabled'     => true,
+                        'badge_text'        => 'Hot Deal',
+                    ]
+                )
+            )
+        );
+
+        $product = $this->createProduct('Badge Visibility Product', '80');
+
+        self::assertTrue($this->renderer->filterIsOnSale(false, $product));
+    }
+
     private function createProduct(string $name, string $price): WC_Product_Simple
     {
         $product = new WC_Product_Simple();

@@ -65,7 +65,8 @@ final class AdminAssetsIntegrationTest extends IntegrationTestCase
         self::assertSame('1.0.4', (string) $script->ver);
         self::assertStringContainsString('window.pluginoraAdmin = ', $inlineBefore);
         self::assertStringContainsString('pluginora\\/v1\\/', $inlineBefore);
-        self::assertStringContainsString('Rule saved successfully.', $inlineBefore);
-        self::assertStringContainsString('Search products or categories...', $inlineBefore);
+        self::assertStringContainsString('Promotion rule saved successfully.', $inlineBefore);
+        self::assertStringContainsString('Promotion Library', $inlineBefore);
+        self::assertStringContainsString('Search products or categories', $inlineBefore);
     }
 }

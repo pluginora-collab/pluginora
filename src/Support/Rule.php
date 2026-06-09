@@ -48,7 +48,7 @@ final class Rule
             (string) $row['rule_type'],
             (string) $row['name'],
             isset($row['status']) ? (string) $row['status'] : 'inactive',
-            isset($row['priority']) ? (int) $row['priority'] : 10,
+            isset($row['priority']) ? (int) $row['priority'] : 1,
             isset($row['stack_mode_override']) ? (string) $row['stack_mode_override'] : null,
             isset($row['starts_at_gmt']) ? (string) $row['starts_at_gmt'] : null,
             isset($row['ends_at_gmt']) ? (string) $row['ends_at_gmt'] : null,

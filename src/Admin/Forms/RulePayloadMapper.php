@@ -40,7 +40,7 @@ final class RulePayloadMapper
         $status   = in_array($payload['status'] ?? 'inactive', ['active', 'inactive'], true)
             ? (string) $payload['status']
             : 'inactive';
-        $priority = max(1, absint($payload['priority'] ?? 10));
+        $priority = max(1, absint($payload['priority'] ?? 1));
 
         return new Rule(
             $existingRule?->getId(),

@@ -89,7 +89,7 @@ final class RuleSchemaProvider
             ],
             'defaults' => [
                 'status'                   => 'inactive',
-                'priority'                 => 10,
+                'priority'                 => 1,
                 'discount_type'            => 'percentage',
                 'applies_to'               => 'all_products',
                 'show_pricing_table'       => false,

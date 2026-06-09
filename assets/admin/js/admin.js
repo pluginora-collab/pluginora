@@ -46,7 +46,12 @@
             saving: false,
             notice: null,
             lookupResults: {},
-            lookupTimers: {}
+            lookupTimers: {},
+            lookupQueries: {},
+            lookupFocusField: null,
+            ruleSearch: '',
+            ruleStatus: 'all',
+            librarySearchFocused: false
         };
     }
 
@@ -80,6 +85,24 @@
 
         function getDefaults() {
             return clone((state.schema && state.schema.defaults) || {});
+        }
+
+        function formatSlugLabel(value) {
+            return String(value || '')
+                .split('_')
+                .map(function (segment) {
+                    return segment ? segment.charAt(0).toUpperCase() + segment.slice(1) : '';
+                })
+                .join(' ');
+        }
+
+        function getRulesSummary() {
+            return {
+                total: state.rules.length,
+                active: state.rules.filter(function (rule) { return 'active' === rule.status; }).length,
+                inactive: state.rules.filter(function (rule) { return 'inactive' === rule.status; }).length,
+                liveModules: Array.from(new Set(state.rules.map(function (rule) { return rule.module; }))).length
+            };
         }
 
         function getTypeDefinition() {
@@ -118,12 +141,35 @@
             });
         }
 
+        function getFilteredRules() {
+            var query = state.ruleSearch.trim().toLowerCase();
+
+            return state.rules.filter(function (rule) {
+                var matchesStatus = 'all' === state.ruleStatus || rule.status === state.ruleStatus;
+
+                if (!matchesStatus) {
+                    return false;
+                }
+
+                if (!query) {
+                    return true;
+                }
+
+                return [rule.name, rule.module, rule.rule_type, rule.status]
+                    .join(' ')
+                    .toLowerCase()
+                    .indexOf(query) !== -1;
+            });
+        }
+
         function resetForm(module) {
             state.module = module || '';
             state.ruleType = '';
             state.formData = getDefaults();
             state.editingId = null;
             state.lookupResults = {};
+            state.lookupQueries = {};
+            state.lookupFocusField = null;
         }
 
         function hydrateForm(rule) {
@@ -247,6 +293,9 @@
         }
 
         function lookupSearch(fieldKey, lookupType, query) {
+            state.lookupQueries[fieldKey] = query;
+            state.lookupFocusField = fieldKey;
+
             if (!query || query.length < 2) {
                 state.lookupResults[fieldKey] = [];
                 render();
@@ -276,6 +325,8 @@
             }
 
             state.lookupResults[fieldKey] = [];
+            state.lookupQueries[fieldKey] = '';
+            state.lookupFocusField = null;
             render();
         }
 
@@ -314,14 +365,19 @@
         function renderLookupField(field, multiple) {
             var values = multiple ? normalizeSelection(state.formData[field.key] || []) : (state.formData[field.key] ? [state.formData[field.key]] : []);
             var results = state.lookupResults[field.key] || [];
+            var query = state.lookupQueries[field.key] || '';
+            var emptyState = query.length >= 2 && !results.length
+                ? '<div class="pluginora-lookup-empty">No matches found. Try a broader search.</div>'
+                : '';
 
             return [
                 '<div class="pluginora-field is-full">',
                 '<label>' + field.label + '</label>',
-                '<input type="search" data-lookup-field="' + field.key + '" data-lookup-type="' + field.lookup + '" placeholder="' + config.strings.searchPlaceholder + '" />',
+                '<input type="search" data-lookup-field="' + field.key + '" data-lookup-type="' + field.lookup + '" value="' + escapeHtml(query) + '" placeholder="' + config.strings.searchPlaceholder + '" />',
                 results.length ? '<div class="pluginora-lookup-results">' + results.map(function (item) {
                     return '<button type="button" class="pluginora-lookup-option" data-action="lookup-add" data-field="' + field.key + '" data-multiple="' + (multiple ? '1' : '0') + '" data-id="' + item.id + '" data-label="' + escapeHtml(item.label) + '">' + escapeHtml(item.label) + '</button>';
                 }).join('') + '</div>' : '',
+                emptyState,
                 values.length ? '<div class="pluginora-chip-list">' + values.map(function (item) {
                     return '<span class="pluginora-chip">' + escapeHtml(item.label || ('#' + item.id)) + '<button type="button" data-action="lookup-remove" data-field="' + field.key + '" data-id="' + item.id + '">×</button></span>';
                 }).join('') + '</div>' : '',
@@ -416,7 +472,7 @@
             });
 
             return Object.keys(sections).map(function (sectionKey) {
-                return '<section class="pluginora-section"><h3>' + escapeHtml(sectionTitle(sectionKey)) + '</h3><div class="pluginora-field-grid">' + sections[sectionKey].map(renderField).join('') + '</div></section>';
+                return '<section class="pluginora-section"><div class="pluginora-section__header"><h3>' + escapeHtml(sectionTitle(sectionKey)) + '</h3><p>' + escapeHtml(sectionDescription(sectionKey)) + '</p></div><div class="pluginora-field-grid">' + sections[sectionKey].map(renderField).join('') + '</div></section>';
             }).join('');
         }
 
@@ -432,6 +488,128 @@
             };
 
             return titles[key] || key;
+        }
+
+        function sectionDescription(key) {
+            var descriptions = {
+                basics: 'Name the rule, set its state, and define its execution order.',
+                targeting: 'Choose where the promotion should apply across products or categories.',
+                discount: 'Define the pricing or savings logic customers will see.',
+                conditions: 'Control when the promotion becomes eligible.',
+                display: 'Decide how the offer should appear on the storefront.',
+                schedule: 'Schedule start and end dates for campaign control.',
+                coupon: 'Configure coupon behavior, code, and redemption settings.'
+            };
+
+            return descriptions[key] || 'Configure this section before saving the rule.';
+        }
+
+        function getCurrentSelectionSummary() {
+            var family = (state.schema && state.schema.families || []).find(function (item) {
+                return item.slug === state.module;
+            });
+            var type = getTypeDefinition();
+
+            return {
+                family: family ? family.label : 'Not selected',
+                type: type ? type.label : 'Not selected',
+                status: state.formData.status || 'inactive',
+                priority: state.formData.priority || 1
+            };
+        }
+
+        function renderBuilderOverview() {
+            var selection = getCurrentSelectionSummary();
+
+            return '<div class="pluginora-workspace-overview">'
+                + '<div class="pluginora-overview-stat"><span>Family</span><strong>' + escapeHtml(selection.family) + '</strong></div>'
+                + '<div class="pluginora-overview-stat"><span>Rule Type</span><strong>' + escapeHtml(selection.type) + '</strong></div>'
+                + '<div class="pluginora-overview-stat"><span>Status</span><strong>' + escapeHtml(formatSlugLabel(selection.status)) + '</strong></div>'
+                + '<div class="pluginora-overview-stat"><span>Priority</span><strong>' + escapeHtml(selection.priority) + '</strong></div>'
+                + '</div>';
+        }
+
+        function renderProgress() {
+            var steps = [
+                {
+                    title: 'Choose Family',
+                    description: 'Start with the promotion engine you need.',
+                    state: state.module ? 'complete' : 'current'
+                },
+                {
+                    title: 'Choose Rule Type',
+                    description: 'Select the exact campaign pattern to create.',
+                    state: state.ruleType ? 'complete' : (state.module ? 'current' : 'upcoming')
+                },
+                {
+                    title: 'Configure Details',
+                    description: 'Set targeting, savings, and activation details.',
+                    state: state.ruleType ? 'current' : 'upcoming'
+                }
+            ];
+
+            return '<div class="pluginora-progress">' + steps.map(function (step, index) {
+                return '<div class="pluginora-progress-step is-' + step.state + '">'
+                    + '<span class="pluginora-progress-step__index">' + (index + 1) + '</span>'
+                    + '<div><strong>' + escapeHtml(step.title) + '</strong><p>' + escapeHtml(step.description) + '</p></div>'
+                    + '</div>';
+            }).join('') + '</div>';
+        }
+
+        function renderHero() {
+            var summary = getRulesSummary();
+
+            return '<section class="pluginora-workspace-hero">'
+                + '<div class="pluginora-workspace-hero__copy">'
+                + '<span class="pluginora-workspace-kicker">Campaign workspace</span>'
+                + '<h2>Launch promotions with less guesswork.</h2>'
+                + '<p>Design pricing and coupon campaigns from a cleaner workspace with guided creation, faster rule lookup, and clearer rule operations.</p>'
+                + '</div>'
+                + '<div class="pluginora-metrics">'
+                + '<div class="pluginora-metric"><span>Total Rules</span><strong>' + escapeHtml(summary.total) + '</strong></div>'
+                + '<div class="pluginora-metric"><span>Active</span><strong>' + escapeHtml(summary.active) + '</strong></div>'
+                + '<div class="pluginora-metric"><span>Inactive</span><strong>' + escapeHtml(summary.inactive) + '</strong></div>'
+                + '<div class="pluginora-metric"><span>Modules</span><strong>' + escapeHtml(summary.liveModules || 0) + '</strong></div>'
+                + '</div>'
+                + '</section>';
+        }
+
+        function getStatusTone(status) {
+            return 'active' === status ? 'success' : 'neutral';
+        }
+
+        function renderRuleLibrary() {
+            var rules = getFilteredRules();
+
+            return '<div class="pluginora-library">'
+                + '<div class="pluginora-library__toolbar">'
+                + '<input type="search" class="pluginora-library__search" data-library-search="1" placeholder="Search rules by name, module, or type" value="' + escapeHtml(state.ruleSearch) + '" />'
+                + '<select class="pluginora-library__filter" data-library-status="1">'
+                + '<option value="all"' + ('all' === state.ruleStatus ? ' selected' : '') + '>All statuses</option>'
+                + '<option value="active"' + ('active' === state.ruleStatus ? ' selected' : '') + '>Active</option>'
+                + '<option value="inactive"' + ('inactive' === state.ruleStatus ? ' selected' : '') + '>Inactive</option>'
+                + '</select>'
+                + '</div>'
+                + (rules.length ? '<div class="pluginora-rule-list">' + rules.map(function (rule) {
+                    return '<article class="pluginora-rule-card">'
+                        + '<div class="pluginora-rule-card__top">'
+                        + '<div><h3>' + escapeHtml(rule.name) + '</h3><p>' + escapeHtml(formatSlugLabel(rule.module)) + ' / ' + escapeHtml(formatSlugLabel(rule.rule_type)) + '</p></div>'
+                        + '<div class="pluginora-rule-card__badges">'
+                        + '<span class="pluginora-badge is-' + getStatusTone(rule.status) + '">' + escapeHtml(formatSlugLabel(rule.status)) + '</span>'
+                        + '<span class="pluginora-badge is-outline">Priority ' + escapeHtml(rule.priority) + '</span>'
+                        + '</div>'
+                        + '</div>'
+                        + '<div class="pluginora-list-actions">'
+                        + '<button type="button" class="button button-secondary" data-action="edit" data-id="' + rule.id + '">Edit</button>'
+                        + '<button type="button" class="button button-secondary" data-action="duplicate" data-id="' + rule.id + '">Duplicate</button>'
+                        + ('active' === rule.status
+                            ? '<button type="button" class="button button-secondary" data-action="deactivate" data-id="' + rule.id + '">Deactivate</button>'
+                            : '<button type="button" class="button button-secondary" data-action="activate" data-id="' + rule.id + '">Activate</button>')
+                        + '<button type="button" class="button button-link-delete" data-action="delete" data-id="' + rule.id + '">Delete</button>'
+                        + '</div>'
+                        + '</article>';
+                }).join('') + '</div>' : '<div class="pluginora-empty-state"><h3>No rules match this view.</h3><p>Try clearing the search, changing the status filter, or creating your first promotion rule.</p></div>')
+                + '</div>';
         }
 
         function renderRuleTable() {
@@ -477,15 +655,46 @@
             var notice = state.notice ? '<div class="pluginora-admin-notice is-' + state.notice.type + '">' + escapeHtml(state.notice.message) + '</div>' : '';
 
             root.innerHTML = notice
+                + '<div class="pluginora-shell">'
+                + renderHero()
                 + '<div class="pluginora-admin-grid">'
                 + '<div class="pluginora-builder-card">'
-                + '<h2>Guided Rule Builder</h2>'
+                + '<div class="pluginora-builder-header"><div><span class="pluginora-builder-header__eyebrow">Guided Rule Builder</span><h2>Create and refine promotions</h2><p>Move through the workflow in order, then save only when targeting and discount behavior are fully defined.</p></div></div>'
+                + renderBuilderOverview()
+                + renderProgress()
+                + '<section class="pluginora-stage"><div class="pluginora-stage__header"><h3>Promotion Family</h3><p>Choose the engine that best matches the campaign you want to launch.</p></div>'
                 + '<div class="pluginora-family-grid">' + familyCards + '</div>'
-                + (state.module ? '<div class="pluginora-type-grid">' + typeCards + '</div>' : '')
-                + (state.ruleType ? renderSections() + '<div class="pluginora-actions"><button type="button" class="button button-primary" data-action="save">' + escapeHtml(state.editingId ? config.strings.update : config.strings.save) + '</button><button type="button" class="button button-secondary" data-action="cancel-form">' + escapeHtml(config.strings.cancel) + '</button></div>' : '<p class="pluginora-muted">Choose a rule type to continue.</p>')
+                + '</section>'
+                + (state.module ? '<section class="pluginora-stage"><div class="pluginora-stage__header"><h3>Rule Type</h3><p>Select the exact pricing or coupon pattern you want to configure.</p></div><div class="pluginora-type-grid">' + typeCards + '</div></section>' : '')
+                + (state.ruleType ? '<section class="pluginora-stage"><div class="pluginora-stage__header"><h3>Configuration</h3><p>Complete the rule details below, then save when the summary reflects the intended setup.</p></div>' + renderSections() + '<div class="pluginora-actions"><button type="button" class="button button-primary" data-action="save">' + escapeHtml(state.editingId ? config.strings.update : config.strings.save) + '</button><button type="button" class="button button-secondary" data-action="cancel-form">' + escapeHtml(config.strings.cancel) + '</button></div></section>' : '<div class="pluginora-empty-state"><h3>Choose a rule type to continue.</h3><p>Once you select a family and rule type, Pluginora will show only the fields needed for that promotion pattern.</p></div>')
                 + '</div>'
-                + '<div class="pluginora-list-card"><h2>' + escapeHtml(config.strings.existingRules) + '</h2>' + renderRuleTable() + '</div>'
+                + '<aside class="pluginora-list-card"><div class="pluginora-list-card__header"><div><span class="pluginora-builder-header__eyebrow">Rule Library</span><h2>' + escapeHtml(config.strings.existingRules) + '</h2><p>Review, filter, and operate on existing promotions without leaving the workspace.</p></div></div>' + renderRuleLibrary() + '</aside>'
+                + '</div>'
                 + '</div>';
+
+            if (state.lookupFocusField) {
+                var activeLookup = root.querySelector('[data-lookup-field="' + state.lookupFocusField + '"]');
+
+                if (activeLookup) {
+                    activeLookup.focus();
+
+                    if (typeof activeLookup.setSelectionRange === 'function') {
+                        var length = activeLookup.value.length;
+                        activeLookup.setSelectionRange(length, length);
+                    }
+                }
+            } else if (state.librarySearchFocused) {
+                var librarySearch = root.querySelector('[data-library-search="1"]');
+
+                if (librarySearch) {
+                    librarySearch.focus();
+
+                    if (typeof librarySearch.setSelectionRange === 'function') {
+                        var searchLength = librarySearch.value.length;
+                        librarySearch.setSelectionRange(searchLength, searchLength);
+                    }
+                }
+            }
         }
 
         root.addEventListener('click', function (event) {
@@ -566,6 +775,13 @@
         root.addEventListener('input', function (event) {
             var lookupField = event.target.getAttribute('data-lookup-field');
 
+            if (event.target.hasAttribute('data-library-search')) {
+                state.ruleSearch = event.target.value;
+                state.librarySearchFocused = true;
+                render();
+                return;
+            }
+
             if (lookupField) {
                 lookupSearch(lookupField, event.target.getAttribute('data-lookup-type'), event.target.value);
                 return;
@@ -587,6 +803,13 @@
 
         root.addEventListener('change', function (event) {
             var field = event.target.getAttribute('data-field');
+
+            if (event.target.hasAttribute('data-library-status')) {
+                state.ruleStatus = event.target.value;
+                state.librarySearchFocused = false;
+                render();
+                return;
+            }
 
             if (field && event.target.type === 'checkbox') {
                 updateField(field, event.target.checked);

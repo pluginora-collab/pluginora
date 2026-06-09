@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pluginora\Tests\Integration;
 
 use Pluginora\Admin\Pages\RuleBuilderPage;
+use Pluginora\Admin\Settings\PluginSettingsPage;
 
 final class RuleBuilderPageIntegrationTest extends IntegrationTestCase
 {
@@ -14,21 +15,20 @@ final class RuleBuilderPageIntegrationTest extends IntegrationTestCase
     {
         parent::set_up();
 
-        $this->page = new RuleBuilderPage();
+        $this->page = new RuleBuilderPage(new PluginSettingsPage(self::$settingsRepository));
     }
 
-    public function test_register_menu_adds_pluginora_submenu_under_woocommerce(): void
+    public function test_register_menu_adds_pluginora_top_level_menu(): void
     {
-        global $submenu;
+        global $menu;
 
         $this->page->registerMenu();
 
-        self::assertIsArray($submenu);
-        self::assertArrayHasKey('woocommerce', $submenu);
+        self::assertIsArray($menu);
 
         $matches = array_values(
             array_filter(
-                $submenu['woocommerce'],
+                $menu,
                 static fn (array $item): bool => 'Pluginora' === $item[0] && 'pluginora' === $item[2]
             )
         );
@@ -43,8 +43,10 @@ final class RuleBuilderPageIntegrationTest extends IntegrationTestCase
         $output = (string) ob_get_clean();
 
         self::assertStringContainsString('Pluginora', $output);
-        self::assertStringContainsString('Start with the rule family', $output);
+        self::assertStringContainsString('Build pricing and coupon campaigns from one branded workspace', $output);
         self::assertStringContainsString('id="pluginora-admin-app"', $output);
         self::assertStringContainsString('Loading Pluginora', $output);
+        self::assertStringContainsString('Promotion Policy', $output);
+        self::assertStringContainsString('Save Settings', $output);
     }
 }
