@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pluginora Storefront Preview</title>
+    <link rel="stylesheet" href="../assets/frontend/css/frontend.css">
+    <style>
+        :root {
+            --preview-bg: #f5f7fb;
+            --preview-surface: #ffffff;
+            --preview-border: #d7dfeb;
+            --preview-text: #10233f;
+            --preview-text-soft: #5b6b80;
+            --preview-primary: #1457d9;
+            --preview-accent: #f59e0b;
+            --preview-success: #1f8f5f;
+            --preview-shadow: 0 20px 40px rgba(16, 35, 63, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(180deg, #eef3fb, #f8fafc);
+            color: var(--preview-text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            margin: 0;
+            padding: 32px;
+        }
+
+        .storefront-shell {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin: 0 auto;
+            max-width: 1240px;
+        }
+
+        .storefront-note {
+            color: var(--preview-text-soft);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .storefront-hero {
+            background: linear-gradient(135deg, #0f1730 0%, #1457d9 70%, #1f8f5f 100%);
+            border-radius: 24px;
+            box-shadow: var(--preview-shadow);
+            color: #fff;
+            padding: 30px;
+        }
+
+        .storefront-hero h1,
+        .storefront-hero p,
+        .preview-card h2,
+        .preview-card h3,
+        .product-card h2,
+        .product-card p,
+        .cart-row h4,
+        .cart-row p,
+        .cart-summary h3,
+        .cart-summary p {
+            margin: 0;
+        }
+
+        .storefront-hero h1 {
+            font-size: 34px;
+            margin-bottom: 10px;
+        }
+
+        .storefront-hero p {
+            color: rgba(255, 255, 255, 0.84);
+            font-size: 16px;
+            max-width: 760px;
+        }
+
+        .preview-grid {
+            display: grid;
+            gap: 24px;
+            grid-template-columns: 1.2fr 0.9fr;
+        }
+
+        .preview-card,
+        .product-card,
+        .cart-summary,
+        .cart-row,
+        .preview-banner {
+            background: var(--preview-surface);
+            border: 1px solid var(--preview-border);
+            border-radius: 24px;
+            box-shadow: var(--preview-shadow);
+        }
+
+        .preview-card,
+        .product-card,
+        .cart-summary,
+        .preview-banner {
+            padding: 24px;
+        }
+
+        .preview-card h2,
+        .product-card h2,
+        .cart-summary h3 {
+            color: var(--preview-text);
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .preview-eyebrow {
+            color: var(--preview-primary);
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .preview-copy {
+            color: var(--preview-text-soft);
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .product-layout {
+            display: grid;
+            gap: 18px;
+        }
+
+        .product-media {
+            align-items: center;
+            background: linear-gradient(180deg, #f0f4fa, #e5edf8);
+            border-radius: 18px;
+            display: flex;
+            justify-content: center;
+            min-height: 260px;
+            position: relative;
+        }
+
+        .product-media::before {
+            background: radial-gradient(circle at center, rgba(20, 87, 217, 0.14), transparent 55%);
+            border-radius: 18px;
+            content: '';
+            inset: 0;
+            position: absolute;
+        }
+
+        .product-blob {
+            background: linear-gradient(160deg, #0f1730, #1457d9);
+            border-radius: 22px;
+            box-shadow: 0 18px 30px rgba(20, 87, 217, 0.2);
+            height: 170px;
+            position: relative;
+            width: 180px;
+            z-index: 1;
+        }
+
+        .product-blob::after {
+            background: rgba(255, 255, 255, 0.14);
+            border-radius: 999px;
+            content: '';
+            height: 52px;
+            position: absolute;
+            right: 20px;
+            top: 18px;
+            width: 52px;
+        }
+
+        .onsale.pluginora-onsale {
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            border-radius: 999px;
+            color: #fff;
+            display: inline-flex;
+            font-size: 12px;
+            font-weight: 800;
+            left: 16px;
+            letter-spacing: 0.03em;
+            padding: 10px 14px;
+            position: absolute;
+            top: 16px;
+            z-index: 2;
+        }
+
+        .product-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .product-subtitle,
+        .cart-subtitle,
+        .coupon-subtitle {
+            color: var(--preview-text-soft);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .price-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .price-pill {
+            background: #eef4ff;
+            border: 1px solid #c4d5f3;
+            border-radius: 999px;
+            color: var(--preview-primary);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 8px 12px;
+        }
+
+        .pluginora-price {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .pluginora-price del {
+            font-size: 20px;
+        }
+
+        .pluginora-savings-message {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .tier-shell {
+            background: #f8fbff;
+            border: 1px solid var(--preview-border);
+            border-radius: 18px;
+            padding: 16px;
+        }
+
+        .pluginora-tier-pricing-table {
+            background: #fff;
+            border-collapse: collapse;
+            border-radius: 16px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .pluginora-tier-pricing-table th,
+        .pluginora-tier-pricing-table td {
+            border-bottom: 1px solid #e7edf6;
+            padding: 12px 14px;
+            text-align: left;
+        }
+
+        .preview-banner {
+            background: linear-gradient(180deg, #eff7ff, #ffffff);
+        }
+
+        .woocommerce-message {
+            border-left: 4px solid var(--preview-primary);
+            color: var(--preview-text);
+            font-size: 15px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .cart-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .cart-row {
+            display: grid;
+            gap: 12px;
+            grid-template-columns: 92px 1fr auto;
+            padding: 18px;
+        }
+
+        .cart-thumb {
+            background: linear-gradient(160deg, #0f1730, #1457d9);
+            border-radius: 18px;
+            min-height: 92px;
+        }
+
+        .pluginora-cart-price {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .cart-summary {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .summary-line {
+            align-items: center;
+            display: flex;
+            font-size: 15px;
+            justify-content: space-between;
+        }
+
+        .summary-line strong {
+            font-size: 18px;
+        }
+
+        .summary-line.is-discount strong {
+            color: var(--preview-success);
+        }
+
+        .pluginora-coupon-card {
+            border-radius: 18px;
+        }
+
+        .pluginora-coupon-form .button {
+            appearance: none;
+            background: var(--preview-primary);
+            border: 0;
+            border-radius: 12px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            min-height: 42px;
+            padding: 0 16px;
+        }
+
+        @media (max-width: 980px) {
+            .preview-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="storefront-shell">
+        <p class="storefront-note">Static preview of the current Pluginora 1.0.5 storefront presentation.</p>
+
+        <section class="storefront-hero">
+            <h1>Pluginora Storefront Preview</h1>
+            <p>This mock shows how Pluginora pricing, badges, notices, tier tables, and available coupons can appear across product and cart experiences.</p>
+        </section>
+
+        <div class="preview-grid">
+            <section class="preview-card">
+                <span class="preview-eyebrow">Product Page</span>
+                <h2>Discounted product presentation</h2>
+                <p class="preview-copy">This section mirrors the product-side UI exposed by Pluginora pricing badges, savings messaging, and tier pricing helpers.</p>
+
+                <div class="product-layout">
+                    <div class="product-media">
+                        <span class="onsale pluginora-onsale">Summer Sale</span>
+                        <div class="product-blob" aria-hidden="true"></div>
+                    </div>
+
+                    <div class="product-meta">
+                        <div class="price-badges">
+                            <span class="price-pill">Simple Discount</span>
+                            <span class="price-pill">Badge Enabled</span>
+                            <span class="price-pill">Savings Message</span>
+                        </div>
+
+                        <h3>Black Hoodie</h3>
+                        <p class="product-subtitle">Targeted by a dynamic pricing rule with a custom sale badge and a visible savings callout.</p>
+
+                        <div>
+                            <span class="pluginora-price"><del><span>$120.00</span></del> <ins><span>$108.00</span></ins></span>
+                            <small class="pluginora-savings-message">You save 10.00%</small>
+                        </div>
+
+                        <div class="tier-shell pluginora-tier-table">
+                            <strong>Quantity Pricing</strong>
+                            <table class="pluginora-tier-pricing-table">
+                                <thead>
+                                    <tr>
+                                        <th>Qty</th>
+                                        <th>Discount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1 to 2</td>
+                                        <td>5.00%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3+</td>
+                                        <td>10.00%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="cart-stack">
+                <section class="preview-banner">
+                    <span class="preview-eyebrow">Cart Notice</span>
+                    <p class="woocommerce-message pluginora-frontend-notice">Add $20.00 more to unlock your cart subtotal discount.</p>
+                </section>
+
+                <section class="preview-card">
+                    <span class="preview-eyebrow">Available Coupons</span>
+                    <h2>Coupon cards</h2>
+                    <p class="coupon-subtitle">This mirrors Pluginora coupon cards shown on cart or checkout when managed coupons are available.</p>
+
+                    <section class="pluginora-coupon-list">
+                        <div class="pluginora-coupon-grid">
+                            <article class="pluginora-coupon-card">
+                                <strong class="pluginora-coupon-code">SAVE10</strong>
+                                <p>Save 10% on your first order.</p>
+                                <form class="pluginora-coupon-form">
+                                    <button type="button" class="button">Apply Coupon</button>
+                                </form>
+                            </article>
+                            <article class="pluginora-coupon-card">
+                                <strong class="pluginora-coupon-code">BOGOACC</strong>
+                                <p>Buy one accessory and unlock a free bonus item.</p>
+                                <form class="pluginora-coupon-form">
+                                    <button type="button" class="button">Apply Coupon</button>
+                                </form>
+                            </article>
+                        </div>
+                    </section>
+                </section>
+
+                <section class="cart-summary">
+                    <span class="preview-eyebrow">Cart Snapshot</span>
+                    <h3>Discounted cart example</h3>
+
+                    <article class="cart-row">
+                        <div class="cart-thumb" aria-hidden="true"></div>
+                        <div>
+                            <h4>Black Hoodie</h4>
+                            <p class="cart-subtitle">Rule applied: Summer Sale 10%</p>
+                        </div>
+                        <div class="pluginora-cart-price"><del>$120.00</del> <ins>$108.00</ins></div>
+                    </article>
+
+                    <div class="summary-line">
+                        <span>Subtotal</span>
+                        <strong>$108.00</strong>
+                    </div>
+                    <div class="summary-line is-discount">
+                        <span>Pluginora Savings</span>
+                        <strong>-$12.00</strong>
+                    </div>
+                    <div class="summary-line">
+                        <span>Total</span>
+                        <strong>$108.00</strong>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

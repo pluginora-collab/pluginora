@@ -28,9 +28,11 @@ It is implemented as a modular OOP WordPress plugin with custom Pluginora rule t
 As of this handoff:
 
 - `v1.0.5` is released and published.
+- `main` now contains additional post-`v1.0.5` hardening work that is not yet part of the published release zip.
 - The published zip now matches the redesigned admin workspace.
 - The plugin is functional for MVP scope.
-- Unit tests, WooCommerce-backed integration tests, PHPCS, CI, and release packaging are in place.
+- Unit tests, WooCommerce-backed integration tests, PHPCS, PHPStan, CI, and release packaging are in place.
+- Playwright E2E smoke coverage, staging validation documentation, and profiling helpers are now in the repository.
 - The plugin should still be treated as staging-ready / controlled-rollout ready rather than universally production-certified.
 
 ## Major Functional Capabilities
@@ -89,6 +91,16 @@ These are the most important recent changes another model should know about.
 - Product lookup search in the admin builder was stabilized so it does not feel like it resets while typing.
 - Custom sale badges now participate in WooCommerce `is_on_sale` logic so frontend badge rendering works more reliably.
 
+### Post-`v1.0.5` production hardening on `main`
+
+- PHPStan static analysis was added with WordPress and WooCommerce stubs.
+- CI now runs PHPStan alongside PHPCS and unit tests.
+- Playwright-based E2E tooling was added for real WordPress + WooCommerce staging runs.
+- A manual GitHub Actions workflow was added for browser E2E execution against staging.
+- Staging validation and performance profiling runbooks were added.
+- A curl-based profiling helper script was added for product, cart, and checkout timing spot checks.
+- Local admin and storefront preview HTML files were committed under `docs/` for design review.
+
 ## Important Files
 
 ### Bootstrap and metadata
@@ -137,6 +149,21 @@ These are the most important recent changes another model should know about.
 - `README.md`
 - `readme.txt`
 - `docs/production-readiness-checklist.md`
+- `docs/staging-validation.md`
+- `docs/performance-profiling.md`
+- `docs/ui-preview.html`
+- `docs/storefront-preview.html`
+
+### Tooling and workflows
+
+- `.github/workflows/ci.yml`
+- `.github/workflows/e2e.yml`
+- `phpstan.neon.dist`
+- `phpstan-bootstrap.php`
+- `package.json`
+- `playwright.config.js`
+- `tests/E2E/`
+- `bin/profile-storefront.sh`
 
 ## Validation Commands
 
@@ -144,9 +171,16 @@ These are the commands used successfully during this session:
 
 ```bash
 composer run lint:phpcs
+composer run lint:phpstan
 composer test:unit
 composer test:integration
 composer verify:release
+```
+
+Playwright test discovery was also validated successfully with:
+
+```bash
+npm run e2e -- --list
 ```
 
 ## Known Test/Validation Caveat
@@ -168,9 +202,8 @@ Still recommended before broader production use:
 - full staging pass on the exact store theme and extension stack
 - tax, shipping, payment, and coupon edge-case validation
 - mixed-rule behavior validation
-- E2E browser coverage
-- static analysis such as PHPStan
-- performance profiling on larger catalogs and mixed carts
+- execution of the Playwright E2E suite against the real staging site
+- performance profiling on larger catalogs and mixed carts using the new helper/runbook
 
 ## Local Preview Files Created In This Session
 
@@ -183,14 +216,14 @@ Important:
 
 - These are **local static preview files**.
 - They are useful for design review and screenshots.
-- They are currently **untracked** unless later committed.
-- They are **not part of the published plugin release** unless explicitly committed and pushed.
+- They are now committed in the repository under `docs/`.
+- They are **not part of the published `v1.0.5` plugin release** unless a later release is cut from `main`.
 
-If another model sees these files, it should ask whether to keep them, commit them under `docs/`, or remove them.
+If another model sees these files, it should treat them as repository documentation assets rather than release-runtime code.
 
 ## Release State At Handoff
 
-- Source for `v1.0.5` is on `main`.
+- `main` is ahead of the published `v1.0.5` release with production-hardening and preview-documentation commits.
 - GitHub release `v1.0.5` exists and is published.
 - README and `readme.txt` were updated so release docs match the single top-level Pluginora workspace.
 - `v1.0.4` release notes were also updated earlier to clarify that later admin UX refinements had landed on `main` before `v1.0.5` was cut.
@@ -201,16 +234,17 @@ If another model continues from here, it should do this first:
 
 1. Read `README.md`.
 2. Read this `config.md`.
-3. Check `git status` to see whether the two preview files are still untracked.
+3. Read `docs/staging-validation.md` and `docs/performance-profiling.md` if the goal is launch readiness.
 4. If working on product behavior, run `composer test:integration` after changes.
-5. If working on release work, run `composer verify:release` before tagging.
+5. If working on quality/tooling, run `composer run lint:phpstan` and inspect `.github/workflows/e2e.yml`.
+6. If working on release work, run `composer verify:release` before tagging.
 
 ## Good Next Tasks
 
 Examples of sensible next work:
 
-- commit or remove the local preview files
 - run staging QA against a real WooCommerce store
-- add browser E2E tests
-- add PHPStan to CI
+- execute the Playwright E2E workflow against staging
+- expand browser E2E coverage beyond the current smoke paths
+- tag and publish a release that includes the post-`v1.0.5` hardening work
 - improve storefront visual styling if more customer-facing polish is desired

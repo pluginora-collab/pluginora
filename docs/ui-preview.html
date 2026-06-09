@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pluginora UI Preview</title>
+    <link rel="stylesheet" href="../assets/admin/css/admin.css">
+    <style>
+        body {
+            background: #eef3f9;
+            color: #10233f;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            margin: 0;
+            padding: 32px;
+        }
+
+        .preview-shell {
+            margin: 0 auto;
+            max-width: 1380px;
+        }
+
+        .preview-note {
+            color: #5b6b80;
+            font-size: 14px;
+            margin: 0 0 16px;
+        }
+
+        .preview-settings-form {
+            display: grid;
+            gap: 16px;
+            margin-top: 18px;
+        }
+
+        .preview-settings-form select {
+            background: #fff;
+            border: 1px solid #aebfd8;
+            border-radius: 14px;
+            min-height: 44px;
+            padding: 0 14px;
+        }
+
+        .preview-settings-form .button {
+            width: fit-content;
+        }
+
+        .button {
+            appearance: none;
+            background: #1457d9;
+            border: 0;
+            border-radius: 12px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            min-height: 42px;
+            padding: 0 16px;
+        }
+
+        .button.button-secondary {
+            background: #eff4fb;
+            color: #10233f;
+        }
+
+        .button.button-link-delete {
+            background: transparent;
+            color: #b42318;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-shell pluginora-admin-page">
+        <p class="preview-note">Static preview of the current Pluginora 1.0.5 admin workspace design.</p>
+
+        <section class="pluginora-page-hero">
+            <div class="pluginora-page-hero__content">
+                <span class="pluginora-page-eyebrow">Promotion Operations</span>
+                <h1>Pluginora</h1>
+                <p>Build pricing and coupon campaigns from one branded workspace with clearer rule creation, management, and promotion policy controls.</p>
+            </div>
+            <div class="pluginora-page-hero__meta">
+                <span class="pluginora-page-pill">Dynamic Pricing</span>
+                <span class="pluginora-page-pill">Coupons</span>
+                <span class="pluginora-page-pill">BOGO</span>
+            </div>
+        </section>
+
+        <div class="pluginora-admin-card">
+            <div class="pluginora-shell">
+                <section class="pluginora-workspace-hero">
+                    <div class="pluginora-workspace-hero__copy">
+                        <span class="pluginora-workspace-kicker">Campaign workspace</span>
+                        <h2>Launch promotions with less guesswork.</h2>
+                        <p>Design pricing and coupon campaigns from a cleaner workspace with guided creation, faster rule lookup, and clearer rule operations.</p>
+                    </div>
+                    <div class="pluginora-metrics">
+                        <div class="pluginora-metric"><span>Total Rules</span><strong>12</strong></div>
+                        <div class="pluginora-metric"><span>Active</span><strong>7</strong></div>
+                        <div class="pluginora-metric"><span>Inactive</span><strong>5</strong></div>
+                        <div class="pluginora-metric"><span>Modules</span><strong>2</strong></div>
+                    </div>
+                </section>
+
+                <div class="pluginora-admin-grid">
+                    <div class="pluginora-builder-card">
+                        <div class="pluginora-builder-header">
+                            <div>
+                                <span class="pluginora-builder-header__eyebrow">Guided Rule Builder</span>
+                                <h2>Create and refine promotions</h2>
+                                <p>Move through the workflow in order, then save only when targeting and discount behavior are fully defined.</p>
+                            </div>
+                        </div>
+
+                        <div class="pluginora-workspace-overview">
+                            <div class="pluginora-overview-stat"><span>Family</span><strong>Create Dynamic Pricing Rule</strong></div>
+                            <div class="pluginora-overview-stat"><span>Rule Type</span><strong>Percentage or Fixed Discount</strong></div>
+                            <div class="pluginora-overview-stat"><span>Status</span><strong>Active</strong></div>
+                            <div class="pluginora-overview-stat"><span>Priority</span><strong>1</strong></div>
+                        </div>
+
+                        <div class="pluginora-progress">
+                            <div class="pluginora-progress-step is-complete">
+                                <span class="pluginora-progress-step__index">1</span>
+                                <div><strong>Choose Family</strong><p>Start with the promotion engine you need.</p></div>
+                            </div>
+                            <div class="pluginora-progress-step is-complete">
+                                <span class="pluginora-progress-step__index">2</span>
+                                <div><strong>Choose Rule Type</strong><p>Select the exact campaign pattern to create.</p></div>
+                            </div>
+                            <div class="pluginora-progress-step is-current">
+                                <span class="pluginora-progress-step__index">3</span>
+                                <div><strong>Configure Details</strong><p>Set targeting, savings, and activation details.</p></div>
+                            </div>
+                        </div>
+
+                        <section class="pluginora-stage">
+                            <div class="pluginora-stage__header">
+                                <h3>Promotion Family</h3>
+                                <p>Choose the engine that best matches the campaign you want to launch.</p>
+                            </div>
+                            <div class="pluginora-family-grid">
+                                <button type="button" class="pluginora-family-card is-active">
+                                    <h3>Create Dynamic Pricing Rule</h3>
+                                    <p>Build product, quantity, cart, and scheduled discount rules through a guided flow.</p>
+                                </button>
+                                <button type="button" class="pluginora-family-card">
+                                    <h3>Create Coupon Rule</h3>
+                                    <p>Create native-backed coupon rules, auto-apply logic, and BOGO promotions.</p>
+                                </button>
+                            </div>
+                        </section>
+
+                        <section class="pluginora-stage">
+                            <div class="pluginora-stage__header">
+                                <h3>Rule Type</h3>
+                                <p>Select the exact pricing or coupon pattern you want to configure.</p>
+                            </div>
+                            <div class="pluginora-type-grid">
+                                <button type="button" class="pluginora-type-card is-active">
+                                    <h3>Percentage or Fixed Discount</h3>
+                                    <p>Apply a percentage or fixed discount to products or categories.</p>
+                                </button>
+                                <button type="button" class="pluginora-type-card">
+                                    <h3>Bulk or Tiered Pricing</h3>
+                                    <p>Define quantity ranges with discount tiers and an optional pricing table.</p>
+                                </button>
+                                <button type="button" class="pluginora-type-card">
+                                    <h3>Cart Total Discount</h3>
+                                    <p>Trigger a discount when the cart subtotal reaches a threshold.</p>
+                                </button>
+                            </div>
+                        </section>
+
+                        <section class="pluginora-stage">
+                            <div class="pluginora-stage__header">
+                                <h3>Configuration</h3>
+                                <p>Complete the rule details below, then save when the summary reflects the intended setup.</p>
+                            </div>
+
+                            <section class="pluginora-section">
+                                <div class="pluginora-section__header">
+                                    <h3>Basics</h3>
+                                    <p>Name the rule, set its state, and define its execution order.</p>
+                                </div>
+                                <div class="pluginora-field-grid">
+                                    <div class="pluginora-field">
+                                        <label>Rule Name</label>
+                                        <input type="text" value="Summer Sale 10%">
+                                    </div>
+                                    <div class="pluginora-field">
+                                        <label>Status</label>
+                                        <select><option selected>Active</option><option>Inactive</option></select>
+                                    </div>
+                                    <div class="pluginora-field">
+                                        <label>Priority</label>
+                                        <input type="number" value="1">
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="pluginora-section">
+                                <div class="pluginora-section__header">
+                                    <h3>Targeting</h3>
+                                    <p>Choose where the promotion should apply across products or categories.</p>
+                                </div>
+                                <div class="pluginora-field-grid">
+                                    <div class="pluginora-field">
+                                        <label>Applies To</label>
+                                        <select><option selected>Selected Products</option></select>
+                                    </div>
+                                    <div class="pluginora-field is-full">
+                                        <label>Selected Products</label>
+                                        <input type="search" value="Hoodie" placeholder="Search products or categories">
+                                        <div class="pluginora-chip-list">
+                                            <span class="pluginora-chip">Black Hoodie<button type="button">×</button></span>
+                                            <span class="pluginora-chip">Blue Hoodie<button type="button">×</button></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="pluginora-section">
+                                <div class="pluginora-section__header">
+                                    <h3>Discount</h3>
+                                    <p>Define the pricing or savings logic customers will see.</p>
+                                </div>
+                                <div class="pluginora-field-grid">
+                                    <div class="pluginora-field">
+                                        <label>Discount Type</label>
+                                        <select><option selected>Percentage</option></select>
+                                    </div>
+                                    <div class="pluginora-field">
+                                        <label>Discount Value</label>
+                                        <input type="number" value="10">
+                                    </div>
+                                    <div class="pluginora-field">
+                                        <label><input type="checkbox" checked> Enable Sale Badge</label>
+                                    </div>
+                                    <div class="pluginora-field">
+                                        <label>Custom Badge Text</label>
+                                        <input type="text" value="Summer Sale">
+                                    </div>
+                                </div>
+                            </section>
+
+                            <div class="pluginora-actions">
+                                <button type="button" class="button">Save Promotion</button>
+                                <button type="button" class="button button-secondary">Cancel</button>
+                            </div>
+                        </section>
+                    </div>
+
+                    <aside class="pluginora-list-card">
+                        <div class="pluginora-list-card__header">
+                            <div>
+                                <span class="pluginora-builder-header__eyebrow">Rule Library</span>
+                                <h2>Promotion Library</h2>
+                                <p>Review, filter, and operate on existing promotions without leaving the workspace.</p>
+                            </div>
+                        </div>
+
+                        <div class="pluginora-library">
+                            <div class="pluginora-library__toolbar">
+                                <input type="search" class="pluginora-library__search" value="sale" placeholder="Search rules by name, module, or type">
+                                <select class="pluginora-library__filter">
+                                    <option>All statuses</option>
+                                    <option selected>Active</option>
+                                </select>
+                            </div>
+
+                            <div class="pluginora-rule-list">
+                                <article class="pluginora-rule-card">
+                                    <div class="pluginora-rule-card__top">
+                                        <div>
+                                            <h3>Summer Sale 10%</h3>
+                                            <p>Dynamic Pricing / Simple Discount</p>
+                                        </div>
+                                        <div class="pluginora-rule-card__badges">
+                                            <span class="pluginora-badge is-success">Active</span>
+                                            <span class="pluginora-badge is-outline">Priority 1</span>
+                                        </div>
+                                    </div>
+                                    <div class="pluginora-list-actions">
+                                        <button type="button" class="button button-secondary">Edit</button>
+                                        <button type="button" class="button button-secondary">Duplicate</button>
+                                        <button type="button" class="button button-secondary">Deactivate</button>
+                                        <button type="button" class="button button-link-delete">Delete</button>
+                                    </div>
+                                </article>
+
+                                <article class="pluginora-rule-card">
+                                    <div class="pluginora-rule-card__top">
+                                        <div>
+                                            <h3>BOGO Accessories</h3>
+                                            <p>Coupon Engine / Bogo Coupon</p>
+                                        </div>
+                                        <div class="pluginora-rule-card__badges">
+                                            <span class="pluginora-badge is-neutral">Inactive</span>
+                                            <span class="pluginora-badge is-outline">Priority 3</span>
+                                        </div>
+                                    </div>
+                                    <div class="pluginora-list-actions">
+                                        <button type="button" class="button button-secondary">Edit</button>
+                                        <button type="button" class="button button-secondary">Duplicate</button>
+                                        <button type="button" class="button button-secondary">Activate</button>
+                                        <button type="button" class="button button-link-delete">Delete</button>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+
+        <section class="pluginora-admin-card pluginora-settings-card">
+            <h2>Promotion Policy</h2>
+            <p>Configure how Pluginora resolves conflicts between dynamic pricing and coupon rules.</p>
+            <div class="preview-settings-form">
+                <div class="pluginora-field">
+                    <label>Conflict Mode</label>
+                    <select>
+                        <option selected>Best Discount Only</option>
+                        <option>Stack All Discounts</option>
+                        <option>Coupon Priority</option>
+                    </select>
+                    <span class="pluginora-field-help">Best Discount Only is the default and prevents promotion stacking.</span>
+                </div>
+                <button type="button" class="button">Save Settings</button>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
