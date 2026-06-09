@@ -7,7 +7,6 @@ namespace Pluginora\Core\Container;
 use InvalidArgumentException;
 use Pluginora\Core\Contracts\ContainerInterface;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionNamedType;
 use RuntimeException;
 
@@ -63,11 +62,7 @@ final class Container implements ContainerInterface
             throw new InvalidArgumentException(sprintf('Unable to resolve service "%s".', $id));
         }
 
-        try {
-            $reflection = new ReflectionClass($id);
-        } catch (ReflectionException $exception) {
-            throw new RuntimeException($exception->getMessage(), 0, $exception);
-        }
+        $reflection = new ReflectionClass($id);
 
         if (! $reflection->isInstantiable()) {
             throw new RuntimeException(sprintf('Service "%s" is not instantiable.', $id));
@@ -145,11 +140,7 @@ final class Container implements ContainerInterface
             return false;
         }
 
-        try {
-            $reflection = new ReflectionClass($id);
-        } catch (ReflectionException) {
-            return false;
-        }
+        $reflection = new ReflectionClass($id);
 
         return $reflection->isInstantiable();
     }

@@ -24,7 +24,9 @@ Current recommendation:
 - [x] Unit tests are passing locally.
 - [x] WooCommerce-backed integration tests are passing locally.
 - [x] PHPCS is passing locally.
+- [x] PHPStan static analysis is passing locally.
 - [x] CI and release workflows are configured.
+- [x] Playwright E2E smoke coverage exists for the admin workspace and storefront pricing flow.
 - [x] Release `v1.0.5` is prepared to package and publish with zip and checksum artifacts.
 
 ## What Is Still Left
@@ -42,9 +44,8 @@ These items are the remaining work before making a stronger production claim for
 
 These items are not strictly blockers for a controlled release, but they materially improve production confidence.
 
-- [ ] Add real browser E2E coverage for admin builder and storefront flows.
-- [ ] Add a static analysis gate such as PHPStan to CI.
-- [ ] Add performance profiling against larger catalogs and mixed carts.
+- [ ] Execute the Playwright E2E suite against the target staging environment.
+- [ ] Capture and review performance timings against larger catalogs and mixed carts.
 - [ ] Add structured operational logging beyond database write-failure logging.
 - [ ] Add regression tests for broader rule interaction and mixed-promotion scenarios.
 
@@ -67,11 +68,13 @@ Use this order for a disciplined release:
 2. Run `composer run lint:phpcs`.
 3. Run `composer test:unit`.
 4. Run `composer test:integration`.
-5. Run `composer verify:release`.
-6. Test the plugin manually on staging.
-7. Push the final code to `main`.
-8. Create and push the next release tag.
-9. Verify the GitHub Actions release workflow artifacts.
+5. Run `composer run lint:phpstan`.
+6. Run `composer verify:release`.
+7. Run the Playwright E2E suite against staging.
+8. Test the plugin manually on staging.
+9. Push the final code to `main`.
+10. Create and push the next release tag.
+11. Verify the GitHub Actions release workflow artifacts.
 
 ## Recommended Current Interpretation
 

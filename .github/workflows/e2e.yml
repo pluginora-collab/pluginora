@@ -1,0 +1,67 @@
+name: E2E
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: Base URL for the staging or local WordPress site.
+        required: true
+        type: string
+      product_id:
+        description: WooCommerce product ID seeded for Pluginora E2E coverage.
+        required: true
+        type: string
+      product_url:
+        description: Frontend product URL for the seeded WooCommerce product.
+        required: true
+        type: string
+      cart_url:
+        description: Cart URL for the target WooCommerce site.
+        required: false
+        default: ''
+        type: string
+      checkout_url:
+        description: Checkout URL for the target WooCommerce site.
+        required: false
+        default: ''
+        type: string
+
+jobs:
+  playwright:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright E2E suite
+        env:
+          PLUGINORA_E2E_BASE_URL: ${{ inputs.base_url }}
+          PLUGINORA_E2E_ADMIN_USERNAME: ${{ secrets.PLUGINORA_E2E_ADMIN_USERNAME }}
+          PLUGINORA_E2E_ADMIN_PASSWORD: ${{ secrets.PLUGINORA_E2E_ADMIN_PASSWORD }}
+          PLUGINORA_E2E_PRODUCT_ID: ${{ inputs.product_id }}
+          PLUGINORA_E2E_PRODUCT_URL: ${{ inputs.product_url }}
+          PLUGINORA_E2E_CART_URL: ${{ inputs.cart_url }}
+          PLUGINORA_E2E_CHECKOUT_URL: ${{ inputs.checkout_url }}
+        run: npm run e2e
+
+      - name: Upload Playwright artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results/playwright

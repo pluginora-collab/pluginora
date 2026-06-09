@@ -191,7 +191,7 @@ final class NativeCouponSyncService
         return (float) $this->ruleDataAccessor->getActionValue($rule, 'coupon_amount', 0);
     }
 
-    private function getExpiryDate(Rule $rule): ?\WC_DateTime
+    private function getExpiryDate(Rule $rule): ?string
     {
         $expiry = $this->ruleDataAccessor->getActionValue($rule, 'expiry_date');
 
@@ -199,7 +199,7 @@ final class NativeCouponSyncService
             return null;
         }
 
-        return new \WC_DateTime($expiry, new \DateTimeZone('UTC'));
+        return $expiry;
     }
 
     private function shouldEnableFreeShipping(Rule $rule): bool

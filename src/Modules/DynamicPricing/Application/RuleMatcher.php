@@ -64,9 +64,8 @@ final class RuleMatcher
     private function getCategoryIds(WC_Product $product): array
     {
         $productId = $this->getEffectiveProductId($product);
-        $terms     = wc_get_product_term_ids($productId, 'product_cat');
 
-        return array_map('intval', is_array($terms) ? $terms : []);
+        return array_map('intval', wc_get_product_term_ids($productId, 'product_cat'));
     }
 
     private function getEffectiveProductId(WC_Product $product): int

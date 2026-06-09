@@ -46,6 +46,9 @@ jobs:
       - name: Run PHPCS
         run: composer run lint:phpcs
 
+      - name: Run PHPStan
+        run: composer run lint:phpstan
+
       - name: Run unit tests
         run: composer test:unit
 

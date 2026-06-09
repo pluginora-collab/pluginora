@@ -18,7 +18,7 @@ final class CouponApplyHandler implements HookableInterface
     {
         $redirectUrl = $this->processRequest(
             (string) ($_SERVER['REQUEST_METHOD'] ?? 'GET'),
-            is_array($_POST) ? $_POST : []
+            $_POST
         );
 
         if (null === $redirectUrl) {

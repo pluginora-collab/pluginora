@@ -8,7 +8,11 @@
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+        "php-stubs/woocommerce-stubs": "^10.0",
+        "php-stubs/wordpress-stubs": "^6.8",
         "phpcompatibility/php-compatibility": "^9.3",
+        "phpstan/phpstan": "^1.12",
+        "phpstan/phpstan-phpunit": "^1.4",
         "phpunit/phpunit": "^9.6",
         "squizlabs/php_codesniffer": "^3.10",
         "wp-coding-standards/wpcs": "^3.1",
@@ -42,10 +46,12 @@
         "test:integration:setup": "bash bin/install-wp-tests.sh",
         "test:integration": "phpunit --configuration phpunit.integration.xml.dist",
         "lint:phpcs": "phpcs --standard=phpcs.xml.dist --runtime-set ignore_warnings_on_exit 1",
+        "lint:phpstan": "phpstan analyse --configuration=phpstan.neon.dist --no-progress --memory-limit=1G",
         "lint:phpcbf": "phpcbf --standard=phpcs.xml.dist",
         "check": [
             "@validate",
             "@lint:phpcs",
+            "@lint:phpstan",
             "@test:unit"
         ]
     }

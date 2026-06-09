@@ -11,6 +11,7 @@ Pluginora is currently packaged and verified as `v1.0.5`.
 
 - GitHub Actions CI is passing on `main`.
 - Unit tests and WooCommerce-backed integration tests are passing.
+- PHPStan static analysis is passing.
 - The latest packaged release artifact is `pluginora-1.0.5.zip`.
 - The current codebase should be treated as production-capable for MVP scope after store-specific staging validation.
 
@@ -33,7 +34,8 @@ Current recommendation:
 - Conflict resolution modes are implemented for `stack_all`, `best_discount_only`, and `coupon_priority`.
 - Database schema install and upgrade handling are implemented.
 - Uninstall cleanup and database write-failure logging are implemented.
-- PHPUnit unit tests, WooCommerce-backed integration tests, PHPCS, CI, and release packaging are in place.
+- PHPUnit unit tests, WooCommerce-backed integration tests, PHPCS, PHPStan, CI, and release packaging are in place.
+- Playwright E2E coverage is scaffolded for the Pluginora admin workspace and storefront pricing flow.
 - Release `v1.0.5` is packaged and published with zip and checksum artifacts.
 
 ## What Is Still Left
@@ -45,8 +47,8 @@ These items are the remaining work before making a stronger production claim for
 - Validate tax, shipping, payment, and coupon edge cases on staging.
 - Validate mixed-promotion behavior when multiple active rules are enabled at the same time.
 - Confirm uninstall and data-retention behavior matches your deployment policy.
-- Add browser E2E coverage for the admin builder and storefront flows if you want stronger regression protection.
-- Add static analysis such as PHPStan and run performance profiling if you want a higher operational confidence bar.
+- Run the Playwright E2E suite against the target staging site.
+- Run the performance profiling workflow against product, cart, and checkout URLs with realistic catalog and mixed-cart data.
 
 ## Highlights
 
@@ -184,7 +186,18 @@ composer test:unit
 composer test:integration:setup
 composer test:integration
 composer run lint:phpcs
+composer run lint:phpstan
 composer verify:release
+```
+
+For browser coverage against a real WordPress site:
+
+```bash
+cp tests/E2E/.env.example tests/E2E/.env.local
+wp eval-file tests/E2E/bin/seed-fixtures.php >> tests/E2E/.env.local
+npm install
+npm run e2e:install
+npm run e2e
 ```
 
 Use this path when you want confidence in the codebase itself, not just a manual WordPress install.

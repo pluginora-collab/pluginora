@@ -1,19 +1,62 @@
-# E2E Test Plan
+# Pluginora E2E Coverage
 
-Pluginora E2E coverage should target a real WordPress + WooCommerce environment.
+Pluginora now includes a Playwright-based E2E suite for a real WordPress + WooCommerce site.
 
-## Priority scenarios
+## Current browser coverage
 
-1. Admin guided rule creation for dynamic pricing and coupon rules.
-2. Product search and category lookup behavior in the rule builder.
-3. Simple discount strike pricing on shop, product, and cart.
-4. Tiered pricing display and cart recalculation when quantity changes.
-5. Auto-apply coupon behavior when cart conditions become true or false.
-6. BOGO reward add and remove behavior when qualifying items change.
-7. Conflict mode behavior for `stack_all`, `best_discount_only`, and `coupon_priority`.
+1. WordPress admin authentication and Pluginora workspace load.
+2. REST-backed rule creation and visibility in the Promotion Library.
+3. Simple discount rendering on the product page.
+4. Discounted pricing visibility on the cart page after add-to-cart.
 
-## Recommended tooling
+## Required environment
 
-- Playwright for browser automation
-- WP-Env, Local, or Docker for the WordPress runtime
-- Seed data fixtures for products, categories, and coupons
+Copy the example environment file and then populate or append the real values for your site:
+
+```bash
+cp tests/E2E/.env.example tests/E2E/.env.local
+```
+
+Required variables:
+
+- `PLUGINORA_E2E_BASE_URL`
+- `PLUGINORA_E2E_ADMIN_USERNAME`
+- `PLUGINORA_E2E_ADMIN_PASSWORD`
+- `PLUGINORA_E2E_PRODUCT_ID`
+- `PLUGINORA_E2E_PRODUCT_URL`
+
+Optional variables:
+
+- `PLUGINORA_E2E_CART_URL`
+- `PLUGINORA_E2E_CHECKOUT_URL`
+
+## Fixture seeding
+
+Use WP-CLI against a WooCommerce site with Pluginora active:
+
+```bash
+wp eval-file tests/E2E/bin/seed-fixtures.php >> tests/E2E/.env.local
+```
+
+That command creates or updates a known product fixture and prints environment values you can feed directly into Playwright.
+
+## Local execution
+
+```bash
+npm install
+npm run e2e:install
+npm run e2e
+```
+
+## GitHub Actions execution
+
+The repository includes a manual workflow at `.github/workflows/e2e.yml`.
+
+Use it when you want to run the same Playwright suite against a staging site from GitHub Actions. Store the admin credentials as repository secrets:
+
+- `PLUGINORA_E2E_ADMIN_USERNAME`
+- `PLUGINORA_E2E_ADMIN_PASSWORD`
+
+## Remaining gaps
+
+The current browser coverage is intentionally small and should be expanded next into tiered pricing, available coupons, BOGO, and conflict-mode scenarios.

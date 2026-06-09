@@ -269,14 +269,12 @@ final class RulesController implements HookableInterface
 
         $rule = $this->ruleRepository->find($ruleId);
 
-        return new WP_REST_Response(['item' => $rule ? $this->payloadMapper->toArray($rule) : null]);
+        return new WP_REST_Response(['item' => $this->payloadMapper->toArray($rule)]);
     }
 
     private function getPayload(WP_REST_Request $request): array
     {
-        $payload = $request->get_json_params();
-
-        return is_array($payload) ? $payload : [];
+        return $request->get_json_params();
     }
 
     private function getIndexArgs(): array

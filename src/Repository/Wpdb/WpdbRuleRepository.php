@@ -68,7 +68,7 @@ final class WpdbRuleRepository implements RuleRepositoryInterface
 
                 if (false === $result) {
                     $this->queueDatabaseError(
-                        $rule->getId() ?? 0,
+                        $rule->getId(),
                         'rule_update',
                         $this->tables->rules(),
                         'Failed to update Pluginora rule.',
@@ -232,7 +232,7 @@ final class WpdbRuleRepository implements RuleRepositoryInterface
             ARRAY_A
         );
 
-        return array_map(static fn (array $row): RuleCondition => RuleCondition::fromRow($row), $rows ?: []);
+        return array_map(static fn (array $row): RuleCondition => RuleCondition::fromRow($row), $rows);
     }
 
     /**
@@ -248,7 +248,7 @@ final class WpdbRuleRepository implements RuleRepositoryInterface
             ARRAY_A
         );
 
-        return array_map(static fn (array $row): RuleAction => RuleAction::fromRow($row), $rows ?: []);
+        return array_map(static fn (array $row): RuleAction => RuleAction::fromRow($row), $rows);
     }
 
     /**
@@ -264,7 +264,7 @@ final class WpdbRuleRepository implements RuleRepositoryInterface
             ARRAY_A
         );
 
-        return array_map(static fn (array $row): RuleItem => RuleItem::fromRow($row), $rows ?: []);
+        return array_map(static fn (array $row): RuleItem => RuleItem::fromRow($row), $rows);
     }
 
     /**
@@ -280,7 +280,7 @@ final class WpdbRuleRepository implements RuleRepositoryInterface
             ARRAY_A
         );
 
-        return array_map(static fn (array $row): RuleTier => RuleTier::fromRow($row), $rows ?: []);
+        return array_map(static fn (array $row): RuleTier => RuleTier::fromRow($row), $rows);
     }
 
     private function deleteChildren(int $ruleId): void
@@ -375,7 +375,7 @@ final class WpdbRuleRepository implements RuleRepositoryInterface
             ]
         );
 
-        if (! is_string($payload) || '' === $payload) {
+        if (! is_string($payload)) {
             $payload = $message;
         }
 

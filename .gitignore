@@ -3,3 +3,7 @@ dist/
 .phpunit.result.cache
 .DS_Store
 node_modules/
+playwright-report/
+test-results/
+tests/E2E/.auth/
+tests/E2E/.env.local
