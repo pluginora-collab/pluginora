@@ -39,26 +39,11 @@ final class RuleBuilderPage implements HookableInterface
 
         ?>
         <div class="wrap pluginora-admin-page">
-            <section class="pluginora-page-hero">
-                <div class="pluginora-page-hero__content">
-                    <span class="pluginora-page-eyebrow"><?php echo esc_html__('Promotion Operations', 'pluginora'); ?></span>
-                    <h1><?php echo esc_html__('Pluginora', 'pluginora'); ?></h1>
-                    <p>
-                        <?php
-                        echo esc_html__(
-                            'Build pricing and coupon campaigns from one branded workspace with clearer rule creation, management, and promotion policy controls.',
-                            'pluginora'
-                        );
-                        ?>
-                    </p>
-                </div>
-                <div class="pluginora-page-hero__meta">
-                    <span class="pluginora-page-pill"><?php echo esc_html__('Dynamic Pricing', 'pluginora'); ?></span>
-                    <span class="pluginora-page-pill"><?php echo esc_html__('Coupons', 'pluginora'); ?></span>
-                    <span class="pluginora-page-pill"><?php echo esc_html__('BOGO', 'pluginora'); ?></span>
-                </div>
-            </section>
-            <div id="pluginora-admin-app" class="pluginora-admin-card" aria-live="polite">
+            <div
+                id="pluginora-admin-app"
+                class="pluginora-admin-card pluginora-admin-card--workspace"
+                aria-live="polite"
+            >
                 <p><?php echo esc_html__('Loading Pluginora…', 'pluginora'); ?></p>
             </div>
             <?php if (null !== $this->settingsPage) : ?>

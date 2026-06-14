@@ -504,72 +504,16 @@
             return descriptions[key] || 'Configure this section before saving the rule.';
         }
 
-        function getCurrentSelectionSummary() {
-            var family = (state.schema && state.schema.families || []).find(function (item) {
-                return item.slug === state.module;
-            });
-            var type = getTypeDefinition();
-
-            return {
-                family: family ? family.label : 'Not selected',
-                type: type ? type.label : 'Not selected',
-                status: state.formData.status || 'inactive',
-                priority: state.formData.priority || 1
-            };
-        }
-
-        function renderBuilderOverview() {
-            var selection = getCurrentSelectionSummary();
-
-            return '<div class="pluginora-workspace-overview">'
-                + '<div class="pluginora-overview-stat"><span>Family</span><strong>' + escapeHtml(selection.family) + '</strong></div>'
-                + '<div class="pluginora-overview-stat"><span>Rule Type</span><strong>' + escapeHtml(selection.type) + '</strong></div>'
-                + '<div class="pluginora-overview-stat"><span>Status</span><strong>' + escapeHtml(formatSlugLabel(selection.status)) + '</strong></div>'
-                + '<div class="pluginora-overview-stat"><span>Priority</span><strong>' + escapeHtml(selection.priority) + '</strong></div>'
-                + '</div>';
-        }
-
-        function renderProgress() {
-            var steps = [
-                {
-                    title: 'Choose Family',
-                    description: 'Start with the promotion engine you need.',
-                    state: state.module ? 'complete' : 'current'
-                },
-                {
-                    title: 'Choose Rule Type',
-                    description: 'Select the exact campaign pattern to create.',
-                    state: state.ruleType ? 'complete' : (state.module ? 'current' : 'upcoming')
-                },
-                {
-                    title: 'Configure Details',
-                    description: 'Set targeting, savings, and activation details.',
-                    state: state.ruleType ? 'current' : 'upcoming'
-                }
-            ];
-
-            return '<div class="pluginora-progress">' + steps.map(function (step, index) {
-                return '<div class="pluginora-progress-step is-' + step.state + '">'
-                    + '<span class="pluginora-progress-step__index">' + (index + 1) + '</span>'
-                    + '<div><strong>' + escapeHtml(step.title) + '</strong><p>' + escapeHtml(step.description) + '</p></div>'
-                    + '</div>';
-            }).join('') + '</div>';
-        }
-
-        function renderHero() {
+        function renderSummaryBar() {
             var summary = getRulesSummary();
 
-            return '<section class="pluginora-workspace-hero">'
-                + '<div class="pluginora-workspace-hero__copy">'
-                + '<span class="pluginora-workspace-kicker">Campaign workspace</span>'
-                + '<h2>Launch promotions with less guesswork.</h2>'
-                + '<p>Design pricing and coupon campaigns from a cleaner workspace with guided creation, faster rule lookup, and clearer rule operations.</p>'
-                + '</div>'
-                + '<div class="pluginora-metrics">'
-                + '<div class="pluginora-metric"><span>Total Rules</span><strong>' + escapeHtml(summary.total) + '</strong></div>'
-                + '<div class="pluginora-metric"><span>Active</span><strong>' + escapeHtml(summary.active) + '</strong></div>'
-                + '<div class="pluginora-metric"><span>Inactive</span><strong>' + escapeHtml(summary.inactive) + '</strong></div>'
-                + '<div class="pluginora-metric"><span>Modules</span><strong>' + escapeHtml(summary.liveModules || 0) + '</strong></div>'
+            return '<section class="pluginora-summary-bar">'
+                + '<span class="pluginora-summary-bar__eyebrow">Active Campaign</span>'
+                + '<div class="pluginora-summary-tabs">'
+                + '<div class="pluginora-summary-tab"><span>Total Rules</span><strong>' + escapeHtml(summary.total) + '</strong></div>'
+                + '<div class="pluginora-summary-tab"><span>Active</span><strong>' + escapeHtml(summary.active) + '</strong></div>'
+                + '<div class="pluginora-summary-tab"><span>Inactive</span><strong>' + escapeHtml(summary.inactive) + '</strong></div>'
+                + '<div class="pluginora-summary-tab"><span>Modules</span><strong>' + escapeHtml(summary.liveModules || 0) + '</strong></div>'
                 + '</div>'
                 + '</section>';
         }
@@ -656,12 +600,9 @@
 
             root.innerHTML = notice
                 + '<div class="pluginora-shell">'
-                + renderHero()
+                + renderSummaryBar()
                 + '<div class="pluginora-admin-grid">'
                 + '<div class="pluginora-builder-card">'
-                + '<div class="pluginora-builder-header"><div><span class="pluginora-builder-header__eyebrow">Guided Rule Builder</span><h2>Create and refine promotions</h2><p>Move through the workflow in order, then save only when targeting and discount behavior are fully defined.</p></div></div>'
-                + renderBuilderOverview()
-                + renderProgress()
                 + '<section class="pluginora-stage"><div class="pluginora-stage__header"><h3>Promotion Family</h3><p>Choose the engine that best matches the campaign you want to launch.</p></div>'
                 + '<div class="pluginora-family-grid">' + familyCards + '</div>'
                 + '</section>'

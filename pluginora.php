@@ -30,6 +30,26 @@ define('PLUGINORA_URL', plugin_dir_url(__FILE__));
 define('PLUGINORA_BASENAME', plugin_basename(__FILE__));
 define('PLUGINORA_TEXT_DOMAIN', 'pluginora');
 
+add_filter(
+    'plugin_action_links_' . PLUGINORA_BASENAME,
+    static function (array $links): array {
+        if (! current_user_can('manage_woocommerce')) {
+            return $links;
+        }
+
+        array_unshift(
+            $links,
+            sprintf(
+                '<a href="%s">%s</a>',
+                esc_url(admin_url('admin.php?page=pluginora')),
+                esc_html__('Settings', 'pluginora')
+            )
+        );
+
+        return $links;
+    }
+);
+
 register_activation_hook(
     PLUGINORA_FILE,
     static function (): void {

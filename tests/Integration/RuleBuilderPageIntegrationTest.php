@@ -43,10 +43,10 @@ final class RuleBuilderPageIntegrationTest extends IntegrationTestCase
         $output = (string) ob_get_clean();
 
         self::assertStringContainsString('Pluginora', $output);
-        self::assertStringContainsString('Build pricing and coupon campaigns from one branded workspace', $output);
         self::assertStringContainsString('id="pluginora-admin-app"', $output);
         self::assertStringContainsString('Loading Pluginora', $output);
         self::assertStringContainsString('Promotion Policy', $output);
         self::assertStringContainsString('Save Settings', $output);
+        self::assertStringNotContainsString('Build pricing and coupon campaigns from one branded workspace', $output);
     }
 }
