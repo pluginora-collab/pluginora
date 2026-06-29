@@ -11,6 +11,7 @@ This file is a context handoff for another model or engineer who needs to contin
 - Exact current checkout can be confirmed with `git rev-parse --short HEAD`
 - Current published release: `v1.0.6`
 - Release URL: `https://github.com/pluginora-collab/pluginora/releases/tag/v1.0.6`
+- Latest layout iteration: post-`v1.0.6` workspace simplification (compact summary bar, no guided overview)
 
 ## What Pluginora Is
 
@@ -78,11 +79,18 @@ These are the most important recent changes another model should know about.
 - The old split WooCommerce submenu pattern was removed from the current released flow.
 - Promotion settings are now embedded into the main Pluginora workspace as a `Promotion Policy` card.
 - The admin workspace was redesigned with:
-  - branded hero section
-  - campaign workspace summary
-  - 3-step guided builder flow
+  - compact "Active Campaign" summary bar with horizontal stat tabs (Total Rules, Active, Inactive, Modules)
+  - streamlined builder without the guided overview cards or progress steps
   - promotion library panel with search and status filtering
   - improved copy and empty states
+
+### Admin workspace simplification (post-v1.0.6)
+
+- Replaced the branded hero section ("Launch promotions with less guesswork") with a compact summary bar labeled "Active Campaign" showing four inline stat tabs.
+- Removed the "Guided Rule Builder" header, builder overview cards (Family / Rule Type / Status / Priority summary), and the 3-step progress indicator (Choose Family → Choose Rule Type → Configure Details).
+- Removed the associated CSS for `.pluginora-workspace-hero`, `.pluginora-workspace-overview`, `.pluginora-overview-stat`, `.pluginora-progress`, and `.pluginora-progress-step` variants.
+- Simplified the UI preview HTML (`docs/ui-preview.html`) to match the new compact layout.
+- The builder still renders Promotion Family selection, Rule Type selection, and Configuration form — only the chrome/overview wrapper was removed.
 
 ### Functional fixes from feedback
 

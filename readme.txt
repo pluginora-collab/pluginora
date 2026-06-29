@@ -16,7 +16,7 @@ Pluginora provides a single promotion engine for WooCommerce stores that need bo
 
 Current capabilities in this release:
 
-* Guided rule builder for Dynamic Pricing and Coupon Engine rules.
+* Compact summary bar with Active Campaign stats and streamlined rule builder for Dynamic Pricing and Coupon Engine rules.
 * Custom rule persistence with extensible repositories.
 * Dynamic pricing runtime for product discounts, tiered pricing, cart subtotal discounts, strike pricing, savings messaging, and badges.
 * Coupon runtime for native coupon sync, auto-apply rules, BOGO reward management, and available coupon displays.
@@ -97,7 +97,8 @@ After activation, Pluginora adds a single top-level Pluginora admin workspace.
 
 The main workspace includes:
 
-* The guided rule builder
+* The compact Active Campaign summary bar
+* The streamlined rule builder
 * The promotion library
 * The embedded Promotion Policy settings card
 
@@ -170,6 +171,7 @@ No. Pluginora is ready for staging and controlled rollout validation, but a real
 
 = 1.0.6 =
 
+* Simplify admin workspace layout: replace hero section with compact summary bar, remove guided builder overview cards and progress steps.
 * Add PHPStan static analysis with WordPress and WooCommerce stubs.
 * Add Playwright-based browser E2E smoke coverage and a manual GitHub Actions workflow for staging runs.
 * Add staging validation and performance profiling runbooks.

@@ -52,7 +52,8 @@ These items are the remaining work before making a stronger production claim for
 
 ## Highlights
 
-- Guided rule builder for Dynamic Pricing and Coupon Engine rules.
+- Compact summary bar with Active Campaign stats.
+- Streamlined rule builder for Dynamic Pricing and Coupon Engine rules.
 - Product, tiered, and cart-level discount execution.
 - Native coupon sync, auto-apply logic, BOGO rewards, and available-coupon rendering.
 - Conflict resolution modes for `stack_all`, `best_discount_only`, and `coupon_priority`.
@@ -247,9 +248,9 @@ If this is your first time running Pluginora, use this exact sequence after acti
 
 1. In WooCommerce, create at least two simple products with clear prices such as `$100` and `$50`.
 2. Open the top-level `Pluginora` workspace.
-3. Leave the embedded `Promotion Policy` conflict mode as `best_discount_only`.
-4. Use the main rule builder workspace.
-5. Create a new rule in the `Dynamic Pricing` family.
+3. Review the compact summary bar showing rule counts.
+4. Leave the embedded `Promotion Policy` conflict mode as `best_discount_only`.
+5. Select a Promotion Family in the builder.
 6. Choose the `simple_discount` rule type.
 7. Target one of the products you created.
 8. Set the discount to `10%`.
@@ -267,7 +268,10 @@ After the first successful run, you can move on to mixed-rule testing, coupon au
 Pluginora now uses a single branded admin workspace:
 
 - top-level `Pluginora`
-- embedded `Promotion Policy` settings in the main workspace
+- compact "Active Campaign" summary bar showing Total Rules, Active, Inactive, and Modules
+- streamlined rule builder (family selection, rule type selection, configuration form)
+- promotion library with search and status filtering
+- embedded `Promotion Policy` settings card
 
 The admin entry point is registered in [src/Admin/Pages/RuleBuilderPage.php](/Users/abhishektiwari/pluginora/src/Admin/Pages/RuleBuilderPage.php), and the settings form is defined in [src/Admin/Settings/PluginSettingsPage.php](/Users/abhishektiwari/pluginora/src/Admin/Settings/PluginSettingsPage.php).
 
