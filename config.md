@@ -68,10 +68,14 @@ These are the most important recent changes another model should know about.
 
 ### `v1.0.7` release work
 
-- Released `v1.0.7` with the post-`v1.0.5` production hardening and preview documentation included.
+- Released `v1.0.7` with the simplified admin workspace layout.
 - Packaged assets:
   - `dist/pluginora-1.0.7.zip`
   - `dist/pluginora-1.0.7.zip.sha256`
+
+### `v1.0.6` release work
+
+- Released `v1.0.6` with the post-`v1.0.5` production hardening and preview documentation included.
 
 ### Admin UX redesign
 
@@ -84,7 +88,7 @@ These are the most important recent changes another model should know about.
   - promotion library panel with search and status filtering
   - improved copy and empty states
 
-### Admin workspace simplification (post-v1.0.7)
+### Admin workspace simplification (v1.0.7)
 
 - Replaced the branded hero section ("Launch promotions with less guesswork") with a compact summary bar labeled "Active Campaign" showing four inline stat tabs.
 - Removed the "Guided Rule Builder" header, builder overview cards (Family / Rule Type / Status / Priority summary), and the 3-step progress indicator (Choose Family → Choose Rule Type → Configure Details).
@@ -98,7 +102,7 @@ These are the most important recent changes another model should know about.
 - Product lookup search in the admin builder was stabilized so it does not feel like it resets while typing.
 - Custom sale badges now participate in WooCommerce `is_on_sale` logic so frontend badge rendering works more reliably.
 
-### Production hardening included in `v1.0.7`
+### Production hardening included in `v1.0.6`
 
 - PHPStan static analysis was added with WordPress and WooCommerce stubs.
 - CI now runs PHPStan alongside PHPCS and unit tests.

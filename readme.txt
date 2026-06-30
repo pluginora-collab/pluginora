@@ -172,6 +172,9 @@ No. Pluginora is ready for staging and controlled rollout validation, but a real
 = 1.0.7 =
 
 * Simplify admin workspace layout: replace hero section with compact summary bar, remove guided builder overview cards and progress steps.
+
+= 1.0.6 =
+
 * Add PHPStan static analysis with WordPress and WooCommerce stubs.
 * Add Playwright-based browser E2E smoke coverage and a manual GitHub Actions workflow for staging runs.
 * Add staging validation and performance profiling runbooks.
