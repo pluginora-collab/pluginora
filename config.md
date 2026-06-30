@@ -9,9 +9,9 @@ This file is a context handoff for another model or engineer who needs to contin
 - GitHub repository: `pluginora-collab/pluginora`
 - Current branch used in this session: `main`
 - Exact current checkout can be confirmed with `git rev-parse --short HEAD`
-- Current published release: `v1.0.6`
-- Release URL: `https://github.com/pluginora-collab/pluginora/releases/tag/v1.0.6`
-- Latest layout iteration: post-`v1.0.6` workspace simplification (compact summary bar, no guided overview)
+- Current published release: `v1.0.7`
+- Release URL: `https://github.com/pluginora-collab/pluginora/releases/tag/v1.0.7`
+- Latest layout iteration: post-`v1.0.7` workspace simplification (compact summary bar, no guided overview)
 
 ## What Pluginora Is
 
@@ -28,7 +28,7 @@ It is implemented as a modular OOP WordPress plugin with custom Pluginora rule t
 
 As of this handoff:
 
-- `v1.0.6` is released and published.
+- `v1.0.7` is released and published.
 - The published zip now matches the redesigned admin workspace.
 - The plugin is functional for MVP scope.
 - Unit tests, WooCommerce-backed integration tests, PHPCS, PHPStan, CI, and release packaging are in place.
@@ -66,12 +66,12 @@ As of this handoff:
 
 These are the most important recent changes another model should know about.
 
-### `v1.0.6` release work
+### `v1.0.7` release work
 
-- Released `v1.0.6` with the post-`v1.0.5` production hardening and preview documentation included.
+- Released `v1.0.7` with the post-`v1.0.5` production hardening and preview documentation included.
 - Packaged assets:
-  - `dist/pluginora-1.0.6.zip`
-  - `dist/pluginora-1.0.6.zip.sha256`
+  - `dist/pluginora-1.0.7.zip`
+  - `dist/pluginora-1.0.7.zip.sha256`
 
 ### Admin UX redesign
 
@@ -84,7 +84,7 @@ These are the most important recent changes another model should know about.
   - promotion library panel with search and status filtering
   - improved copy and empty states
 
-### Admin workspace simplification (post-v1.0.6)
+### Admin workspace simplification (post-v1.0.7)
 
 - Replaced the branded hero section ("Launch promotions with less guesswork") with a compact summary bar labeled "Active Campaign" showing four inline stat tabs.
 - Removed the "Guided Rule Builder" header, builder overview cards (Family / Rule Type / Status / Priority summary), and the 3-step progress indicator (Choose Family → Choose Rule Type → Configure Details).
@@ -98,7 +98,7 @@ These are the most important recent changes another model should know about.
 - Product lookup search in the admin builder was stabilized so it does not feel like it resets while typing.
 - Custom sale badges now participate in WooCommerce `is_on_sale` logic so frontend badge rendering works more reliably.
 
-### Production hardening included in `v1.0.6`
+### Production hardening included in `v1.0.7`
 
 - PHPStan static analysis was added with WordPress and WooCommerce stubs.
 - CI now runs PHPStan alongside PHPCS and unit tests.
@@ -224,14 +224,14 @@ Important:
 - These are **local static preview files**.
 - They are useful for design review and screenshots.
 - They are now committed in the repository under `docs/`.
-- They are included in the repository and were published as documentation assets alongside the `v1.0.6` source release.
+- They are included in the repository and were published as documentation assets alongside the `v1.0.7` source release.
 
 If another model sees these files, it should treat them as repository documentation assets rather than release-runtime code.
 
 ## Release State At Handoff
 
-- `main` matches the published `v1.0.6` release state at handoff time.
-- GitHub release `v1.0.6` exists and is published.
+- `main` matches the published `v1.0.7` release state at handoff time.
+- GitHub release `v1.0.7` exists and is published.
 - README and `readme.txt` were updated so release docs match the single top-level Pluginora workspace.
 - `v1.0.4` release notes were also updated earlier to clarify the path to the newer admin UX releases.
 

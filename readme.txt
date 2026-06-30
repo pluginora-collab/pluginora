@@ -4,7 +4,7 @@ Tags: woocommerce, dynamic pricing, discounts, coupons, bogo
 Requires at least: 6.5
 Tested up to: 6.8
 Requires PHP: 8.1
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 License: Proprietary
 License URI: https://example.com
 
@@ -169,7 +169,7 @@ No. Pluginora is ready for staging and controlled rollout validation, but a real
 
 
 
-= 1.0.6 =
+= 1.0.7 =
 
 * Simplify admin workspace layout: replace hero section with compact summary bar, remove guided builder overview cards and progress steps.
 * Add PHPStan static analysis with WordPress and WooCommerce stubs.
