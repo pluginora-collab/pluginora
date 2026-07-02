@@ -87,40 +87,23 @@
                 <div class="pluginora-admin-grid">
                     <div class="pluginora-builder-card">
                         <section class="pluginora-stage">
-                            <div class="pluginora-stage__header">
-                                <h3>Promotion Family</h3>
-                                <p>Choose the engine that best matches the campaign you want to launch.</p>
-                            </div>
                             <div class="pluginora-family-grid">
-                                <button type="button" class="pluginora-family-card is-active">
-                                    <h3>Create Dynamic Pricing Rule</h3>
-                                    <p>Build product, quantity, cart, and scheduled discount rules through a guided flow.</p>
-                                </button>
-                                <button type="button" class="pluginora-family-card">
-                                    <h3>Create Coupon Rule</h3>
-                                    <p>Create native-backed coupon rules, auto-apply logic, and BOGO promotions.</p>
-                                </button>
+                                <select class="pluginora-select-family">
+                                    <option value="">Select Rule</option>
+                                    <option value="dynamic_pricing" selected>Create Dynamic Pricing Rule</option>
+                                    <option value="coupon_engine">Create Coupon Rule</option>
+                                </select>
                             </div>
                         </section>
 
                         <section class="pluginora-stage">
-                            <div class="pluginora-stage__header">
-                                <h3>Rule Type</h3>
-                                <p>Select the exact pricing or coupon pattern you want to configure.</p>
-                            </div>
                             <div class="pluginora-type-grid">
-                                <button type="button" class="pluginora-type-card is-active">
-                                    <h3>Percentage or Fixed Discount</h3>
-                                    <p>Apply a percentage or fixed discount to products or categories.</p>
-                                </button>
-                                <button type="button" class="pluginora-type-card">
-                                    <h3>Bulk or Tiered Pricing</h3>
-                                    <p>Define quantity ranges with discount tiers and an optional pricing table.</p>
-                                </button>
-                                <button type="button" class="pluginora-type-card">
-                                    <h3>Cart Total Discount</h3>
-                                    <p>Trigger a discount when the cart subtotal reaches a threshold.</p>
-                                </button>
+                                <select class="pluginora-select-type">
+                                    <option value="">Select Rule</option>
+                                    <option value="simple_discount" selected>Percentage or Fixed Discount</option>
+                                    <option value="tiered_pricing">Bulk or Tiered Pricing</option>
+                                    <option value="cart_subtotal_discount">Cart Total Discount</option>
+                                </select>
                             </div>
                         </section>
 

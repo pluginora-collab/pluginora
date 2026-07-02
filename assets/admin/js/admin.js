@@ -586,15 +586,15 @@
                 return;
             }
 
-            var familyCards = (state.schema.families || []).map(function (family) {
-                var active = family.slug === state.module ? ' is-active' : '';
-                return '<button type="button" class="pluginora-family-card' + active + '" data-action="select-family" data-family="' + family.slug + '"><h3>' + escapeHtml(family.label) + '</h3><p>' + escapeHtml(family.description) + '</p></button>';
-            }).join('');
+            var familyCards = '<select class="pluginora-select-family" data-action="select-family"><option value="">Select Rule</option>' + (state.schema.families || []).map(function (family) {
+                var active = family.slug === state.module ? ' selected' : '';
+                return '<option value="' + family.slug + '"' + active + '>' + escapeHtml(family.label) + '</option>';
+            }).join('') + '</select>';
 
-            var typeCards = state.module ? ((state.schema.types[state.module] || []).map(function (type) {
-                var active = type.slug === state.ruleType ? ' is-active' : '';
-                return '<button type="button" class="pluginora-type-card' + active + '" data-action="select-type" data-type="' + type.slug + '"><h3>' + escapeHtml(type.label) + '</h3><p>' + escapeHtml(type.description) + '</p></button>';
-            }).join('')) : '';
+            var typeCards = state.module ? '<select class="pluginora-select-type" data-action="select-type"><option value="">Select Rule</option>' + ((state.schema.types[state.module] || []).map(function (type) {
+                var active = type.slug === state.ruleType ? ' selected' : '';
+                return '<option value="' + type.slug + '"' + active + '>' + escapeHtml(type.label) + '</option>';
+            }).join('')) + '</select>' : '';
 
             var notice = state.notice ? '<div class="pluginora-admin-notice is-' + state.notice.type + '">' + escapeHtml(state.notice.message) + '</div>' : '';
 
@@ -603,10 +603,10 @@
                 + renderSummaryBar()
                 + '<div class="pluginora-admin-grid">'
                 + '<div class="pluginora-builder-card">'
-                + '<section class="pluginora-stage"><div class="pluginora-stage__header"><h3>Promotion Family</h3><p>Choose the engine that best matches the campaign you want to launch.</p></div>'
+                + '<section class="pluginora-stage">'
                 + '<div class="pluginora-family-grid">' + familyCards + '</div>'
                 + '</section>'
-                + (state.module ? '<section class="pluginora-stage"><div class="pluginora-stage__header"><h3>Rule Type</h3><p>Select the exact pricing or coupon pattern you want to configure.</p></div><div class="pluginora-type-grid">' + typeCards + '</div></section>' : '')
+                + (state.module ? '<section class="pluginora-stage"><div class="pluginora-type-grid">' + typeCards + '</div></section>' : '')
                 + (state.ruleType ? '<section class="pluginora-stage"><div class="pluginora-stage__header"><h3>Configuration</h3><p>Complete the rule details below, then save when the summary reflects the intended setup.</p></div>' + renderSections() + '<div class="pluginora-actions"><button type="button" class="button button-primary" data-action="save">' + escapeHtml(state.editingId ? config.strings.update : config.strings.save) + '</button><button type="button" class="button button-secondary" data-action="cancel-form">' + escapeHtml(config.strings.cancel) + '</button></div></section>' : '<div class="pluginora-empty-state"><h3>Choose a rule type to continue.</h3><p>Once you select a family and rule type, Pluginora will show only the fields needed for that promotion pattern.</p></div>')
                 + '</div>'
                 + '<aside class="pluginora-list-card"><div class="pluginora-list-card__header"><div><span class="pluginora-builder-header__eyebrow">Rule Library</span><h2>' + escapeHtml(config.strings.existingRules) + '</h2><p>Review, filter, and operate on existing promotions without leaving the workspace.</p></div></div>' + renderRuleLibrary() + '</aside>'
@@ -648,15 +648,12 @@
             var action = target.getAttribute('data-action');
 
             if ('select-family' === action) {
-                resetForm(target.getAttribute('data-family'));
-                render();
+                // Now handled by change event
                 return;
             }
 
             if ('select-type' === action) {
-                state.ruleType = target.getAttribute('data-type');
-                state.formData = Object.assign(getDefaults(), state.formData, { module: state.module, rule_type: state.ruleType });
-                render();
+                // Now handled by change event
                 return;
             }
 
@@ -748,6 +745,20 @@
             if (event.target.hasAttribute('data-library-status')) {
                 state.ruleStatus = event.target.value;
                 state.librarySearchFocused = false;
+                render();
+                return;
+            }
+
+            var action = event.target.getAttribute('data-action');
+            if ('select-family' === action) {
+                resetForm(event.target.value);
+                render();
+                return;
+            }
+
+            if ('select-type' === action) {
+                state.ruleType = event.target.value;
+                state.formData = Object.assign(getDefaults(), state.formData, { module: state.module, rule_type: state.ruleType });
                 render();
                 return;
             }

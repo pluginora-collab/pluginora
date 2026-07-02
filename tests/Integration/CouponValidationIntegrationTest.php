@@ -45,7 +45,8 @@ final class CouponValidationIntegrationTest extends IntegrationTestCase
         $coupon     = self::$nativeCouponSyncService->findCouponByCode('EXPIRED15');
         $validation = new CouponValidation(
             self::$ruleRepository,
-            new CouponRuleMatcher(new \Pluginora\Modules\CouponEngine\Application\RuleDataAccessor())
+            new CouponRuleMatcher(new \Pluginora\Modules\CouponEngine\Application\RuleDataAccessor()),
+            self::$conflictResolver
         );
 
         self::assertInstanceOf(WC_Coupon::class, $coupon);
@@ -77,7 +78,8 @@ final class CouponValidationIntegrationTest extends IntegrationTestCase
         $coupon     = self::$nativeCouponSyncService->findCouponByCode('ACTIVE15');
         $validation = new CouponValidation(
             self::$ruleRepository,
-            new CouponRuleMatcher(new \Pluginora\Modules\CouponEngine\Application\RuleDataAccessor())
+            new CouponRuleMatcher(new \Pluginora\Modules\CouponEngine\Application\RuleDataAccessor()),
+            self::$conflictResolver
         );
 
         self::assertInstanceOf(WC_Coupon::class, $coupon);

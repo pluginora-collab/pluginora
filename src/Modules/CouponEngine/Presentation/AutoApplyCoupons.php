@@ -19,6 +19,8 @@ final class AutoApplyCoupons implements HookableInterface
      */
     private ?array $cachedRules = null;
 
+    private bool $removingCouponInternally = false;
+
     public function __construct(
         private readonly RuleQueryRepositoryInterface $ruleQueryRepository,
         private readonly CouponRuleMatcher $couponRuleMatcher,
@@ -32,6 +34,33 @@ final class AutoApplyCoupons implements HookableInterface
         add_action('woocommerce_before_cart', [$this, 'maybeApplyCoupons']);
         add_action('woocommerce_before_checkout_form', [$this, 'maybeApplyCoupons']);
         add_action('woocommerce_before_calculate_totals', [$this, 'maybeApplyCouponsToCart']);
+        add_action('woocommerce_removed_coupon', [$this, 'onCouponRemoved']);
+        add_action('woocommerce_applied_coupon', [$this, 'onCouponApplied']);
+    }
+
+    public function onCouponRemoved(string $couponCode): void
+    {
+        if ($this->removingCouponInternally) {
+            return;
+        }
+
+        if (function_exists('WC') && null !== WC()->session) {
+            $removed = (array) WC()->session->get('pluginora_removed_coupons', []);
+            $removed[] = strtolower($couponCode);
+            WC()->session->set('pluginora_removed_coupons', array_unique($removed));
+        }
+    }
+
+    public function onCouponApplied(string $couponCode): void
+    {
+        if (function_exists('WC') && null !== WC()->session) {
+            $removed = array_filter(
+                (array) WC()->session->get('pluginora_removed_coupons', []),
+                static fn (mixed $removedCode): bool => strtolower((string) $removedCode)
+                    !== strtolower($couponCode)
+            );
+            WC()->session->set('pluginora_removed_coupons', array_values($removed));
+        }
     }
 
     public function maybeApplyCoupons(): void
@@ -63,6 +92,13 @@ final class AutoApplyCoupons implements HookableInterface
                 continue;
             }
 
+            if (function_exists('WC') && null !== WC()->session) {
+                $removed = (array) WC()->session->get('pluginora_removed_coupons', []);
+                if (in_array(strtolower($couponCode), $removed, true)) {
+                    continue;
+                }
+            }
+
             $matches = $this->couponRuleMatcher->matchesAutoApplyRule($rule, $cart);
             $applied = $cart->has_discount($couponCode);
             $allowed = $matches && $this->conflictResolver->shouldApplyCouponRule($cart, $rule);
@@ -83,7 +119,13 @@ final class AutoApplyCoupons implements HookableInterface
             }
 
             if ((! $matches || ! $allowed) && $applied) {
-                $cart->remove_coupon($couponCode);
+                $this->removingCouponInternally = true;
+
+                try {
+                    $cart->remove_coupon($couponCode);
+                } finally {
+                    $this->removingCouponInternally = false;
+                }
             }
         }
     }

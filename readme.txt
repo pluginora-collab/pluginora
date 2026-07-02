@@ -4,11 +4,11 @@ Tags: woocommerce, dynamic pricing, discounts, coupons, bogo
 Requires at least: 6.5
 Tested up to: 6.8
 Requires PHP: 8.1
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 License: Proprietary
 License URI: https://example.com
 
-Pluginora is a modular WooCommerce extension that combines dynamic pricing rules and coupon orchestration in a guided admin experience.
+Pluginora is a modular WooCommerce extension that combines dynamic pricing rules and coupon orchestration in a compact admin experience.
 
 == Description ==
 
@@ -168,6 +168,13 @@ No. Pluginora is ready for staging and controlled rollout validation, but a real
 == Changelog ==
 
 
+
+= 1.0.8 =
+
+* Respect manual removal of auto-applied coupons so removed coupon labels stay removed from the cart.
+* Improve best-discount conflict handling so Pluginora does not apply matching cart discounts and managed coupons twice.
+* Estimate fixed-product coupon savings during conflict resolution.
+* Replace Promotion Family and Rule Type cards with compact dropdown selectors in the admin builder.
 
 = 1.0.7 =
 

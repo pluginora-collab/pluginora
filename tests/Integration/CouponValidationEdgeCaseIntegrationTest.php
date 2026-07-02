@@ -88,6 +88,7 @@ final class CouponValidationEdgeCaseIntegrationTest extends IntegrationTestCase
         return new CouponValidation(
             self::$ruleRepository,
             new CouponRuleMatcher(new RuleDataAccessor()),
+            self::$conflictResolver,
             $isAdminResolver
         );
     }

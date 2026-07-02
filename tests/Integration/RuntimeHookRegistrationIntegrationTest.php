@@ -73,7 +73,11 @@ final class RuntimeHookRegistrationIntegrationTest extends IntegrationTestCase
             self::$conflictResolver
         );
         $this->couponApplyHandler = new CouponApplyHandler();
-        $this->couponValidation = new CouponValidation(self::$ruleRepository, $couponRuleMatcher);
+        $this->couponValidation = new CouponValidation(
+            self::$ruleRepository,
+            $couponRuleMatcher,
+            self::$conflictResolver
+        );
     }
 
     public function tear_down(): void
@@ -100,6 +104,8 @@ final class RuntimeHookRegistrationIntegrationTest extends IntegrationTestCase
             'woocommerce_before_calculate_totals',
             [$this->autoApplyCoupons, 'maybeApplyCouponsToCart']
         );
+        remove_action('woocommerce_removed_coupon', [$this->autoApplyCoupons, 'onCouponRemoved']);
+        remove_action('woocommerce_applied_coupon', [$this->autoApplyCoupons, 'onCouponApplied']);
 
         remove_action(
             'woocommerce_before_calculate_totals',
@@ -175,6 +181,8 @@ final class RuntimeHookRegistrationIntegrationTest extends IntegrationTestCase
             10,
             has_action('woocommerce_before_calculate_totals', [$this->autoApplyCoupons, 'maybeApplyCouponsToCart'])
         );
+        self::assertNotFalse(has_action('woocommerce_removed_coupon', [$this->autoApplyCoupons, 'onCouponRemoved']));
+        self::assertNotFalse(has_action('woocommerce_applied_coupon', [$this->autoApplyCoupons, 'onCouponApplied']));
 
         self::assertSame(
             25,

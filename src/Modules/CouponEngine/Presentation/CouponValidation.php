@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pluginora\Modules\CouponEngine\Presentation;
 
 use Closure;
+use Pluginora\Core\Application\ConflictResolver;
 use Pluginora\Core\Contracts\HookableInterface;
 use Pluginora\Modules\CouponEngine\Application\CouponRuleMatcher;
 use Pluginora\Repository\Contracts\RuleRepositoryInterface;
@@ -15,6 +16,7 @@ final class CouponValidation implements HookableInterface
     public function __construct(
         private readonly RuleRepositoryInterface $ruleRepository,
         private readonly CouponRuleMatcher $couponRuleMatcher,
+        private readonly ConflictResolver $conflictResolver,
         private readonly ?Closure $isAdminResolver = null
     ) {
     }
@@ -42,6 +44,19 @@ final class CouponValidation implements HookableInterface
 
         if (null === $rule) {
             return true;
+        }
+
+        if (function_exists('WC') && null !== WC()->cart && ! WC()->cart->is_empty()) {
+            if (! $this->conflictResolver->shouldApplyCouponRule(WC()->cart, $rule)) {
+                if (! $this->isAdminContext()) {
+                    wc_add_notice(
+                        __('This coupon cannot be used with the current cart discounts.', 'pluginora'),
+                        'error'
+                    );
+                }
+
+                return false;
+            }
         }
 
         if (! $this->couponRuleMatcher->isWithinDateWindow($rule, gmdate('Y-m-d H:i:s'))) {

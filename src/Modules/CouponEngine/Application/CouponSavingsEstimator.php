@@ -169,10 +169,50 @@ final class CouponSavingsEstimator
         }
 
         return match ($coupon->get_discount_type()) {
-            'fixed_cart' => min($subtotal, $amount),
-            'percent'    => min($subtotal, ($subtotal * $amount) / 100),
-            default      => 0.0,
+            'fixed_cart'    => min($subtotal, $amount),
+            'percent'       => min($subtotal, ($subtotal * $amount) / 100),
+            'fixed_product' => $this->estimateFixedProductSavings($coupon, $cart),
+            default         => 0.0,
         };
+    }
+
+    private function estimateFixedProductSavings(\WC_Coupon $coupon, WC_Cart $cart): float
+    {
+        $savings = 0.0;
+        $amount = (float) $coupon->get_amount();
+        $productTargets  = array_map('intval', $coupon->get_product_ids());
+        $categoryTargets = array_map('intval', $coupon->get_product_categories());
+
+        foreach ($cart->get_cart() as $cartItem) {
+            if (empty($cartItem['data']) || ! is_object($cartItem['data'])) {
+                continue;
+            }
+
+            $product   = $cartItem['data'];
+            $productId = (int) $product->get_id();
+            $parentId  = method_exists($product, 'get_parent_id') ? (int) $product->get_parent_id() : 0;
+            $targetId  = $parentId > 0 ? $parentId : $productId;
+
+            $eligible = false;
+            if ([] === $productTargets && [] === $categoryTargets) {
+                $eligible = true;
+            } elseif ([] !== $productTargets && in_array($targetId, $productTargets, true)) {
+                $eligible = true;
+            } elseif ([] !== $categoryTargets) {
+                $categoryIds = wc_get_product_term_ids($targetId, 'product_cat');
+                if ([] !== array_intersect(array_map('intval', $categoryIds), $categoryTargets)) {
+                    $eligible = true;
+                }
+            }
+
+            if ($eligible) {
+                $itemSubtotal = ((float) $product->get_price('edit')) * (int) $cartItem['quantity'];
+                $itemSavings = $amount * (int) $cartItem['quantity'];
+                $savings += min($itemSubtotal, $itemSavings);
+            }
+        }
+
+        return $savings;
     }
 
     private function getEligibleSubtotal(Rule $rule, WC_Cart $cart): float

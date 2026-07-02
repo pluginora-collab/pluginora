@@ -3,19 +3,19 @@
 [![CI](https://github.com/pluginora-collab/pluginora/actions/workflows/ci.yml/badge.svg)](https://github.com/pluginora-collab/pluginora/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/pluginora-collab/pluginora)](https://github.com/pluginora-collab/pluginora/releases)
 
-Pluginora is a modular WooCommerce extension for dynamic pricing and coupon orchestration with a guided admin workflow.
+Pluginora is a modular WooCommerce extension for dynamic pricing and coupon orchestration with a compact admin workflow.
 
 ## Current Status
 
-Pluginora is currently packaged and verified as `v1.0.7`.
+Pluginora is currently packaged and verified as `v1.0.8`.
 
 - GitHub Actions CI is passing on `main`.
 - Unit tests and WooCommerce-backed integration tests are passing.
 - PHPStan static analysis is passing.
-- The latest packaged release artifact is `pluginora-1.0.7.zip`.
+- The latest packaged release artifact is `pluginora-1.0.8.zip`.
 - The current codebase should be treated as production-capable for MVP scope after store-specific staging validation.
 
-Current verified release: [v1.0.7](https://github.com/pluginora-collab/pluginora/releases/tag/v1.0.7)
+Current verified release: [v1.0.8](https://github.com/pluginora-collab/pluginora/releases/tag/v1.0.8)
 
 ## Production Readiness Snapshot
 
@@ -36,7 +36,7 @@ Current recommendation:
 - Uninstall cleanup and database write-failure logging are implemented.
 - PHPUnit unit tests, WooCommerce-backed integration tests, PHPCS, PHPStan, CI, and release packaging are in place.
 - Playwright E2E coverage is scaffolded for the Pluginora admin workspace and storefront pricing flow.
-- Release `v1.0.7` is packaged and published with zip and checksum artifacts.
+- Release `v1.0.8` is packaged and published with zip and checksum artifacts.
 
 ## What Is Still Left
 
@@ -72,13 +72,13 @@ These items are the remaining work before making a stronger production claim for
 
 If you want the fastest way to run Pluginora, use the packaged release zip on a WordPress site that already has WooCommerce installed.
 
-1. Download `pluginora-1.0.7.zip` from the [releases page](https://github.com/pluginora-collab/pluginora/releases).
+1. Download `pluginora-1.0.8.zip` from the [releases page](https://github.com/pluginora-collab/pluginora/releases).
 2. Log in to WordPress admin as an administrator.
 3. Go to `Plugins` -> `Add New` -> `Upload Plugin`.
-4. Upload `pluginora-1.0.7.zip` and click `Install Now`.
+4. Upload `pluginora-1.0.8.zip` and click `Install Now`.
 5. Activate WooCommerce if it is not already active.
 6. Activate Pluginora.
-7. Open `WooCommerce` -> `Pluginora` and create one active rule.
+7. Open the top-level `Pluginora` workspace and create one active rule.
 8. Open a product page, then the cart, then checkout to confirm the rule works end to end.
 
 ## Step-By-Step Run Guide
@@ -101,10 +101,10 @@ If you are testing safely for the first time, use a staging or local WooCommerce
 
 Use this if you want the fastest way to test Pluginora in WordPress.
 
-1. Download the latest `pluginora-1.0.7.zip` release asset.
+1. Download the latest `pluginora-1.0.8.zip` release asset.
 2. Start your WordPress site and confirm you can log in to admin.
 3. In WordPress admin, go to `Plugins` -> `Add New` -> `Upload Plugin`.
-4. Choose `pluginora-1.0.7.zip` from your machine.
+4. Choose `pluginora-1.0.8.zip` from your machine.
 5. Click `Install Now` and wait for WordPress to unpack the plugin.
 6. Click `Activate Plugin`.
 7. If WooCommerce is not already active, activate WooCommerce before continuing.

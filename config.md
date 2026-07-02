@@ -9,9 +9,9 @@ This file is a context handoff for another model or engineer who needs to contin
 - GitHub repository: `pluginora-collab/pluginora`
 - Current branch used in this session: `main`
 - Exact current checkout can be confirmed with `git rev-parse --short HEAD`
-- Current published release: `v1.0.7`
-- Release URL: `https://github.com/pluginora-collab/pluginora/releases/tag/v1.0.7`
-- Latest layout iteration: post-`v1.0.7` workspace simplification (compact summary bar, no guided overview)
+- Current published release: `v1.0.8`
+- Release URL: `https://github.com/pluginora-collab/pluginora/releases/tag/v1.0.8`
+- Latest layout iteration: `v1.0.8` compact dropdown builder controls
 
 ## What Pluginora Is
 
@@ -28,7 +28,7 @@ It is implemented as a modular OOP WordPress plugin with custom Pluginora rule t
 
 As of this handoff:
 
-- `v1.0.7` is released and published.
+- `v1.0.8` is released and published.
 - The published zip now matches the redesigned admin workspace.
 - The plugin is functional for MVP scope.
 - Unit tests, WooCommerce-backed integration tests, PHPCS, PHPStan, CI, and release packaging are in place.
@@ -66,6 +66,17 @@ As of this handoff:
 
 These are the most important recent changes another model should know about.
 
+### `v1.0.8` release work
+
+- Released `v1.0.8` with coupon conflict and admin builder refinements.
+- Packaged assets:
+  - `dist/pluginora-1.0.8.zip`
+  - `dist/pluginora-1.0.8.zip.sha256`
+- Fixed manual removal handling for auto-applied coupon labels in the cart.
+- Improved best-discount conflict handling so managed WooCommerce coupons and Pluginora dynamic cart discounts do not apply twice for the same promotion path.
+- Added fixed-product coupon savings estimation for conflict resolution.
+- Replaced Promotion Family and Rule Type selection cards with compact dropdown selectors.
+
 ### `v1.0.7` release work
 
 - Released `v1.0.7` with the simplified admin workspace layout.
@@ -95,6 +106,12 @@ These are the most important recent changes another model should know about.
 - Removed the associated CSS for `.pluginora-workspace-hero`, `.pluginora-workspace-overview`, `.pluginora-overview-stat`, `.pluginora-progress`, and `.pluginora-progress-step` variants.
 - Simplified the UI preview HTML (`docs/ui-preview.html`) to match the new compact layout.
 - The builder still renders Promotion Family selection, Rule Type selection, and Configuration form — only the chrome/overview wrapper was removed.
+
+### Admin builder compact controls (v1.0.8)
+
+- Converted Promotion Family and Rule Type card grids into dropdown selectors.
+- Removed the heading/description copy around those selectors so the builder takes less vertical space.
+- Updated `docs/ui-preview.html` to show the compact dropdown selector layout.
 
 ### Functional fixes from feedback
 
@@ -228,14 +245,14 @@ Important:
 - These are **local static preview files**.
 - They are useful for design review and screenshots.
 - They are now committed in the repository under `docs/`.
-- They are included in the repository and were published as documentation assets alongside the `v1.0.7` source release.
+- They are included in the repository and were published as documentation assets alongside the `v1.0.8` source release.
 
 If another model sees these files, it should treat them as repository documentation assets rather than release-runtime code.
 
 ## Release State At Handoff
 
-- `main` matches the published `v1.0.7` release state at handoff time.
-- GitHub release `v1.0.7` exists and is published.
+- `main` matches the published `v1.0.8` release state at handoff time.
+- GitHub release `v1.0.8` exists and is published.
 - README and `readme.txt` were updated so release docs match the single top-level Pluginora workspace.
 - `v1.0.4` release notes were also updated earlier to clarify the path to the newer admin UX releases.
 

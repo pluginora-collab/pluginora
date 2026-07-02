@@ -276,50 +276,28 @@
 
 .pluginora-family-grid,
 .pluginora-type-grid {
-    display: grid;
-    gap: 14px;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    margin-bottom: 24px;
 }
 
-.pluginora-family-card,
-.pluginora-type-card {
-    background: linear-gradient(180deg, #fff, #f7f9fc);
+.pluginora-select-family,
+.pluginora-select-type {
+    appearance: none;
+    background: #fff url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%232a2a2a%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M4.646%206.646a.5.5%200%200%201%20.708%200L8%209.293l2.646-2.647a.5.5%200%200%201%20.708.708l-3%203a.5.5%200%200%201-.708%200l-3-3a.5.5%200%200%201%200-.708z%22%2F%3E%3C%2Fsvg%3E') no-repeat right 12px center;
+    background-size: 16px;
     border: 1px solid var(--pluginora-border);
-    border-radius: 18px;
+    border-radius: 8px;
     color: var(--pluginora-text);
-    cursor: pointer;
-    min-height: 150px;
-    padding: 18px;
-    text-align: left;
-    transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+    display: block;
+    font-size: 14px;
+    padding: 10px 32px 10px 14px;
+    width: 100%;
 }
 
-.pluginora-family-card:hover,
-.pluginora-type-card:hover,
-.pluginora-family-card:focus,
-.pluginora-type-card:focus {
-    border-color: rgba(20, 87, 217, 0.4);
-    box-shadow: 0 14px 28px rgba(20, 87, 217, 0.12);
-    outline: 0;
-    transform: translateY(-1px);
-}
-
-.pluginora-family-card.is-active,
-.pluginora-type-card.is-active {
-    background: linear-gradient(180deg, #eef4ff, #ffffff);
+.pluginora-select-family:focus,
+.pluginora-select-type:focus {
     border-color: var(--pluginora-primary);
-    box-shadow: 0 16px 32px rgba(20, 87, 217, 0.14);
-}
-
-.pluginora-family-card h3,
-.pluginora-type-card h3 {
-    margin: 0 0 10px;
-}
-
-.pluginora-family-card p,
-.pluginora-type-card p {
-    color: var(--pluginora-text-soft);
-    margin: 0;
+    box-shadow: 0 0 0 2px rgba(20, 87, 217, 0.2);
+    outline: none;
 }
 
 .pluginora-field-grid {
